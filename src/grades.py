@@ -8,7 +8,7 @@ BSc Computer Science at the University of London
 import json
 
 # Local imports
-from utils import mathtools
+from .utils import mathtools
 
 
 class Grades:
@@ -179,7 +179,9 @@ class Grades:
         return round(self.total_credits / 360 * 100, 2)
 
 
-if __name__ == "__main__":
+def main():
+    """Execute the main functions of the script. Allows to be called from
+    other modules."""
     GRADES = Grades()
     GRADES.load()
     AVERAGE_SCORE = GRADES.calculate_average_of_finished_modules()
@@ -199,3 +201,7 @@ if __name__ == "__main__":
         f"Total credits done: {GRADES.get_total_credits()} / 360",
         f"({GRADES.get_percentage_degree_done()}%)",
     )
+
+
+if __name__ == "__main__":
+    main()
