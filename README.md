@@ -2,6 +2,23 @@
 
 Simple script to get information about progress made in a BSc Computer Science at the University of London (calculations are specific to this particular degree).
 
+---
+
+## Table of contents
+
+- [Grades Calculator](#grades-calculator)
+  - [Table of contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [To run the utility](#to-run-the-utility)
+  - [To run the test suite](#to-run-the-test-suite)
+  - [Skeleton `grades.json`](#skeleton-gradesjson)
+    - [Module taken](#module-taken)
+    - [Module recognized (RPL)](#module-recognized-rpl)
+    - [Complete sample JSON file](#complete-sample-json-file)
+  - [Sample output](#sample-output)
+
+---
+
 ## Requirements
 
 Python 3.6 and above.
@@ -49,3 +66,22 @@ You should create the file `grades.json` in this directory to get started. You c
 
     cp src/grades-template.json grades.json
 
+## Sample output
+
+      python main.py
+
+> Modules taken: [{'Algorithms and Data Structures I': {'score': 95, 'level': 4}}, {'Discrete Mathematics': {'score': 100, 'level': 4}}, {'How Computers Work': {'score': -1, 'level': 4}}, {'Introduction to Programming I': {'score': 100, 'level': 4}}, {'Numerical Mathematics': {'score': 80, 'level': 4}}, {'Introduction to Programming II': {'score': 99, 'level': 4}}, {'Web Development': {'score': 87, 'level': 4}}]
+>
+> Number of modules done: 7
+>
+> Scores so far: [95, 100, 100, 80, 99, 87]
+>
+> Average so far: 93.5 (ECTS: A)
+>
+> Classification: First Class Honours
+>
+> ECTS grade equivalence: {'Algorithms and Data Structures I': 'A', 'Discrete Mathematics': 'A', 'How Computers Work': 'N/A', 'Introduction to Programming I': 'A', 'Numerical Mathematics': 'A', 'Introduction to Programming II': 'A', 'Web Development': 'A'}
+>
+> GPA: 3.67 (US) – 4 (UK)
+>
+> Total credits done: 105 / 360 (29.17%)
