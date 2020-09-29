@@ -6,6 +6,7 @@ BSc Computer Science at the University of London
 
 # Standard library imports
 import json
+import pprint
 
 # Local imports
 from .utils import mathtools
@@ -182,10 +183,12 @@ class Grades:
 def main():
     """Execute the main functions of the script. Allows to be called from
     other modules."""
+    pp = pprint.PrettyPrinter(indent=2, width=10)
     GRADES = Grades()
     GRADES.load()
     AVERAGE_SCORE = GRADES.calculate_average_of_finished_modules()
-    print("Modules taken:", GRADES.get_list_of_finished_modules())
+    print("Modules taken:")
+    pp.pprint(GRADES.get_list_of_finished_modules())
     print("Number of modules done:", GRADES.get_num_of_finished_modules())
     print("Scores so far:", GRADES.get_scores_of_finished_modules())
     print(
@@ -193,9 +196,8 @@ def main():
         f" (ECTS: {GRADES.get_ects_equivalent_score(AVERAGE_SCORE)})"
     )
     print("Classification:", GRADES.get_classification())
-    print(
-        "ECTS grade equivalence:", GRADES.get_ects_scores_of_finished_modules()
-    )
+    print("ECTS grade equivalence:")
+    pp.pprint(GRADES.get_ects_scores_of_finished_modules())
     print(f"GPA: {GRADES.get_us_gpa()} (US) – {GRADES.get_uk_gpa()} (UK)")
     print(
         f"Total credits done: {GRADES.get_total_credits()} / 360",

@@ -68,20 +68,34 @@ You should create the file `grades.json` in this directory to get started. You c
 
 ## Sample output
 
-      python main.py
+    $ python main.py
 
-> Modules taken: [{'Algorithms and Data Structures I': {'score': 95, 'level': 4}}, {'Discrete Mathematics': {'score': 100, 'level': 4}}, {'How Computers Work': {'score': -1, 'level': 4}}, {'Introduction to Programming I': {'score': 100, 'level': 4}}, {'Numerical Mathematics': {'score': 80, 'level': 4}}, {'Introduction to Programming II': {'score': 99, 'level': 4}}, {'Web Development': {'score': 87, 'level': 4}}]
->
-> Number of modules done: 7
->
-> Scores so far: [95, 100, 100, 80, 99, 87]
->
-> Average so far: 93.5 (ECTS: A)
->
-> Classification: First Class Honours
->
-> ECTS grade equivalence: {'Algorithms and Data Structures I': 'A', 'Discrete Mathematics': 'A', 'How Computers Work': 'N/A', 'Introduction to Programming I': 'A', 'Numerical Mathematics': 'A', 'Introduction to Programming II': 'A', 'Web Development': 'A'}
->
-> GPA: 3.67 (US) – 4 (UK)
->
-> Total credits done: 105 / 360 (29.17%)
+    Modules taken:
+    [ { 'Algorithms and Data Structures I': { 'level': 4,
+                                              'score': 95}},
+      { 'Discrete Mathematics': { 'level': 4,
+                                  'score': 100}},
+      { 'How Computers Work': { 'level': 4,
+                                'score': -1}},
+      { 'Introduction to Programming I': { 'level': 4,
+                                           'score': 100}},
+      { 'Numerical Mathematics': { 'level': 4,
+                                   'score': 80}},
+      { 'Introduction to Programming II': { 'level': 4,
+                                            'score': 99}},
+      { 'Web Development': { 'level': 4,
+                             'score': 87}}]
+    Number of modules done: 7
+    Scores so far: [95, 100, 100, 80, 99, 87]
+    Average so far: 93.5 (ECTS: A)
+    Classification: First Class Honours
+    ECTS grade equivalence:
+    { 'Algorithms and Data Structures I': 'A',
+      'Discrete Mathematics': 'A',
+      'How Computers Work': 'N/A',
+      'Introduction to Programming I': 'A',
+      'Introduction to Programming II': 'A',
+      'Numerical Mathematics': 'A',
+      'Web Development': 'A'}
+    GPA: 3.67 (US) – 4 (UK)
+    Total credits done: 105 / 360 (29.17%)
