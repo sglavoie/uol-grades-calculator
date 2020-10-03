@@ -87,7 +87,7 @@ You should create the file `grades.json` in this directory to get started. You c
                              'score': 87}}]
     Number of modules done: 7
     Scores so far: [95, 100, 100, 80, 99, 87]
-    Average so far: 93.5 (ECTS: A)
+    Average so far: 93.5 (ECTS: A, US: A)
     Classification: First Class Honours
     ECTS grade equivalence:
     { 'Algorithms and Data Structures I': 'A',
@@ -97,5 +97,13 @@ You should create the file `grades.json` in this directory to get started. You c
       'Introduction to Programming II': 'A',
       'Numerical Mathematics': 'A',
       'Web Development': 'A'}
-    GPA: 3.67 (US) – 4 (UK)
+    US grade equivalence:
+    { 'Algorithms and Data Structures I': 'A',
+      'Discrete Mathematics': 'A',
+      'How Computers Work': 'N/A',
+      'Introduction to Programming I': 'A',
+      'Introduction to Programming II': 'A',
+      'Numerical Mathematics': 'B-',
+      'Web Development': 'B+'}
+    GPA: 4 (US) – 4 (UK)
     Total credits done: 105 / 360 (29.17%)
