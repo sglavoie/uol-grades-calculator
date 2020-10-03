@@ -291,6 +291,43 @@ class TestDataIsCalculatedWell:
         assert grades.get_ects_equivalent_score(score) == expected_score
 
     @staticmethod
+    @pytest.mark.parametrize(
+        "score,expected_score",
+        [
+            (100, "A"),
+            (93, "A"),
+            (92, "A-"),
+            (90, "A-"),
+            (89, "B+"),
+            (87, "B+"),
+            (86, "B"),
+            (83, "B"),
+            (82, "B-"),
+            (80, "B-"),
+            (79, "C+"),
+            (77, "C+"),
+            (76, "C"),
+            (73, "C"),
+            (72, "C-"),
+            (70, "C-"),
+            (69, "D+"),
+            (67, "D+"),
+            (66, "D"),
+            (63, "D"),
+            (62, "D-"),
+            (60, "D-"),
+            (59, "F"),
+            (0, "F"),
+            (-1, "N/A"),
+        ],
+    )
+    def test_us_letter_equivalent_score(
+        grades, score, expected_score, monkeypatch
+    ):
+        monkeypatch.setattr(grades, "average", score, raising=True)
+        assert grades.get_us_letter_equivalent_score(score) == expected_score
+
+    @staticmethod
     def test_ects_equivalent_list_of_scores_conversion(grades):
         expected_scores = {
             "Module 1": "A",
