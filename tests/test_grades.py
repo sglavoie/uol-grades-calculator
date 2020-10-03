@@ -237,22 +237,36 @@ class TestDataIsCalculatedWell:
     @pytest.mark.parametrize(
         "score,expected_gpa",
         [
-            (100, 4),
-            (95, 3.75),
-            (93, 3.65),
-            (90, 3.5),
-            (87, 3.35),
-            (82, 3.1),
-            (59, 1.95),
-            (51, 1.55),
-            (29, 0.45),
-            (21, 0.05),
-            (20, 0),
-            (12, 0),
+            (100, 4.0),
+            (93, 4.0),
+            (92, 3.7),
+            (90, 3.7),
+            (89, 3.3),
+            (87, 3.3),
+            (86, 3.0),
+            (83, 3.0),
+            (82, 2.7),
+            (80, 2.7),
+            (79, 2.3),
+            (77, 2.3),
+            (76, 2.0),
+            (73, 2.0),
+            (72, 1.7),
+            (70, 1.7),
+            (69, 1.3),
+            (67, 1.3),
+            (66, 1.0),
+            (63, 1.0),
+            (62, 0.7),
+            (60, 0.7),
+            (59, 0),
+            (29, 0),
             (0, 0),
         ],
     )
     def test_us_gpa(grades, score, expected_gpa, monkeypatch):
+        """Use the standard 4.0 GPA scale with pluses and minuses:
+        A/A-, B+/B/B-, etc."""
         monkeypatch.setattr(grades, "average", score, raising=True)
         assert grades.get_us_gpa() == expected_gpa
 

@@ -149,10 +149,30 @@ class Grades:
 
     def get_us_gpa(self) -> float:
         """Return the GPA as calculated in the US."""
-        result = round(self.average / 20 - 1, 2)
-        if result >= 0:
-            return result
-        return 0
+        result = 0
+        if self.average >= 60:
+            result = 0.7
+        if self.average >= 63:
+            result = 1
+        if self.average >= 67:
+            result = 1.3
+        if self.average >= 70:
+            result = 1.7
+        if self.average >= 73:
+            result = 2
+        if self.average >= 77:
+            result = 2.3
+        if self.average >= 80:
+            result = 2.7
+        if self.average >= 83:
+            result = 3
+        if self.average >= 87:
+            result = 3.3
+        if self.average >= 90:
+            result = 3.7
+        if self.average >= 93:
+            result = 4
+        return round(result, 2)
 
     @staticmethod
     def get_ects_equivalent_score(score: int) -> str:
