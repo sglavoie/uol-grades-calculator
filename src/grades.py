@@ -27,7 +27,9 @@ class Grades:
             with open(grades_file) as grades_json:
                 self.grades = json.load(grades_json)
         except FileNotFoundError as fnf:
-            raise FileNotFoundError(f"\n\n{grades_file} was not found.\n") from fnf
+            raise FileNotFoundError(
+                f"\n\n{grades_file} was not found.\n"
+            ) from fnf
         except json.decoder.JSONDecodeError as err:
             print(f"\n\n{grades_file} is not formatted correctly.\n")
             raise err
@@ -127,12 +129,11 @@ class Grades:
 
     def get_uk_gpa(self) -> float:
         """Return the GPA as calculated in the UK."""
-        if self.average < 35:
-            result = 0
+        result = 0
         if self.average >= 35:
-            result = 1.0
+            result = 1
         if self.average >= 40:
-            result = 2.0
+            result = 2
         if self.average >= 45:
             result = 2.3
         if self.average >= 50:
@@ -218,14 +219,13 @@ def main():
     prettyp = pprint.PrettyPrinter(indent=2, width=10)
     grades = Grades()
     grades.load()
-    avg_score = grades.calculate_average_of_finished_modules()
     print("Modules taken:")
     prettyp.pprint(grades.get_list_of_finished_modules())
     print("Number of modules done:", grades.get_num_of_finished_modules())
     print("Scores so far:", grades.get_scores_of_finished_modules())
     print(
-        f"Average so far: {avg_score}"
-        f" (ECTS: {grades.get_ects_equivalent_score(avg_score)})"
+        f"Average so far: {grades.average}"
+        f" (ECTS: {grades.get_ects_equivalent_score(grades.average)})"
     )
     print("Classification:", grades.get_classification())
     print("ECTS grade equivalence:")
