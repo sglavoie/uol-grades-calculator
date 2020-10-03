@@ -13,12 +13,16 @@ from .utils import mathtools
 
 
 class Grades:
+    """Provides methods to get insight about your grades."""
+
     def __init__(self) -> None:
+        """Set some default values before loading any grades."""
         self.grades = None
         self.average = 0
         self.total_credits = 0
 
     def load(self, grades_file="grades.json") -> None:
+        """Load grades from a JSON file."""
         try:
             with open(grades_file) as grades_json:
                 self.grades = json.load(grades_json)
@@ -45,6 +49,8 @@ class Grades:
 
     @staticmethod
     def score_is_valid(score) -> bool:
+        """Check whether a given score is a valid numeric value.
+        Return a Boolean value."""
         try:
             if (
                 score is not None
@@ -57,6 +63,8 @@ class Grades:
         return False
 
     def get_num_of_finished_modules(self) -> int:
+        """Return the number of modules completed with a score greater
+        than or equal to zero as an integer."""
         total = 0
         for _, values in self.grades.items():
             score = values.get("score")
@@ -65,6 +73,8 @@ class Grades:
         return total
 
     def get_list_of_finished_modules(self) -> list:
+        """Return a list of dicts containing information about all the modules
+        that have a valid score (either -1 or >= 0)."""
         modules = []
         for module, values in self.grades.items():
             score = values.get("score")
@@ -73,6 +83,7 @@ class Grades:
         return modules
 
     def get_scores_of_finished_modules(self) -> list:
+        """Return a list of floats with the score obtained in each module."""
         modules = self.get_list_of_finished_modules()
         scores = []
         for module in modules:
@@ -95,6 +106,7 @@ class Grades:
         return converted_scores
 
     def calculate_average_of_finished_modules(self) -> float:
+        """Return the unweighted average across all completed modules."""
         scores = self.get_scores_of_finished_modules()
         if len(scores) == 0:
             return 0
@@ -159,7 +171,7 @@ class Grades:
         return "E/F"
 
     def get_total_credits(self) -> int:
-        """Get the total number of credits gotten so far."""
+        """Get the total number of credits gotten so far as an integer."""
         self.total_credits = 0
         for subject_name, details in self.grades.items():
             if details.get("score"):
@@ -183,25 +195,25 @@ class Grades:
 def main():
     """Execute the main functions of the script. Allows to be called from
     other modules."""
-    pp = pprint.PrettyPrinter(indent=2, width=10)
-    GRADES = Grades()
-    GRADES.load()
-    AVERAGE_SCORE = GRADES.calculate_average_of_finished_modules()
+    prettyp = pprint.PrettyPrinter(indent=2, width=10)
+    grades = Grades()
+    grades.load()
+    avg_score = grades.calculate_average_of_finished_modules()
     print("Modules taken:")
-    pp.pprint(GRADES.get_list_of_finished_modules())
-    print("Number of modules done:", GRADES.get_num_of_finished_modules())
-    print("Scores so far:", GRADES.get_scores_of_finished_modules())
+    prettyp.pprint(grades.get_list_of_finished_modules())
+    print("Number of modules done:", grades.get_num_of_finished_modules())
+    print("Scores so far:", grades.get_scores_of_finished_modules())
     print(
-        f"Average so far: {AVERAGE_SCORE}"
-        f" (ECTS: {GRADES.get_ects_equivalent_score(AVERAGE_SCORE)})"
+        f"Average so far: {avg_score}"
+        f" (ECTS: {grades.get_ects_equivalent_score(avg_score)})"
     )
-    print("Classification:", GRADES.get_classification())
+    print("Classification:", grades.get_classification())
     print("ECTS grade equivalence:")
-    pp.pprint(GRADES.get_ects_scores_of_finished_modules())
-    print(f"GPA: {GRADES.get_us_gpa()} (US) – {GRADES.get_uk_gpa()} (UK)")
+    prettyp.pprint(grades.get_ects_scores_of_finished_modules())
+    print(f"GPA: {grades.get_us_gpa()} (US) – {grades.get_uk_gpa()} (UK)")
     print(
-        f"Total credits done: {GRADES.get_total_credits()} / 360",
-        f"({GRADES.get_percentage_degree_done()}%)",
+        f"Total credits done: {grades.get_total_credits()} / 360",
+        f"({grades.get_percentage_degree_done()}%)",
     )
 
 
