@@ -328,6 +328,47 @@ class TestDataIsCalculatedWell:
         assert grades.get_us_letter_equivalent_score(score) == expected_score
 
     @staticmethod
+    def test_us_letter_equivalent_list_of_scores_conversion(grades):
+        expected_scores = {
+            "Module 1": "A",
+            "Module 2": "N/A",
+            "Module 3": "B",
+            "Module 4": "C",
+            "Module 5": "F",
+            "Module 6": "A",
+            "Module 7": "D",
+            "Module 8": "A-",
+            "Module 9": "B+",
+            "Module 10": "B-",
+            "Module 11": "C+",
+            "Module 12": "C-",
+            "Module 13": "D+",
+            "Module 14": "D-",
+        }
+        with patch.dict(
+            grades.grades,
+            {
+                "Module 1": {"score": 95.2},
+                "Module 2": {"score": -1},  # not counted: i.e. N/A
+                "Module 3": {"score": 85},
+                "Module 4": {"score": 74.2},
+                "Module 5": {"score": 59.2},
+                "Module 6": {"score": 100},
+                "Module 7": {"score": 64.5},
+                "Module 8": {"score": 91},
+                "Module 9": {"score": 88.7},
+                "Module 10": {"score": 81.4},
+                "Module 11": {"score": 79},
+                "Module 12": {"score": 70},
+                "Module 13": {"score": 67.1},
+                "Module 14": {"score": 61},
+            },
+            clear=True,
+        ):
+            out = grades.get_us_letter_equivalent_list_of_scores_conversion()
+            assert out == expected_scores
+
+    @staticmethod
     def test_ects_equivalent_list_of_scores_conversion(grades):
         expected_scores = {
             "Module 1": "A",

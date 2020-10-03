@@ -50,7 +50,7 @@ class Grades:
         return 0
 
     @staticmethod
-    def score_is_valid(score) -> bool:
+    def score_is_valid(score: float) -> bool:
         """Check whether a given score is a valid numeric value.
         Return a Boolean value."""
         try:
@@ -103,6 +103,20 @@ class Grades:
         for module in finished_modules:
             for module_name, module_score in module.items():
                 converted_scores[module_name] = self.get_ects_equivalent_score(
+                    module_score.get("score")
+                )
+        return converted_scores
+
+    def get_us_letter_equivalent_list_of_scores_conversion(self) -> dict:
+        """Return a dictionary containing the converted US letter score
+        for each module."""
+        finished_modules = self.get_list_of_finished_modules()
+        converted_scores = {}
+        for module in finished_modules:
+            for module_name, module_score in module.items():
+                converted_scores[
+                    module_name
+                ] = self.get_us_letter_equivalent_score(
                     module_score.get("score")
                 )
         return converted_scores
