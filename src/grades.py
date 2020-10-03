@@ -26,8 +26,8 @@ class Grades:
         try:
             with open(grades_file) as grades_json:
                 self.grades = json.load(grades_json)
-        except FileNotFoundError:
-            raise FileNotFoundError(f"\n\n{grades_file} was not found.\n")
+        except FileNotFoundError as fnf:
+            raise FileNotFoundError(f"\n\n{grades_file} was not found.\n") from fnf
         except json.decoder.JSONDecodeError as err:
             print(f"\n\n{grades_file} is not formatted correctly.\n")
             raise err

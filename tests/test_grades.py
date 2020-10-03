@@ -155,12 +155,12 @@ class TestDataIsCalculatedWell:
             grades.grades,
             {
                 "Module 1": {"score": 100},
+                "Module 2": {"score": -1},
                 "Module 3": {"score": 80},
                 "Module 4": {"score": 79.7},
-                "Module 6": {"score": 0},
-                "Module 2": {"score": -1},
                 "Module 5": {"level": 4},
-                "Module 5": {},
+                "Module 6": {"score": 0},
+                "Module 7": {},
             },
             clear=True,
         ):
@@ -346,9 +346,9 @@ class TestDataIsCalculatedWell:
         with patch.dict(
             grades.grades,
             {
+                "Module 2": {"score": 34},  # do not count failed attempts
                 "Module 3": {"score": 90.5},
                 "Module 4": {"level": 5},
-                "Module 4": {"score": 34},  # do not count failed attempts
             },
             clear=True,
         ):
