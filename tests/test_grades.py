@@ -328,7 +328,7 @@ class TestDataIsCalculatedWell:
         assert grades.get_us_letter_equivalent_score(score) == expected_score
 
     @staticmethod
-    def test_us_letter_equivalent_list_of_scores_conversion(grades):
+    def test_get_scores_of_finished_modules_for_system_us(grades):
         expected_scores = {
             "Module 1": "A",
             "Module 2": "N/A",
@@ -365,11 +365,11 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            out = grades.get_us_letter_equivalent_list_of_scores_conversion()
+            out = grades.get_scores_of_finished_modules_for_system(system="US")
             assert out == expected_scores
 
     @staticmethod
-    def test_ects_equivalent_list_of_scores_conversion(grades):
+    def test_get_scores_of_finished_modules_for_system_ects(grades):
         expected_scores = {
             "Module 1": "A",
             "Module 2": "N/A",
@@ -392,7 +392,7 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            out = grades.get_ects_scores_of_finished_modules()
+            out = grades.get_scores_of_finished_modules_for_system(system="ECTS")
             assert out == expected_scores
 
     @staticmethod

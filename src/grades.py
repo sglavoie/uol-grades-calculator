@@ -21,7 +21,7 @@ class Grades:
         self.average = 0
         self.total_credits = 0
 
-    def load(self, grades_file="grades.json") -> None:
+    def load(self, grades_file: str = "grades.json") -> None:
         """Load grades from a JSON file."""
         try:
             with open(grades_file) as grades_json:
@@ -95,28 +95,20 @@ class Grades:
                     scores.append(score)
         return scores
 
-    def get_ects_scores_of_finished_modules(self) -> dict:
+    def get_scores_of_finished_modules_for_system(
+        self, system: str = "US"
+    ) -> dict:
         """Return a dictionary containing the converted ECTS score
         for each module."""
         finished_modules = self.get_list_of_finished_modules()
         converted_scores = {}
+        if system == "US":
+            to_run = self.get_us_letter_equivalent_score
+        elif system == "ECTS":
+            to_run = self.get_ects_equivalent_score
         for module in finished_modules:
             for module_name, module_score in module.items():
-                converted_scores[module_name] = self.get_ects_equivalent_score(
-                    module_score.get("score")
-                )
-        return converted_scores
-
-    def get_us_letter_equivalent_list_of_scores_conversion(self) -> dict:
-        """Return a dictionary containing the converted US letter score
-        for each module."""
-        finished_modules = self.get_list_of_finished_modules()
-        converted_scores = {}
-        for module in finished_modules:
-            for module_name, module_score in module.items():
-                converted_scores[
-                    module_name
-                ] = self.get_us_letter_equivalent_score(
+                converted_scores[module_name] = to_run(
                     module_score.get("score")
                 )
         return converted_scores
@@ -269,11 +261,18 @@ def main():
     print("Scores so far:", grades.get_scores_of_finished_modules())
     print(
         f"Average so far: {grades.average}"
-        f" (ECTS: {grades.get_ects_equivalent_score(grades.average)})"
+        f" (ECTS: {grades.get_ects_equivalent_score(grades.average)},"
+        f" US: {grades.get_us_letter_equivalent_score(grades.average)})"
     )
     print("Classification:", grades.get_classification())
     print("ECTS grade equivalence:")
-    prettyp.pprint(grades.get_ects_scores_of_finished_modules())
+    prettyp.pprint(
+        grades.get_scores_of_finished_modules_for_system(system="ECTS")
+    )
+    print("US grade equivalence:")
+    prettyp.pprint(
+        grades.get_scores_of_finished_modules_for_system(system="US")
+    )
     print(f"GPA: {grades.get_us_gpa()} (US) – {grades.get_uk_gpa()} (UK)")
     print(
         f"Total credits done: {grades.get_total_credits()} / 360",
