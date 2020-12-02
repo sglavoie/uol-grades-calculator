@@ -4,6 +4,9 @@
 # Personal info
 grades.json
 
+# Virtual environment
+.venv/
+
 ### Code ###
 .vscode/*
 
