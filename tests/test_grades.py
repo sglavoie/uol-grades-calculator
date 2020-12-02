@@ -2,32 +2,32 @@
 Test suite for `grades_calculator`.
 """
 # Standard library imports
-import json
 import uuid
 from unittest.mock import patch
 
 # Third-party library imports
 import pytest
+import yaml
 
 
 class TestGradesAreLoadedProperly:
     @staticmethod
-    def test_grades_json_is_loaded_as_dict(grades):
+    def test_grades_yml_is_loaded_as_dict(grades):
         grades.load()
         assert isinstance(grades.grades, dict)
 
     @staticmethod
-    def test_no_grades_json_raises_file_not_found(grades):
+    def test_no_grades_yml_raises_file_not_found(grades):
         with pytest.raises(FileNotFoundError):
-            non_existent_file = str(uuid.uuid4()) + ".json"
+            non_existent_file = str(uuid.uuid4()) + ".yml"
             grades.load(grades_file=non_existent_file)
 
 
-class TestJsonStructureIsFormattedWell:
+class TestYMLStructureIsFormattedWell:
     @staticmethod
-    def test_garbage_json_file_raises_error(grades):
-        with pytest.raises(json.decoder.JSONDecodeError):
-            grades.load(grades_file="tests/fixtures/json/bad_format.json")
+    def test_garbage_yml_file_raises_error(grades):
+        with pytest.raises(yaml.scanner.ScannerError):
+            grades.load(grades_file="tests/fixtures/yaml/bad_format.yml")
 
     @staticmethod
     @pytest.mark.parametrize(
@@ -178,7 +178,9 @@ class TestDataIsCalculatedWell:
         ):
             assert grades.calculate_average_of_finished_modules() == 93.97
         with patch.dict(
-            grades.grades, {}, clear=True,
+            grades.grades,
+            {},
+            clear=True,
         ):
             assert grades.calculate_average_of_finished_modules() == 0
 
@@ -392,7 +394,9 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            out = grades.get_scores_of_finished_modules_for_system(system="ECTS")
+            out = grades.get_scores_of_finished_modules_for_system(
+                system="ECTS"
+            )
             assert out == expected_scores
 
     @staticmethod

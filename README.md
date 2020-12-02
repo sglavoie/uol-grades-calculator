@@ -25,6 +25,7 @@ Python 3.6 and above.
 
 ## To run the utility
 
+      pip install -r requirements.txt
       python main.py
 
 ## To run the test suite

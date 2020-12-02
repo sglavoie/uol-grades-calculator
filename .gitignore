@@ -2,7 +2,7 @@
 # Edit at https://www.gitignore.io/?templates=code,python
 
 # Personal info
-grades.json
+grades.yml
 
 # Virtual environment
 .venv/

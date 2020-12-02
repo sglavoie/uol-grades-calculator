@@ -5,8 +5,10 @@ BSc Computer Science at the University of London
 """
 
 # Standard library imports
-import json
 import pprint
+
+# Third-party library imports
+import yaml
 
 # Local imports
 from .utils import mathtools
@@ -21,18 +23,15 @@ class Grades:
         self.average = 0
         self.total_credits = 0
 
-    def load(self, grades_file: str = "grades.json") -> None:
-        """Load grades from a JSON file."""
+    def load(self, grades_file: str = "grades.yml") -> None:
+        """Load grades from a YAML file."""
         try:
-            with open(grades_file) as grades_json:
-                self.grades = json.load(grades_json)
+            with open(grades_file) as config_file:
+                self.grades = yaml.safe_load(config_file)
         except FileNotFoundError as fnf:
             raise FileNotFoundError(
                 f"\n\n{grades_file} was not found.\n"
             ) from fnf
-        except json.decoder.JSONDecodeError as err:
-            print(f"\n\n{grades_file} is not formatted correctly.\n")
-            raise err
         else:  # no exception raised in `try` block
             self.average = self.calculate_average_of_finished_modules()
             self.total_credits = self.get_total_credits()
