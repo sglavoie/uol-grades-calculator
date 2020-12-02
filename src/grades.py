@@ -33,7 +33,7 @@ class Grades:
                 f"\n\n{grades_file} was not found.\n"
             ) from fnf
         else:  # no exception raised in `try` block
-            self.average = self.calculate_average_of_finished_modules()
+            self.average = self.calculate_unweighted_average_of_finished_modules()
             self.total_credits = self.get_total_credits()
 
     @staticmethod
@@ -112,7 +112,7 @@ class Grades:
                 )
         return converted_scores
 
-    def calculate_average_of_finished_modules(self) -> float:
+    def calculate_unweighted_average_of_finished_modules(self) -> float:
         """Return the unweighted average across all completed modules."""
         scores = self.get_scores_of_finished_modules()
         if len(scores) == 0:

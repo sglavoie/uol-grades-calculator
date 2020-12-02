@@ -150,7 +150,9 @@ class TestDataIsRetrievedCorrectly:
 
 class TestDataIsCalculatedWell:
     @staticmethod
-    def test_calculate_average_of_finished_modules_rounds_half_up(grades):
+    def test_calculate_unweighted_average_of_finished_modules_rounds_half_up(
+        grades,
+    ):
         with patch.dict(
             grades.grades,
             {
@@ -164,7 +166,10 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            assert grades.calculate_average_of_finished_modules() == 64.93
+            assert (
+                grades.calculate_unweighted_average_of_finished_modules()
+                == 64.93
+            )
         with patch.dict(
             grades.grades,
             {
@@ -176,13 +181,18 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            assert grades.calculate_average_of_finished_modules() == 93.97
+            assert (
+                grades.calculate_unweighted_average_of_finished_modules()
+                == 93.97
+            )
         with patch.dict(
             grades.grades,
             {},
             clear=True,
         ):
-            assert grades.calculate_average_of_finished_modules() == 0
+            assert (
+                grades.calculate_unweighted_average_of_finished_modules() == 0
+            )
 
     @staticmethod
     @pytest.mark.parametrize(
