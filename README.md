@@ -11,10 +11,10 @@ Simple script to get information about progress made in a BSc Computer Science a
   - [Requirements](#requirements)
   - [To run the utility](#to-run-the-utility)
   - [To run the test suite](#to-run-the-test-suite)
-  - [Skeleton `grades.json`](#skeleton-gradesjson)
+  - [Skeleton `grades.yml`](#skeleton-gradesyml)
     - [Module taken](#module-taken)
     - [Module recognized (RPL)](#module-recognized-rpl)
-    - [Complete sample JSON file](#complete-sample-json-file)
+    - [Complete sample YAML file](#complete-sample-yaml-file)
   - [Sample output](#sample-output)
 
 ---
@@ -33,7 +33,7 @@ Python 3.6 and above.
       pip install -r requirements-dev.txt
       pytest
 
-## Skeleton `grades.json`
+## Skeleton `grades.yml`
 
 Sample format for any given module.
 
@@ -41,31 +41,27 @@ Sample format for any given module.
 
 This means we define a score between `0` and `100`, both being inclusive values.
 
-```json
-      "Algorithms and Data Structures I": {
-      "score": 80.5,
-      "level": 4
-      }
+```yaml
+Algorithms and Data Structures I:
+  score: 80.5
 ```
 
 ### Module recognized (RPL)
 
 In this case, we define a score of `-1` to indicate that this module is done but we didn't get a score for it.
 
-```json
-"Algorithms and Data Structures I": {
-    "score": -1,
-    "level": 4
-  }
+```yaml
+Algorithms and Data Structures I:
+  score: -1
 ```
 
-### Complete sample JSON file
+### Complete sample YAML file
 
-The included template `src/grades-template.json` contains the complete list of modules to be taken, except for one elective module at level 6. Simply add the `score` property once a module has been taken. The "Final Project" module should be named as such and nothing else if you want it to count for 30 credits instead of 15 credits :wink:.
+The included template `src/grades-template.yml` contains the complete list of modules to be taken, except for one elective module at level 6. Simply update the `score` property once a module has been taken. The "Final Project" module should be named as such and nothing else if you want it to count for 30 credits instead of 15 credits :wink:.
 
-You should create the file `grades.json` in this directory to get started. You can copy the available template like so:
+You should create the file `grades.yml` in this directory to get started. You can copy the available template like so:
 
-    cp src/grades-template.json grades.json
+    cp src/grades-template.yml grades.yml
 
 ## Sample output
 
