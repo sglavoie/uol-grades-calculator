@@ -30,6 +30,12 @@ class Grades:
         self.average = self.calculate_unweighted_average_of_finished_modules()
         self.total_credits = self.get_total_credits()
 
+    def read_config(self, config_file: str = "src/config.yml") -> None:
+        """Load config file from YAML."""
+        with open(config_file) as cfile:
+            self.config = yaml.safe_load(cfile)
+        print(self.config)
+
     @staticmethod
     def get_weight_of(level: int) -> int:
         """Return the weight of a given `level`. The ratio is 1:3:5 for
