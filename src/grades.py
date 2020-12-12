@@ -20,8 +20,6 @@ class Grades:
     def __init__(self) -> None:
         """Set some default values before loading any grades."""
         self.grades = None
-        self.average = 0
-        self.total_credits = 0
 
     def load(self, grades_file: str = "grades.yml") -> None:
         """Load grades from a YAML file."""
@@ -245,7 +243,7 @@ class Grades:
 def main():
     """Execute the main functions of the script. Allows to be called from
     other modules."""
-    prettyp = pprint.PrettyPrinter(indent=2, width=10)
+    prettyp = pprint.PrettyPrinter(indent=2)
     grades = Grades()
     grades.load()
     print("Modules taken:")
@@ -257,16 +255,16 @@ def main():
         f" (ECTS: {grades.get_ects_equivalent_score(grades.average)},"
         f" US: {grades.get_us_letter_equivalent_score(grades.average)})"
     )
-    print("Classification:", grades.get_classification())
-    print("ECTS grade equivalence:")
+    print("\nClassification:", grades.get_classification())
+    print("\nECTS grade equivalence:")
     prettyp.pprint(
         grades.get_scores_of_finished_modules_for_system(system="ECTS")
     )
-    print("US grade equivalence:")
+    print("\nUS grade equivalence:")
     prettyp.pprint(
         grades.get_scores_of_finished_modules_for_system(system="US")
     )
-    print(f"GPA: {grades.get_us_gpa()} (US) – {grades.get_uk_gpa()} (UK)")
+    print(f"\nGPA: {grades.get_us_gpa()} (US) – {grades.get_uk_gpa()} (UK)")
     print(
         f"Total credits done: {grades.get_total_credits()} / 360",
         f"({grades.get_percentage_degree_done()}%)",
