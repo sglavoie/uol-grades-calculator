@@ -19,13 +19,14 @@ class Grades:
 
     def __init__(self) -> None:
         """Set some default values before loading any grades."""
-        self.grades = None
 
+        self.grades = None
     def load(self, grades_file: str = "grades.yml") -> None:
         """Load grades from a YAML file."""
         with open(grades_file) as gfile:
             self.grades = yaml.safe_load(gfile)
-        self.average = self.calculate_unweighted_average_of_finished_modules()
+        self.unweighted_average = self.calculate_unweighted_average()
+        self.weighted_average = self.calculate_weighted_average()
         self.total_credits = self.get_total_credits()
 
     @staticmethod
@@ -71,7 +72,8 @@ class Grades:
         modules = []
         for module, values in self.grades.items():
             score = values.get("score")
-            if self.score_is_valid(score):
+            level = values.get("level")
+            if level and self.score_is_valid(score):
                 modules.append({module: values})
         return modules
 
@@ -104,71 +106,105 @@ class Grades:
                 )
         return converted_scores
 
-    def calculate_unweighted_average_of_finished_modules(self) -> float:
+    def calculate_unweighted_average(self) -> float:
         """Return the unweighted average across all completed modules."""
         scores = self.get_scores_of_finished_modules()
-        if len(scores) == 0:
-            return 0
-        return mathtools.round_half_up(sum(scores) / len(scores), 2)
+        return (
+            0
+            if not scores
+            else mathtools.round_half_up(sum(scores) / len(scores), 2)
+        )
+
+    def calculate_weighted_average(self) -> float:
+        modules = self.get_list_of_finished_modules()
+        scores = self.get_scores_of_finished_modules()
+
+        levels = []
+        final_project = False
+        for module in modules:
+            for name, value in module.items():
+                if name.lower() == "final project":
+                    final_project = True
+                level = value.get("level")
+                score = value.get("score")
+                if "score" in value and score >= 0:
+                    levels.append(self.get_weight_of(level))
+        total_weight = sum(levels)
+
+        if final_project:
+            total_weight += 5
+
+        total = 0
+        for module in modules:
+            for key, values in module.items():
+                score = values.get("score")
+                level = self.get_weight_of(values.get("level"))
+                extra = 2 if key.lower() == "final project" else 1
+                if "score" in value and score >= 0:
+                    try:
+                        total += score * level * extra
+                    except TypeError:
+                        pass
+        return 0 if not scores else round(total / total_weight, 2)
 
     def get_classification(self) -> str:
         """Return a string containing the classification of the student
         according to the Programme Specification."""
-        if self.average >= 70:
+        if self.weighted_average >= 70:
             return "First Class Honours"
-        if self.average >= 60:
+        if self.weighted_average >= 60:
             return "Second Class Honours [Upper Division]"
-        if self.average >= 50:
+        if self.weighted_average >= 50:
             return "Second Class Honours [Lower Division]"
-        if self.average >= 40:
+        if self.weighted_average >= 40:
             return "Third Class Honours"
         return "Fail"
 
     def get_uk_gpa(self) -> float:
         """Return the GPA as calculated in the UK."""
         result = 0
-        if self.average >= 35:
+        if self.weighted_average >= 35:
             result = 1
-        if self.average >= 40:
+        if self.weighted_average >= 40:
             result = 2
-        if self.average >= 45:
+        if self.weighted_average >= 45:
             result = 2.3
-        if self.average >= 50:
+        if self.weighted_average >= 50:
             result = 2.7
-        if self.average >= 55:
+        if self.weighted_average >= 55:
             result = 3
-        if self.average >= 60:
+        if self.weighted_average >= 60:
             result = 3.3
-        if self.average >= 65:
+        if self.weighted_average >= 65:
             result = 3.7
-        if self.average >= 70:
+        if self.weighted_average >= 70:
             result = 4
         return round(result, 2)
 
     def get_us_gpa(self) -> float:
         """Return the GPA as calculated in the US."""
         result = 0
-        if self.average >= 60:
+        if self.weighted_average >= 60:
             result = 0.7
-        if self.average >= 63:
+        if self.weighted_average >= 63:
             result = 1
-        if self.average >= 67:
+        if self.weighted_average >= 67:
             result = 1.3
-        if self.average >= 70:
+        if self.weighted_average >= 70:
             result = 1.7
-        if self.average >= 73:
+        if self.weighted_average >= 73:
             result = 2
-        if self.average >= 77:
+        if self.weighted_average >= 77:
             result = 2.3
-        if self.average >= 80:
+        if self.weighted_average >= 80:
             result = 2.7
-        if self.average >= 83:
+        if self.weighted_average >= 83:
             result = 3
-        if self.average >= 87:
+        if self.weighted_average >= 87:
             result = 3.3
-        if self.average >= 90:
+        if self.weighted_average >= 90:
             result = 3.7
-        if self.average >= 93:
+        if self.weighted_average >= 93:
             result = 4
         return round(result, 2)
 
@@ -251,9 +287,14 @@ def main():
     print("Number of modules done:", grades.get_num_of_finished_modules())
     print("Scores so far:", grades.get_scores_of_finished_modules())
     print(
-        f"Average so far: {grades.average}"
-        f" (ECTS: {grades.get_ects_equivalent_score(grades.average)},"
-        f" US: {grades.get_us_letter_equivalent_score(grades.average)})"
+        f"\nWeighted average: {grades.weighted_average}"
+        f" (ECTS: {grades.get_ects_equivalent_score(grades.weighted_average)},"
+        f" US: {grades.get_us_letter_equivalent_score(grades.weighted_average)})"
+    )
+    print(
+        f"Unweighted average: {grades.unweighted_average}"
+        f" (ECTS: {grades.get_ects_equivalent_score(grades.unweighted_average)},"
+        f" US: {grades.get_us_letter_equivalent_score(grades.unweighted_average)})"
     )
     print("\nClassification:", grades.get_classification())
     print("\nECTS grade equivalence:")
