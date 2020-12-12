@@ -68,24 +68,21 @@ You should create the file `grades.yml` in this directory to get started. You ca
     $ python main.py
 
     Modules taken:
-    [ { 'Algorithms and Data Structures I': { 'level': 4,
-                                              'score': 95}},
-      { 'Discrete Mathematics': { 'level': 4,
-                                  'score': 100}},
-      { 'How Computers Work': { 'level': 4,
-                                'score': -1}},
-      { 'Introduction to Programming I': { 'level': 4,
-                                           'score': 100}},
-      { 'Numerical Mathematics': { 'level': 4,
-                                   'score': 80}},
-      { 'Introduction to Programming II': { 'level': 4,
-                                            'score': 99}},
-      { 'Web Development': { 'level': 4,
-                             'score': 87}}]
+    [ {'Algorithms and Data Structures I': {'level': 4, 'score': 95}},
+      {'Discrete Mathematics': {'level': 4, 'score': 100}},
+      {'How Computers Work': {'level': 4, 'score': -1}},
+      {'Introduction to Programming I': {'level': 4, 'score': 100}},
+      {'Numerical Mathematics': {'level': 4, 'score': 80}},
+      {'Introduction to Programming II': {'level': 4, 'score': 99}},
+      {'Web Development': {'level': 4, 'score': 87}}]
     Number of modules done: 7
     Scores so far: [95, 100, 100, 80, 99, 87]
-    Average so far: 93.5 (ECTS: A, US: A)
+
+    Weighted average: 93.5 (ECTS: A, US: A)
+    Unweighted average: 93.5 (ECTS: A, US: A)
+
     Classification: First Class Honours
+
     ECTS grade equivalence:
     { 'Algorithms and Data Structures I': 'A',
       'Discrete Mathematics': 'A',
@@ -94,6 +91,7 @@ You should create the file `grades.yml` in this directory to get started. You ca
       'Introduction to Programming II': 'A',
       'Numerical Mathematics': 'A',
       'Web Development': 'A'}
+
     US grade equivalence:
     { 'Algorithms and Data Structures I': 'A',
       'Discrete Mathematics': 'A',
@@ -102,5 +100,6 @@ You should create the file `grades.yml` in this directory to get started. You ca
       'Introduction to Programming II': 'A',
       'Numerical Mathematics': 'B-',
       'Web Development': 'B+'}
+
     GPA: 4 (US) – 4 (UK)
     Total credits done: 105 / 360 (29.17%)
