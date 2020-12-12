@@ -19,8 +19,8 @@ class Grades:
 
     def __init__(self) -> None:
         """Set some default values before loading any grades."""
-
         self.grades = None
+
     def load(self, grades_file: str = "grades.yml") -> None:
         """Load grades from a YAML file."""
         with open(grades_file) as gfile:
