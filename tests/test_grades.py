@@ -19,11 +19,6 @@ class TestGradesAreLoadedProperly:
 
 class TestYMLStructureIsFormattedWell:
     @staticmethod
-    def test_garbage_yml_file_raises_error(grades):
-        with pytest.raises(yaml.scanner.ScannerError):
-            grades.load(grades_file="tests/fixtures/yaml/bad_format.yml")
-
-    @staticmethod
     @pytest.mark.parametrize(
         "score,expected_bool",
         [
