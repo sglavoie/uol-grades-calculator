@@ -42,21 +42,6 @@ class TestYMLStructureIsFormattedWell:
         assert grades.score_is_valid(score) == expected_bool
 
 
-class TestConfigIsLoadedProperly:
-    @staticmethod
-    def test_levels_from_config_file_are_read(grades):
-        config_dict = {
-            "Algorithms and Data Structures I": {"level": 4},
-            "Discrete Mathematics": {"level": 4},
-            "Algorithms and Data Structures II": {"level": 5},
-            "Agile Software Projects": {"level": 5},
-            "Databases and Advanced Data Techniques": {"level": 6},
-            "Final Project": {"level": 6},
-        }
-        grades.read_config(config_file="tests/fixtures/yaml/levels.yml")
-        assert grades.config == config_dict
-
-
 class TestDataIsRetrievedCorrectly:
     @staticmethod
     @pytest.mark.parametrize(
