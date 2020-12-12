@@ -25,16 +25,10 @@ class Grades:
 
     def load(self, grades_file: str = "grades.yml") -> None:
         """Load grades from a YAML file."""
-        try:
-            with open(grades_file) as config_file:
-                self.grades = yaml.safe_load(config_file)
-        except FileNotFoundError as fnf:
-            raise FileNotFoundError(
-                f"\n\n{grades_file} was not found.\n"
-            ) from fnf
-        else:  # no exception raised in `try` block
-            self.average = self.calculate_unweighted_average_of_finished_modules()
-            self.total_credits = self.get_total_credits()
+        with open(grades_file) as gfile:
+            self.grades = yaml.safe_load(gfile)
+        self.average = self.calculate_unweighted_average_of_finished_modules()
+        self.total_credits = self.get_total_credits()
 
     @staticmethod
     def get_weight_of(level: int) -> int:

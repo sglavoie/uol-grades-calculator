@@ -16,12 +16,6 @@ class TestGradesAreLoadedProperly:
         grades.load()
         assert isinstance(grades.grades, dict)
 
-    @staticmethod
-    def test_no_grades_yml_raises_file_not_found(grades):
-        with pytest.raises(FileNotFoundError):
-            non_existent_file = str(uuid.uuid4()) + ".yml"
-            grades.load(grades_file=non_existent_file)
-
 
 class TestYMLStructureIsFormattedWell:
     @staticmethod
