@@ -2,25 +2,25 @@
 Algorithms and Data Structures I:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 4
 Discrete Mathematics:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 4
 Fundamentals of Computer Science:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 4
 How Computers Work:
@@ -34,49 +34,49 @@ How Computers Work:
 Introduction to Programming I:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 4
 Numerical Mathematics:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 4
 Introduction to Programming II:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 70
   midterm_score:
-  midterm_weight:
+  midterm_weight: 30
   module_score:
   level: 4
 Web Development:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 70
   midterm_score:
-  midterm_weight:
+  midterm_weight: 30
   module_score:
   level: 4
 Algorithms and Data Structures II:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 5
 Agile Software Projects:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 70
   midterm_score:
-  midterm_weight:
+  midterm_weight: 30
   module_score:
   level: 5
 Computer Security:
@@ -98,25 +98,25 @@ Databases networks and the web:
 Graphics Programming:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 5
 Object Oriented Programming:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 5
 Programming with Data:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 5
 Software Design and Development:
