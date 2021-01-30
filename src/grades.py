@@ -74,7 +74,11 @@ class Grades:
             module_score = values.get("module_score")
             level = values.get("level")
             if level and self.module_score_is_valid(module_score):
-                modules.append({module: values})
+                non_empty_values = {}
+                for key, value in values.items():
+                    if value is not None:
+                        non_empty_values[key] = value
+                modules.append({module: non_empty_values})
         return modules
 
     def get_module_scores_of_finished_modules(self) -> list:
