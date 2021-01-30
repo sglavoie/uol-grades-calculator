@@ -42,14 +42,14 @@ class Grades:
         return 0
 
     @staticmethod
-    def score_is_valid(score: float) -> bool:
+    def module_score_is_valid(module_score: float) -> bool:
         """Check whether a given score is a valid numeric value.
         Return a Boolean value."""
         try:
             if (
-                score is not None
-                and isinstance(float(score), float)
-                and (0 <= score <= 100 or score == -1)
+                module_score is not None
+                and isinstance(float(module_score), float)
+                and (0 <= module_score <= 100 or module_score == -1)
             ):
                 return True
         except (ValueError, TypeError):
@@ -61,8 +61,8 @@ class Grades:
         than or equal to zero as an integer."""
         total = 0
         for _, values in self.grades.items():
-            score = values.get("score")
-            if self.score_is_valid(score):
+            module_score = values.get("module_score")
+            if self.module_score_is_valid(module_score):
                 total += 1
         return total
 
@@ -71,24 +71,24 @@ class Grades:
         that have a valid score (either -1 or >= 0)."""
         modules = []
         for module, values in self.grades.items():
-            score = values.get("score")
+            module_score = values.get("module_score")
             level = values.get("level")
-            if level and self.score_is_valid(score):
+            if level and self.module_score_is_valid(module_score):
                 modules.append({module: values})
         return modules
 
-    def get_scores_of_finished_modules(self) -> list:
+    def get_module_scores_of_finished_modules(self) -> list:
         """Return a list of floats with the score obtained in each module."""
         modules = self.get_list_of_finished_modules()
-        scores = []
+        module_scores = []
         for module in modules:
             for value in module.values():
-                score = value.get("score")
-                if "score" in value and score >= 0:
-                    scores.append(score)
-        return scores
+                module_score = value.get("module_score")
+                if "module_score" in value and module_score >= 0:
+                    module_scores.append(module_score)
+        return module_scores
 
-    def get_scores_of_finished_modules_for_system(
+    def get_module_scores_of_finished_modules_for_system(
         self, system: str = "US"
     ) -> dict:
         """Return a dictionary containing the converted ECTS score
@@ -102,22 +102,22 @@ class Grades:
         for module in finished_modules:
             for module_name, module_score in module.items():
                 converted_scores[module_name] = to_run(
-                    module_score.get("score")
+                    module_score.get("module_score")
                 )
         return converted_scores
 
     def calculate_unweighted_average(self) -> float:
         """Return the unweighted average across all completed modules."""
-        scores = self.get_scores_of_finished_modules()
+        module_scores = self.get_module_scores_of_finished_modules()
         return (
             0
-            if not scores
-            else mathtools.round_half_up(sum(scores) / len(scores), 2)
+            if not module_scores
+            else mathtools.round_half_up(sum(module_scores) / len(module_scores), 2)
         )
 
     def calculate_weighted_average(self) -> float:
         modules = self.get_list_of_finished_modules()
-        scores = self.get_scores_of_finished_modules()
+        module_scores = self.get_module_scores_of_finished_modules()
 
         levels = []
         final_project = False
@@ -126,8 +126,8 @@ class Grades:
                 if name.lower() == "final project":
                     final_project = True
                 level = value.get("level")
-                score = value.get("score")
-                if "score" in value and score >= 0:
+                module_score = value.get("module_score")
+                if "module_score" in value and module_score >= 0:
                     levels.append(self.get_weight_of(level))
         total_weight = sum(levels)
 
@@ -137,15 +137,15 @@ class Grades:
         total = 0
         for module in modules:
             for key, values in module.items():
-                score = values.get("score")
+                module_score = values.get("module_score")
                 level = self.get_weight_of(values.get("level"))
                 extra = 2 if key.lower() == "final project" else 1
-                if "score" in value and score >= 0:
+                if "module_score" in value and module_score >= 0:
                     try:
-                        total += score * level * extra
+                        total += module_score * level * extra
                     except TypeError:
                         pass
-        return 0 if not scores else round(total / total_weight, 2)
+        return 0 if not module_scores else round(total / total_weight, 2)
 
     def get_classification(self) -> str:
         """Return a string containing the classification of the student
@@ -258,9 +258,9 @@ class Grades:
         """Get the total number of credits gotten so far as an integer."""
         self.total_credits = 0
         for subject_name, details in self.grades.items():
-            if details.get("score"):
-                score = details["score"]
-                if score == -1 or score >= 40:
+            if details.get("module_score"):
+                module_score = details["module_score"]
+                if module_score == -1 or module_score >= 40:
                     # This won't be -1 but it does not matter
                     if subject_name.lower() == "final project":
                         self.total_credits += 30
@@ -285,7 +285,7 @@ def main():
     print("Modules taken:")
     prettyp.pprint(grades.get_list_of_finished_modules())
     print("Number of modules done:", grades.get_num_of_finished_modules())
-    print("Scores so far:", grades.get_scores_of_finished_modules())
+    print("Scores so far:", grades.get_module_scores_of_finished_modules())
     print(
         f"\nWeighted average: {grades.weighted_average}"
         f" (ECTS: {grades.get_ects_equivalent_score(grades.weighted_average)},"
@@ -299,11 +299,11 @@ def main():
     print("\nClassification:", grades.get_classification())
     print("\nECTS grade equivalence:")
     prettyp.pprint(
-        grades.get_scores_of_finished_modules_for_system(system="ECTS")
+            grades.get_module_scores_of_finished_modules_for_system(system="ECTS")
     )
     print("\nUS grade equivalence:")
     prettyp.pprint(
-        grades.get_scores_of_finished_modules_for_system(system="US")
+            grades.get_module_scores_of_finished_modules_for_system(system="US")
     )
     print(f"\nGPA: {grades.get_us_gpa()} (US) – {grades.get_uk_gpa()} (UK)")
     print(

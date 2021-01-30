@@ -1,70 +1,185 @@
 ---
 Algorithms and Data Structures I:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 4
 Discrete Mathematics:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 4
 Fundamentals of Computer Science:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 4
 How Computers Work:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 4
 Introduction to Programming I:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 4
 Numerical Mathematics:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 4
 Introduction to Programming II:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 4
 Web Development:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 4
 Algorithms and Data Structures II:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 5
 Agile Software Projects:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 5
 Computer Security:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 5
 Databases networks and the web:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 5
 Graphics Programming:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 5
 Object Oriented Programming:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 5
 Programming with Data:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 5
 Software Design and Development:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 5
 Databases and Advanced Data Techniques:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 6
 Machine Learning and Neural Networks:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 6
 Artificial Intelligence:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 6
 Intelligent Signal Processing:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 6
 Natural Language Processing:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 6
 Elective Module:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 6
 Final Project:
-  score: -100
+  completion_date:
+  final_score:
+  final_weight:
+  midterm_score:
+  midterm_weight:
+  module_score:
   level: 6
