@@ -39,11 +39,11 @@ Sample format for any given module.
 
 ### Module taken
 
-This means we define a score between `0` and `100`, both being inclusive values.
+This means we define a module score between `0` and `100`, both being inclusive values.
 
 ```yaml
 Algorithms and Data Structures I:
-  score: 80.5
+  module_score: 80.5
 ```
 
 ### Module recognized (RPL)
@@ -52,12 +52,12 @@ In this case, we define a score of `-1` to indicate that this module is done but
 
 ```yaml
 Algorithms and Data Structures I:
-  score: -1
+  module_score: -1
 ```
 
 ### Complete sample YAML file
 
-The included template `src/grades-template.yml` contains the complete list of modules to be taken, except for one elective module at level 6. Simply update the `score` property once a module has been taken. The "Final Project" module should be named as such and nothing else if you want it to count for 30 credits instead of 15 credits :wink:.
+The included template `src/grades-template.yml` contains the complete list of modules to be taken, except for one elective module at level 6. Simply update the `module_score` property once a module has been taken. The "Final Project" module should be named as such and nothing else if you want it to count for 30 credits instead of 15 credits :wink:.
 
 You should create the file `grades.yml` in this directory to get started. You can copy the available template like so:
 
@@ -68,38 +68,47 @@ You should create the file `grades.yml` in this directory to get started. You ca
     $ python main.py
 
     Modules taken:
-    [ {'Algorithms and Data Structures I': {'level': 4, 'score': 95}},
-      {'Discrete Mathematics': {'level': 4, 'score': 100}},
-      {'How Computers Work': {'level': 4, 'score': -1}},
-      {'Introduction to Programming I': {'level': 4, 'score': 100}},
-      {'Numerical Mathematics': {'level': 4, 'score': 80}},
-      {'Introduction to Programming II': {'level': 4, 'score': 99}},
-      {'Web Development': {'level': 4, 'score': 87}}]
-    Number of modules done: 7
-    Scores so far: [95, 100, 100, 80, 99, 87]
+    [ {'Algorithms and Data Structures I': {'level': 4, 'module_score': 95}},
+      {'Discrete Mathematics': {'level': 4, 'module_score': 100}},
+      {'Fundamentals of Computer Science': {'level': 4, 'module_score': 98}},
+      {'How Computers Work': {'level': 4, 'module_score': -1}},
+      {'Introduction to Programming I': {'level': 4, 'module_score': 100}},
+      {'Numerical Mathematics': {'level': 4, 'module_score': 80}},
+      {'Introduction to Programming II': {'level': 4, 'module_score': 99}},
+      {'Web Development': {'level': 4, 'module_score': 87}},
+      {'Algorithms and Data Structures II': {'level': 5, 'module_score': 92}},
+      {'Object Oriented Programming': {'level': 5, 'module_score': 96}}]
+    Number of modules done: 10
+    Scores so far: [95, 100, 98, 100, 80, 99, 87, 92, 96]
 
-    Weighted average: 93.5 (ECTS: A, US: A)
-    Unweighted average: 93.5 (ECTS: A, US: A)
+    Weighted average: 94.08 (ECTS: A, US: A)
+    Unweighted average: 94.11 (ECTS: A, US: A)
 
     Classification: First Class Honours
 
     ECTS grade equivalence:
     { 'Algorithms and Data Structures I': 'A',
+      'Algorithms and Data Structures II': 'A',
       'Discrete Mathematics': 'A',
+      'Fundamentals of Computer Science': 'A',
       'How Computers Work': 'N/A',
       'Introduction to Programming I': 'A',
       'Introduction to Programming II': 'A',
       'Numerical Mathematics': 'A',
+      'Object Oriented Programming': 'A',
       'Web Development': 'A'}
 
     US grade equivalence:
     { 'Algorithms and Data Structures I': 'A',
+      'Algorithms and Data Structures II': 'A-',
       'Discrete Mathematics': 'A',
+      'Fundamentals of Computer Science': 'A',
       'How Computers Work': 'N/A',
       'Introduction to Programming I': 'A',
       'Introduction to Programming II': 'A',
       'Numerical Mathematics': 'B-',
+      'Object Oriented Programming': 'A',
       'Web Development': 'B+'}
 
     GPA: 4 (US) – 4 (UK)
-    Total credits done: 105 / 360 (29.17%)
+    Total credits done: 150 / 360 (41.67%)
