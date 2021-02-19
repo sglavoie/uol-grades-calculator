@@ -4,9 +4,6 @@ BSc Computer Science at the University of London
 (calculations are specific to this particular degree).
 """
 
-# Standard library imports
-import pprint
-
 # Third-party library imports
 import yaml
 
@@ -278,43 +275,3 @@ class Grades:
         if self.total_credits > 360:
             return -1  # can't be more than what's available!
         return round(self.total_credits / 360 * 100, 2)
-
-
-def main():
-    """Execute the main functions of the script. Allows to be called from
-    other modules."""
-    prettyp = pprint.PrettyPrinter(indent=2)
-    grades = Grades()
-    grades.load()
-    print("Modules taken:")
-    prettyp.pprint(grades.get_list_of_finished_modules())
-    print("Number of modules done:", grades.get_num_of_finished_modules())
-    print("Scores so far:", grades.get_module_scores_of_finished_modules())
-    print(
-        f"\nWeighted average: {grades.weighted_average}"
-        f" (ECTS: {grades.get_ects_equivalent_score(grades.weighted_average)},"
-        f" US: {grades.get_us_letter_equivalent_score(grades.weighted_average)})"
-    )
-    print(
-        f"Unweighted average: {grades.unweighted_average}"
-        f" (ECTS: {grades.get_ects_equivalent_score(grades.unweighted_average)},"
-        f" US: {grades.get_us_letter_equivalent_score(grades.unweighted_average)})"
-    )
-    print("\nClassification:", grades.get_classification())
-    print("\nECTS grade equivalence:")
-    prettyp.pprint(
-            grades.get_module_scores_of_finished_modules_for_system(system="ECTS")
-    )
-    print("\nUS grade equivalence:")
-    prettyp.pprint(
-            grades.get_module_scores_of_finished_modules_for_system(system="US")
-    )
-    print(f"\nGPA: {grades.get_us_gpa()} (US) – {grades.get_uk_gpa()} (UK)")
-    print(
-        f"Total credits done: {grades.get_total_credits()} / 360",
-        f"({grades.get_percentage_degree_done()}%)",
-    )
-
-
-if __name__ == "__main__":
-    main()

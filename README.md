@@ -10,28 +10,25 @@ Simple script to get information about progress made in a BSc Computer Science a
   - [Table of contents](#table-of-contents)
   - [Requirements](#requirements)
   - [To run the utility](#to-run-the-utility)
-  - [To run the test suite](#to-run-the-test-suite)
   - [Skeleton `grades.yml`](#skeleton-gradesyml)
     - [Module taken](#module-taken)
     - [Module recognized (RPL)](#module-recognized-rpl)
     - [Complete sample YAML file](#complete-sample-yaml-file)
   - [Sample output](#sample-output)
+  - [For developers](#for-developers)
+    - [To run the test suite](#to-run-the-test-suite)
 
 ---
 
 ## Requirements
 
-Python 3.6 and above.
+Python 3.6 and above. Install additional dependencies with the following command:
+
+    pip install -r requirements.txt
 
 ## To run the utility
 
-      pip install -r requirements.txt
-      python main.py
-
-## To run the test suite
-
-      pip install -r requirements-dev.txt
-      pytest
+    python -m uol_grades_calculator
 
 ## Skeleton `grades.yml`
 
@@ -57,11 +54,11 @@ Algorithms and Data Structures I:
 
 ### Complete sample YAML file
 
-The included template `src/grades-template.yml` contains the complete list of modules to be taken, except for one elective module at level 6. Simply update the `module_score` property once a module has been taken. The "Final Project" module should be named as such and nothing else if you want it to count for 30 credits instead of 15 credits :wink:.
+The included template `uol_grades_calculator/grades-template.yml` contains the complete list of modules to be taken, except for one elective module at level 6. Simply update the `module_score` property once a module has been taken. The "Final Project" module should be named as such and nothing else if you want it to count for 30 credits instead of 15 credits :wink:.
 
 You should create the file `grades.yml` in this directory to get started. You can copy the available template like so:
 
-    cp src/grades-template.yml grades.yml
+    cp uol_grades_calculator/grades-template.yml grades.yml
 
 ## Sample output
 
@@ -112,3 +109,9 @@ You should create the file `grades.yml` in this directory to get started. You ca
 
     GPA: 4 (US) – 4 (UK)
     Total credits done: 150 / 360 (41.67%)
+
+## For developers
+### To run the test suite
+
+    pip install -r requirements-dev.txt
+    pytest

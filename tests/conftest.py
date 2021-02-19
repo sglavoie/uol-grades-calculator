@@ -1,15 +1,14 @@
 """
 Set up pytest fixtures for convenient testing.
 """
+# Standard library imports
 import sys
-
-sys.path.insert(0, "../src")
 
 # Third-party library imports
 import pytest
 
 # Local imports
-from src.grades import Grades
+from uol_grades_calculator.grades import Grades
 
 
 @pytest.fixture(scope="module")
