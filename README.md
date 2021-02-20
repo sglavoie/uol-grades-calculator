@@ -17,6 +17,7 @@ Simple script to get information about progress made in a BSc Computer Science a
   - [Sample output](#sample-output)
   - [For developers](#for-developers)
     - [To run the test suite](#to-run-the-test-suite)
+    - [To develop locally as a package](#to-develop-locally-as-a-package)
 
 ---
 
@@ -111,7 +112,14 @@ You should create the file `grades.yml` in this directory to get started. You ca
     Total credits done: 150 / 360 (41.67%)
 
 ## For developers
+
 ### To run the test suite
 
     pip install -r requirements-dev.txt
     pytest
+
+### To develop locally as a package
+
+    python setup.py develop
+
+Then the command `ugc` (short for `uol_grades_calculator`) becomes available on the command-line.
