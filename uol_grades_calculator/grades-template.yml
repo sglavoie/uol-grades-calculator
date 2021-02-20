@@ -26,9 +26,9 @@ Fundamentals of Computer Science:
 How Computers Work:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 4
 Introduction to Programming I:
@@ -82,17 +82,17 @@ Agile Software Projects:
 Computer Security:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 5
 Databases networks and the web:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 5
 Graphics Programming:
@@ -122,25 +122,25 @@ Programming with Data:
 Software Design and Development:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 5
 Databases and Advanced Data Techniques:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 6
 Machine Learning and Neural Networks:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 6
 Artificial Intelligence:
@@ -154,9 +154,9 @@ Artificial Intelligence:
 Intelligent Signal Processing:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 6
 Natural Language Processing:
