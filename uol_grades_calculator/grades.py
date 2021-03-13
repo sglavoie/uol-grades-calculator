@@ -8,35 +8,60 @@ BSc Computer Science at the University of London
 import yaml
 
 # Local imports
-from .utils import mathtools
+from uol_grades_calculator.utils import mathtools
 
 
 class Grades:
-    """Provides methods to get insight about your grades."""
-
     def __init__(self) -> None:
         """Set some default values before loading any grades."""
-        self.grades = None
+        self.data = None
+        self.total_credits = 0
+        self.load()
 
     def load(self, grades_file: str = "grades.yml") -> None:
         """Load grades from a YAML file."""
         with open(grades_file) as gfile:
-            self.grades = yaml.safe_load(gfile)
+            self.data = yaml.safe_load(gfile)
         self.unweighted_average = self.calculate_unweighted_average()
         self.weighted_average = self.calculate_weighted_average()
         self.total_credits = self.get_total_credits()
 
-    @staticmethod
-    def get_weight_of(level: int) -> int:
-        """Return the weight of a given `level`. The ratio is 1:3:5 for
-        modules of L4:L5:L6 respectively."""
-        if level == 4:
-            return 1
-        if level == 5:
-            return 3
-        if level == 6:
-            return 5
-        return 0
+    def calculate_unweighted_average(self) -> float:
+        """Return the unweighted average across all completed modules."""
+        module_scores = self.get_module_scores_of_finished_modules()
+        return (
+            0
+            if not module_scores
+            else mathtools.round_half_up(
+                sum(module_scores) / len(module_scores), 2
+            )
+        )
+
+    def get_module_scores_of_finished_modules(self) -> list:
+        """Return a list of floats with the score obtained in each module."""
+        modules = self.get_list_of_finished_modules()
+        module_scores = []
+        for module in modules:
+            for value in module.values():
+                module_score = value.get("module_score")
+                if "module_score" in value and module_score >= 0:
+                    module_scores.append(module_score)
+        return module_scores
+
+    def get_list_of_finished_modules(self) -> list:
+        """Return a list of dicts containing information about all the modules
+        that have a valid score (either -1 or >= 0)."""
+        modules = []
+        for module, values in self.data.items():
+            module_score = values.get("module_score")
+            level = values.get("level")
+            if level and self.module_score_is_valid(module_score):
+                non_empty_values = {}
+                for key, value in values.items():
+                    if value is not None:
+                        non_empty_values[key] = value
+                modules.append({module: non_empty_values})
+        return modules
 
     @staticmethod
     def module_score_is_valid(module_score: float) -> bool:
@@ -52,69 +77,6 @@ class Grades:
         except (ValueError, TypeError):
             pass
         return False
-
-    def get_num_of_finished_modules(self) -> int:
-        """Return the number of modules completed with a score greater
-        than or equal to zero as an integer."""
-        total = 0
-        for _, values in self.grades.items():
-            module_score = values.get("module_score")
-            if self.module_score_is_valid(module_score):
-                total += 1
-        return total
-
-    def get_list_of_finished_modules(self) -> list:
-        """Return a list of dicts containing information about all the modules
-        that have a valid score (either -1 or >= 0)."""
-        modules = []
-        for module, values in self.grades.items():
-            module_score = values.get("module_score")
-            level = values.get("level")
-            if level and self.module_score_is_valid(module_score):
-                non_empty_values = {}
-                for key, value in values.items():
-                    if value is not None:
-                        non_empty_values[key] = value
-                modules.append({module: non_empty_values})
-        return modules
-
-    def get_module_scores_of_finished_modules(self) -> list:
-        """Return a list of floats with the score obtained in each module."""
-        modules = self.get_list_of_finished_modules()
-        module_scores = []
-        for module in modules:
-            for value in module.values():
-                module_score = value.get("module_score")
-                if "module_score" in value and module_score >= 0:
-                    module_scores.append(module_score)
-        return module_scores
-
-    def get_module_scores_of_finished_modules_for_system(
-        self, system: str = "US"
-    ) -> dict:
-        """Return a dictionary containing the converted ECTS score
-        for each module."""
-        finished_modules = self.get_list_of_finished_modules()
-        converted_scores = {}
-        if system == "US":
-            to_run = self.get_us_letter_equivalent_score
-        elif system == "ECTS":
-            to_run = self.get_ects_equivalent_score
-        for module in finished_modules:
-            for module_name, module_score in module.items():
-                converted_scores[module_name] = to_run(
-                    module_score.get("module_score")
-                )
-        return converted_scores
-
-    def calculate_unweighted_average(self) -> float:
-        """Return the unweighted average across all completed modules."""
-        module_scores = self.get_module_scores_of_finished_modules()
-        return (
-            0
-            if not module_scores
-            else mathtools.round_half_up(sum(module_scores) / len(module_scores), 2)
-        )
 
     def calculate_weighted_average(self) -> float:
         modules = self.get_list_of_finished_modules()
@@ -147,6 +109,60 @@ class Grades:
                     except TypeError:
                         pass
         return 0 if not module_scores else round(total / total_weight, 2)
+
+    @staticmethod
+    def get_weight_of(level: int) -> int:
+        """Return the weight of a given `level`. The ratio is 1:3:5 for
+        modules of L4:L5:L6 respectively."""
+        if level == 4:
+            return 1
+        if level == 5:
+            return 3
+        if level == 6:
+            return 5
+        return 0
+
+    def get_total_credits(self) -> int:
+        """Get the total number of credits gotten so far as an integer."""
+        self.total_credits = 0
+        for subject_name, details in self.data.items():
+            if details.get("module_score"):
+                module_score = details["module_score"]
+                if module_score == -1 or module_score >= 40:
+                    # This won't be -1 but it does not matter
+                    if subject_name.lower() == "final project":
+                        self.total_credits += 30
+                    else:
+                        self.total_credits += 15
+        return self.total_credits
+
+    def get_num_of_finished_modules(self) -> int:
+        """Return the number of modules completed with a score greater
+        than or equal to zero as an integer."""
+        total = 0
+        for _, values in self.data.items():
+            module_score = values.get("module_score")
+            if self.module_score_is_valid(module_score):
+                total += 1
+        return total
+
+    def get_module_scores_of_finished_modules_for_system(
+        self, system: str = "US"
+    ) -> dict:
+        """Return a dictionary containing the converted ECTS score
+        for each module."""
+        finished_modules = self.get_list_of_finished_modules()
+        converted_scores = {}
+        if system == "US":
+            to_run = self.get_us_letter_equivalent_score
+        elif system == "ECTS":
+            to_run = self.get_ects_equivalent_score
+        for module in finished_modules:
+            for module_name, module_score in module.items():
+                converted_scores[module_name] = to_run(
+                    module_score.get("module_score")
+                )
+        return converted_scores
 
     def get_classification(self) -> str:
         """Return a string containing the classification of the student
@@ -254,20 +270,6 @@ class Grades:
         if score == -1:  # RPL: score is not applicable
             return "N/A"
         return "E/F"
-
-    def get_total_credits(self) -> int:
-        """Get the total number of credits gotten so far as an integer."""
-        self.total_credits = 0
-        for subject_name, details in self.grades.items():
-            if details.get("module_score"):
-                module_score = details["module_score"]
-                if module_score == -1 or module_score >= 40:
-                    # This won't be -1 but it does not matter
-                    if subject_name.lower() == "final project":
-                        self.total_credits += 30
-                    else:
-                        self.total_credits += 15
-        return self.total_credits
 
     def get_percentage_degree_done(self) -> float:
         """From the total number of credits, return the percentage done
