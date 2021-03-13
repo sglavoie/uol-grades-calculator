@@ -2,12 +2,10 @@
 Test suite for `grades_calculator`.
 """
 # Standard library imports
-import uuid
 from unittest.mock import patch
 
 # Third-party library imports
 import pytest
-import yaml
 
 
 class TestGradesAreLoadedProperly:
