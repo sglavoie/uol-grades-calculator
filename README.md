@@ -33,7 +33,32 @@ Python 3.6 and above. Install additional dependencies with the following command
 
 ## Skeleton `grades.yml`
 
-Sample format for any given module.
+Each module described in `grades.yml` should contain information adhering to the following indications:
+
+| YAML node         | Value                                               | Example(s)             | Optional \* |
+| ----------------- | --------------------------------------------------- | ---------------------- | ----------- |
+| `completion_date` | Date as a **string**: `YYYY-MM`                     | `2020-01`              | Yes         |
+| `final_score`     | **Float**: _range_ 0.00–100.00                      | `50`, `50.5`, `90.56`  | Yes         |
+| `final_weight`    | **Integer** expressing a percentage: _range_ 0–100  | `0`, `40`, `80`, `100` | Yes         |
+| `midterm_score`   | **Float**: _range_ 0.00–100.00                      | `50`, `50.5`, `90.56`  | Yes         |
+| `midterm_weight`  | **Integer** expressing a percentage: _range_ 0–100  | `0`, `40`, `80`, `100` | Yes         |
+| `module_score`    | **Float**: _range_ 0.00–100.00                      | `50`, `50.5`, `90.56`  | **No**      |
+| `level`           | **Integer**: choose _strictly_ from `4`, `5` or `6` | `4`, `5`, `6`          | **No**      |
+
+\* If a node value is left empty (or the node is absent in a given module), this will affect how the module is taken into account (average across all modules, summary of modules taken, etc.).
+
+Here is a complete example for one module:
+
+```yaml
+Algorithms and Data Structures I:
+  completion_date: 2020-03
+  final_score: 92
+  final_weight: 50
+  midterm_score: 98
+  midterm_weight: 50
+  module_score: 95
+  level: 4
+```
 
 ### Module taken
 
