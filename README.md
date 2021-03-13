@@ -4,20 +4,18 @@ Simple script to get information about progress made in a BSc Computer Science a
 
 ---
 
-## Table of contents
+### Table of contents
 
-- [Grades Calculator](#grades-calculator)
-  - [Table of contents](#table-of-contents)
-  - [Requirements](#requirements)
-  - [To run the utility](#to-run-the-utility)
-  - [Skeleton `grades.yml`](#skeleton-gradesyml)
-    - [Module taken](#module-taken)
-    - [Module recognized (RPL)](#module-recognized-rpl)
-    - [Complete sample YAML file](#complete-sample-yaml-file)
-  - [Sample output](#sample-output)
-  - [For developers](#for-developers)
-    - [To run the test suite](#to-run-the-test-suite)
-    - [To develop locally as a package](#to-develop-locally-as-a-package)
+- [Requirements](#requirements)
+- [To run the utility](#to-run-the-utility)
+- [Skeleton `grades.yml`](#skeleton-gradesyml)
+  - [Module taken](#module-taken)
+  - [Module recognized (RPL)](#module-recognized-rpl)
+  - [Complete sample YAML file](#complete-sample-yaml-file)
+- [Sample output](#sample-output)
+- [For developers](#for-developers)
+  - [To run the test suite](#to-run-the-test-suite)
+  - [To develop locally as a package](#to-develop-locally-as-a-package)
 
 ---
 
