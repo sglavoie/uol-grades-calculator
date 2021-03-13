@@ -1,18 +1,11 @@
 """
-Test suite for `grades_calculator`.
+Test grades.py
 """
 # Standard library imports
 from unittest.mock import patch
 
 # Third-party library imports
 import pytest
-
-
-class TestGradesAreLoadedProperly:
-    @staticmethod
-    def test_grades_yml_is_loaded_as_dict(grades):
-        grades.load()
-        assert isinstance(grades.data, dict)
 
 
 class TestYMLStructureIsFormattedWell:

@@ -4,24 +4,21 @@ BSc Computer Science at the University of London
 (calculations are specific to this particular degree).
 """
 
-# Third-party library imports
-import yaml
-
 # Local imports
+from uol_grades_calculator.config import Config
 from uol_grades_calculator.utils import mathtools
 
 
 class Grades:
-    def __init__(self) -> None:
+    def __init__(self, config_path=None) -> None:
         """Set some default values before loading any grades."""
-        self.data = None
+        self.config = Config(config_path=config_path)
+        self.data = self.config.load()
         self.total_credits = 0
         self.load()
 
-    def load(self, grades_file: str = "grades.yml") -> None:
-        """Load grades from a YAML file."""
-        with open(grades_file) as gfile:
-            self.data = yaml.safe_load(gfile)
+    def load(self) -> None:
+        """Perform basic calculations required for most commands."""
         self.unweighted_average = self.calculate_unweighted_average()
         self.weighted_average = self.calculate_weighted_average()
         self.total_credits = self.get_total_credits()
