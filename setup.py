@@ -25,7 +25,7 @@ setup(
     ],
     packages=find_packages(exclude=("tests",)),
     include_package_data=True,
-    install_requires=["PyYAML"],
+    install_requires=["PyYAML", "Click"],
     entry_points={
         "console_scripts": [
             "ugc=uol_grades_calculator.__main__:main",
