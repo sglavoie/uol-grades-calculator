@@ -122,4 +122,4 @@ You should create the file `grades.yml` in this directory to get started. You ca
 
     python setup.py develop
 
-Then the command `ugc` (short for `uol_grades_calculator`) becomes available on the command-line.
+Then the command `ugc` (short for `uol_grades_calculator`) becomes available on the command-line. Type `ugc --help` for more information.
