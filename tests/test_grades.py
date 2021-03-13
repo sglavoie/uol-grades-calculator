@@ -2,19 +2,17 @@
 Test suite for `grades_calculator`.
 """
 # Standard library imports
-import uuid
 from unittest.mock import patch
 
 # Third-party library imports
 import pytest
-import yaml
 
 
 class TestGradesAreLoadedProperly:
     @staticmethod
     def test_grades_yml_is_loaded_as_dict(grades):
         grades.load()
-        assert isinstance(grades.grades, dict)
+        assert isinstance(grades.data, dict)
 
 
 class TestYMLStructureIsFormattedWell:
@@ -38,7 +36,9 @@ class TestYMLStructureIsFormattedWell:
             (None, False),
         ],
     )
-    def test_grades_module_scores_are_valid(grades, module_score, expected_bool):
+    def test_grades_module_scores_are_valid(
+        grades, module_score, expected_bool
+    ):
         assert grades.module_score_is_valid(module_score) == expected_bool
 
 
@@ -75,7 +75,7 @@ class TestDataIsRetrievedCorrectly:
     @staticmethod
     def test_count_finished_modules(grades):
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 "Module 1": {"module_score": 100, "level": 4},
                 "Module 2": {"module_score": 0, "level": 4},
@@ -94,14 +94,14 @@ class TestDataIsRetrievedCorrectly:
     @staticmethod
     def test_get_list_of_finished_modules(grades):
         expected_list = [
-                {"Module 1": {"module_score": 100, "level": 4}},
-                {"Module 2": {"module_score": -1, "level": 4}},
-                {"Module 3": {"module_score": 80, "level" : 4}},
-                {"Module 4": {"module_score": 75.5, "level": 5}},
-                {"Module 5": {"module_score": 0, "level": 4}},
+            {"Module 1": {"module_score": 100, "level": 4}},
+            {"Module 2": {"module_score": -1, "level": 4}},
+            {"Module 3": {"module_score": 80, "level": 4}},
+            {"Module 4": {"module_score": 75.5, "level": 5}},
+            {"Module 5": {"module_score": 0, "level": 4}},
         ]
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 "Module 1": {"module_score": 100, "level": 4},
                 "Module 2": {"module_score": -1, "level": 4},
@@ -122,7 +122,7 @@ class TestDataIsRetrievedCorrectly:
     def test_get_module_scores_of_finished_modules(grades):
         expected_list = [100, 80, 75.5, 0]
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 "Module 1": {"module_score": 100, "level": 4},
                 "Module 3": {"module_score": 80, "level": 4},
@@ -134,14 +134,16 @@ class TestDataIsRetrievedCorrectly:
             },
             clear=True,
         ):
-            assert grades.get_module_scores_of_finished_modules() == expected_list
+            assert (
+                grades.get_module_scores_of_finished_modules() == expected_list
+            )
 
 
 class TestDataIsCalculatedWell:
     @staticmethod
     def test_calculate_unweighted_average(grades):
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 "Module 1": {"module_score": 100, "level": 4},
                 "Module 2": {"module_score": -1, "level": 5},
@@ -155,7 +157,7 @@ class TestDataIsCalculatedWell:
         ):
             assert grades.calculate_unweighted_average() == 86.57
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 "Module 1": {"module_score": 97.23, "level": 4},
                 "Module 2": {"module_score": 93.58, "level": 4},
@@ -167,14 +169,18 @@ class TestDataIsCalculatedWell:
         ):
             assert grades.calculate_unweighted_average() == 93.97
         with patch.dict(
-            grades.grades, {}, clear=True,
+            grades.data,
+            {},
+            clear=True,
         ):
             assert grades.calculate_unweighted_average() == 0
 
     @staticmethod
-    def test_calculate_weighted_average(grades,):
+    def test_calculate_weighted_average(
+        grades,
+    ):
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 "Module 1": {"module_score": 100, "level": 4},
                 "Module 2": {"module_score": -1, "level": 4},
@@ -189,7 +195,7 @@ class TestDataIsCalculatedWell:
             # skip module 3: `level` is expected
             assert grades.calculate_weighted_average() == 84.78
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 "Module 1": {"module_score": 97.23, "level": 4},
                 "Module 2": {"module_score": 93.58, "level": 5},
@@ -201,7 +207,7 @@ class TestDataIsCalculatedWell:
         ):
             assert grades.calculate_weighted_average() == 92.61
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 "Module 1": {"module_score": 97.23, "level": 4},
                 "Module 2": {"module_score": 93.58, "level": 5},
@@ -215,7 +221,9 @@ class TestDataIsCalculatedWell:
             # (97.23 + 93.58 * 3 + 89 * 10) / 14
             assert grades.calculate_weighted_average() == 90.57
         with patch.dict(
-            grades.grades, {}, clear=True,
+            grades.data,
+            {},
+            clear=True,
         ):
             assert grades.calculate_weighted_average() == 0
 
@@ -239,7 +247,9 @@ class TestDataIsCalculatedWell:
         ],
     )
     def test_classification(grades, module_score, expected_class, monkeypatch):
-        monkeypatch.setattr(grades, "weighted_average", module_score, raising=True)
+        monkeypatch.setattr(
+            grades, "weighted_average", module_score, raising=True
+        )
         assert grades.get_classification() == expected_class
 
     @staticmethod
@@ -267,7 +277,9 @@ class TestDataIsCalculatedWell:
         ],
     )
     def test_uk_gpa(grades, module_score, expected_gpa, monkeypatch):
-        monkeypatch.setattr(grades, "weighted_average", module_score, raising=True)
+        monkeypatch.setattr(
+            grades, "weighted_average", module_score, raising=True
+        )
         assert grades.get_uk_gpa() == expected_gpa
 
     @staticmethod
@@ -304,7 +316,9 @@ class TestDataIsCalculatedWell:
     def test_us_gpa(grades, module_score, expected_gpa, monkeypatch):
         """Use the standard 4.0 GPA scale with pluses and minuses:
         A/A-, B+/B/B-, etc."""
-        monkeypatch.setattr(grades, "weighted_average", module_score, raising=True)
+        monkeypatch.setattr(
+            grades, "weighted_average", module_score, raising=True
+        )
         assert grades.get_us_gpa() == expected_gpa
 
     @staticmethod
@@ -323,9 +337,16 @@ class TestDataIsCalculatedWell:
             (0, "E/F"),
         ],
     )
-    def test_ects_equivalent(grades, module_score, expected_module_score, monkeypatch):
-        monkeypatch.setattr(grades, "weighted_average", module_score, raising=True)
-        assert grades.get_ects_equivalent_score(module_score) == expected_module_score
+    def test_ects_equivalent(
+        grades, module_score, expected_module_score, monkeypatch
+    ):
+        monkeypatch.setattr(
+            grades, "weighted_average", module_score, raising=True
+        )
+        assert (
+            grades.get_ects_equivalent_score(module_score)
+            == expected_module_score
+        )
 
     @staticmethod
     @pytest.mark.parametrize(
@@ -361,8 +382,13 @@ class TestDataIsCalculatedWell:
     def test_us_letter_equivalent_score(
         grades, module_score, expected_module_score, monkeypatch
     ):
-        monkeypatch.setattr(grades, "weighted_average", module_score, raising=True)
-        assert grades.get_us_letter_equivalent_score(module_score) == expected_module_score
+        monkeypatch.setattr(
+            grades, "weighted_average", module_score, raising=True
+        )
+        assert (
+            grades.get_us_letter_equivalent_score(module_score)
+            == expected_module_score
+        )
 
     @staticmethod
     def test_get_module_scores_of_finished_modules_for_system_us(grades):
@@ -383,10 +409,13 @@ class TestDataIsCalculatedWell:
             "Module 14": "D-",
         }
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 "Module 1": {"module_score": 95.2, "level": 4},
-                "Module 2": {"module_score": -1, "level": 4},  # not counted: i.e. N/A
+                "Module 2": {
+                    "module_score": -1,
+                    "level": 4,
+                },  # not counted: i.e. N/A
                 "Module 3": {"module_score": 85, "level": 4},
                 "Module 4": {"module_score": 74.2, "level": 4},
                 "Module 5": {"module_score": 59.2, "level": 4},
@@ -402,7 +431,9 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            out = grades.get_module_scores_of_finished_modules_for_system(system="US")
+            out = grades.get_module_scores_of_finished_modules_for_system(
+                system="US"
+            )
             assert out == expected_module_scores
 
     @staticmethod
@@ -417,7 +448,7 @@ class TestDataIsCalculatedWell:
             "Module 7": "D",
         }
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 "Module 1": {"module_score": 95.2, "level": 4},
                 "Module 2": {"module_score": -1, "level": 4},  # not counted
@@ -437,7 +468,7 @@ class TestDataIsCalculatedWell:
     @staticmethod
     def test_get_total_credits(grades):
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 "Module 1": {"module_score": -1, "level": 4},  # counts as done
                 "Module 2": {"module_score": 80, "level": 5},
@@ -448,35 +479,42 @@ class TestDataIsCalculatedWell:
         ):
             assert grades.get_total_credits() == 45
         with patch.dict(
-            grades.grades,
-            {"Final Project": {"module_score": 80, "level": 6}},  # counts double
+            grades.data,
+            {
+                "Final Project": {"module_score": 80, "level": 6}
+            },  # counts double
             clear=True,
         ):
             assert grades.get_total_credits() == 30
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 "final project": {
                     "module_score": 80,
-                    "level": 6
+                    "level": 6,
                 },  # make sure capitalization does not matter
             },
             clear=True,
         ):
             assert grades.get_total_credits() == 30
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 "Module 1": {"module_score": -1, "level": 5},  # counts as done
-                "Final Project": {"module_score": 80, "level": 6},  # counts double
+                "Final Project": {
+                    "module_score": 80,
+                    "level": 6,
+                },  # counts double
                 "Module 3": {"module_score": 90.5, "level": 5},
-                "Module 4": {"level": 5},  # don't count when there's no module_score
+                "Module 4": {
+                    "level": 5
+                },  # don't count when there's no module_score
             },
             clear=True,
         ):
             assert grades.get_total_credits() == 60
         with patch.dict(
-            grades.grades,
+            grades.data,
             {
                 # do not count failed attempts
                 "Module 2": {"module_score": 34, "level": 4},
