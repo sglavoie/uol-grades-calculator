@@ -31,4 +31,5 @@ def cli(ctx, config):
 @cli.command()
 @pass_grades
 def summarize(grades):
+    """Print a summary of the progress made so far."""
     commands.summarize(grades)
