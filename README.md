@@ -8,11 +8,13 @@ Simple script to get information about progress made in a BSc Computer Science a
 
 - [Requirements](#requirements)
 - [To run the utility](#to-run-the-utility)
-- [Skeleton `grades.yml`](#skeleton-gradesyml)
+- [Generate a sample config file to get started](#generate-a-sample-config-file-to-get-started)
+  - [Specifying a different path for the config file](#specifying-a-different-path-for-the-config-file)
+- [How to fill the config file (`.grades.yml` by default)](#how-to-fill-the-config-file-gradesyml-by-default)
   - [Module taken](#module-taken)
   - [Module recognized (RPL)](#module-recognized-rpl)
-  - [Complete sample YAML file](#complete-sample-yaml-file)
-- [Sample output](#sample-output)
+- [Sample command outputs](#sample-command-outputs)
+  - [`summarize`](#summarize)
 - [For developers](#for-developers)
   - [To run the test suite](#to-run-the-test-suite)
   - [To develop locally as a package](#to-develop-locally-as-a-package)
@@ -29,9 +31,29 @@ Python 3.6 and above. Install additional dependencies with the following command
 
     python -m uol_grades_calculator
 
-## Skeleton `grades.yml`
+By passing no arguments, this will print the default help message.
 
-Each module described in `grades.yml` should contain information adhering to the following indications:
+## Generate a sample config file to get started
+
+To generate a sample configuration file, run the following command:
+
+    python -m uol_grades_calculator generate-sample
+
+The configuration file will be created in your home directory as a hidden file (i.e. `~/.grades.yml`).
+
+### Specifying a different path for the config file
+
+If you want to create it somewhere else:
+
+    python -m uol_grades_calculator --config /path/to/config/file.yml generate-sample
+
+Note that you will have to indicate where the config is each time you use this tool in this case (you can always create an alias to avoid the trouble of typing it every time). For example:
+
+    python -m uol_grades_calculator --config /path/to/config/file.yml summarize
+
+## How to fill the config file (`.grades.yml` by default)
+
+Each module described in the config file should contain information adhering to the following indications:
 
 | YAML node         | Value                                               | Example(s)             | Optional \* |
 | ----------------- | --------------------------------------------------- | ---------------------- | ----------- |
@@ -76,17 +98,9 @@ Algorithms and Data Structures I:
   module_score: -1
 ```
 
-### Complete sample YAML file
+## Sample command outputs
 
-The included template `uol_grades_calculator/grades-template.yml` contains the complete list of modules to be taken, except for one elective module at level 6. Simply update the `module_score` property once a module has been taken. The "Final Project" module should be named as such and nothing else if you want it to count for 30 credits instead of 15 credits :wink:.
-
-You should create the file `grades.yml` in this directory to get started. You can copy the available template like so:
-
-    cp uol_grades_calculator/grades-template.yml grades.yml
-
-## Sample output
-
-    $ python -m uol_grades_calculator summarize
+### `summarize`
 
     Modules taken:
     [ { 'Algorithms and Data Structures I': { 'completion_date': '2020-03',
