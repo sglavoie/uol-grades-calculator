@@ -17,11 +17,11 @@ class TestConfigIsLoadedProperly:
         assert config.path == custom_path
 
     @staticmethod
-    def test_self_path_is_set_to_default_path(config):
+    def test_self_path_is_set_to_default_path():
         default_path = f"{str(Path.home())}/.grades.yml"  # should mock...
-        assert config.path == default_path
+        assert Config().path == default_path
 
     @staticmethod
-    def test_grades_yml_is_loaded_as_dict(config):
-        data = config.load()
+    def test_grades_yml_is_loaded_as_dict(local_config):
+        data = local_config.load()
         assert isinstance(data, dict)
