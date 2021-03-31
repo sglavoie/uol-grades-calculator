@@ -46,7 +46,7 @@ def summarize(grades):
 
 
 def generate_sample(config, force_overwrite=False) -> bool:
-    """Test..."""
+    """Generate a sample grades YAML config file."""
     if not force_overwrite and os.path.exists(config.path):
         print(f"Will not overwrite existing {config.path}")
         return False
