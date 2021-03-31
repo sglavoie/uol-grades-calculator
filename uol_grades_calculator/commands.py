@@ -3,11 +3,15 @@ List the commands available from the CLI: one per function.
 """
 
 # Standard library imports
+import os
 import pprint
 
 
 def summarize(grades):
     """Print a summary of the progress made so far."""
+    if not os.path.exists(grades.config.path):
+        return
+
     prettyp = pprint.PrettyPrinter(indent=2)
     print("Modules taken:")
     prettyp.pprint(grades.get_list_of_finished_modules())
