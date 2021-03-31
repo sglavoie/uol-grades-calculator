@@ -4,7 +4,9 @@ List the commands available from the CLI: one per function.
 
 # Standard library imports
 import os
+from pathlib import Path
 import pprint
+import shutil
 
 
 def summarize(grades):
@@ -41,3 +43,20 @@ def summarize(grades):
         f"Total credits done: {grades.get_total_credits()} / 360",
         f"({grades.get_percentage_degree_done()}%)",
     )
+
+
+def generate_sample(config, force_overwrite=False) -> bool:
+    """Test..."""
+    if not force_overwrite and os.path.exists(config.path):
+        print(f"Will not overwrite existing {config.path}")
+        return False
+
+    template = "uol_grades_calculator/grades-template.yml"
+    template_location = Path().absolute() / template
+
+    if force_overwrite:
+        print(f"Overwriting {config.path}")
+
+    shutil.copyfile(template_location, config.path)
+    print("→ Configuration file generated.")
+    return True

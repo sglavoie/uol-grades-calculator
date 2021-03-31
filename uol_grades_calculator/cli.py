@@ -33,3 +33,16 @@ def cli(ctx, config):
 def summarize(grades):
     """Print a summary of the progress made so far."""
     commands.summarize(grades)
+
+
+@cli.command()
+@click.option(
+    "-f",
+    "--force-overwrite",
+    is_flag=True,
+    help="Overwrite the existing config file, if any.",
+)
+@pass_grades
+def generate_sample(grades, force_overwrite):
+    """Generate a sample grades YAML config file."""
+    commands.generate_sample(grades.config, force_overwrite=force_overwrite)
