@@ -25,6 +25,6 @@ class Config:
             with open(self.path) as gfile:
                 self.config = yaml.safe_load(gfile)
                 return self.config
-        except FileNotFoundError as err:
+        except FileNotFoundError:
             print(f"Configuration file not found: {self.path}")
-            raise SystemExit from err
+            return None
