@@ -4,6 +4,9 @@ BSc Computer Science at the University of London
 (calculations are specific to this particular degree).
 """
 
+# Standard library imports
+import os
+
 # Local imports
 from uol_grades_calculator.config import Config
 from uol_grades_calculator.utils import mathtools
@@ -15,7 +18,11 @@ class Grades:
         self.config = Config(config_path=config_path)
         self.data = self.config.load()
         self.total_credits = 0
-        self.load()
+
+        # Avoid running calculations if the config file is not found
+        # Otherwise, this will throw errors when running some commands
+        if os.path.exists(self.config.path):
+            self.load()
 
     def load(self) -> None:
         """Perform basic calculations required for most commands."""
