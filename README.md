@@ -1,5 +1,7 @@
 # Grades Calculator
 
+[![PyPi](https://img.shields.io/pypi/v/uol-grades-calculator.svg)](https://pypi.python.org/pypi/uol-grades-calculator)
+
 Simple script to get information about progress made in a BSc Computer Science at the University of London (calculations are specific to this particular degree).
 
 ---
@@ -18,6 +20,7 @@ Simple script to get information about progress made in a BSc Computer Science a
 - [For developers](#for-developers)
   - [To run the test suite](#to-run-the-test-suite)
   - [To develop locally as a package](#to-develop-locally-as-a-package)
+  - [To publish to PyPI](#to-publish-to-pypi)
 
 ---
 
@@ -216,3 +219,22 @@ Algorithms and Data Structures I:
     python setup.py develop
 
 Then the command `ugc` (short for `uol_grades_calculator`) becomes available on the command-line. Type `ugc --help` for more information.
+
+### To publish to PyPI
+
+Update version as necessary in `uol_grades_calculator/__init__.py` and `setup.py`.
+
+Regenerate a build:
+
+    rm -rf dist build
+    python setup.py sdist bdist_wheel --universal
+
+Test the package at test.pypi.org:
+
+    python -m twine upload --repository testpypi dist/*
+
+The package will be publicly available at https://test.pypi.org/project/uol-grades-calculator/ and you will be able to `pip install` it as usual.
+
+Publish officially at [pypi.org](https://pypi.org):
+
+    python -m twine upload dist/*
