@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="uol-grades-calculator",
-    version="0.2.0",
+    version="0.3.0",
     description="Grades calculator for the BSc Computer Science at the University of London",
     long_description=README,
     long_description_content_type="text/markdown",
