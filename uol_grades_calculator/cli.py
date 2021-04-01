@@ -46,3 +46,13 @@ def summarize(grades):
 def generate_sample(grades, force_overwrite):
     """Generate a sample grades YAML config file."""
     commands.generate_sample(grades.config, force_overwrite=force_overwrite)
+
+@cli.group()
+def check():
+    """Perform sanity checks against the results generated."""
+
+@check.command()
+@pass_grades
+def score_accuracy(grades):
+    """Check for rounding errors when averaging module score."""
+    commands.check_score_accuracy_all_modules(grades)
