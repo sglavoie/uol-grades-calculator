@@ -8,6 +8,12 @@ from pathlib import Path
 import pprint
 import shutil
 
+# Third-party library imports
+import click
+
+# Local imports
+from uol_grades_calculator.utils import mathtools
+
 
 def summarize(grades):
     """Print a summary of the progress made so far."""
@@ -60,3 +66,48 @@ def generate_sample(config, force_overwrite=False) -> bool:
     shutil.copyfile(template_location, config.path)
     print("→ Configuration file generated.")
     return True
+
+
+def check_score_accuracy_all_modules(grades) -> dict:
+    expected_dict = {}
+    for module, values in grades.data.items():
+        conditions = [
+            values.get("final_score"),
+            values.get("final_weight"),
+            values.get("midterm_score"),
+            values.get("midterm_weight"),
+            values.get("module_score"),
+        ]
+        if not all(conditions):
+            continue
+
+        expected_score = check_score_accuracy_module(values)
+        actual_score = values["module_score"]
+        if not expected_score == actual_score:
+            expected_dict[module] = {
+                "actual": actual_score,
+                "expected": expected_score,
+            }
+            click.secho(
+                f"{module}: {actual_score}% actual [expected {expected_score}%]",
+                fg="red",
+            )
+    if not expected_dict:
+        click.secho("All module scores are accurate!", fg="green")
+    return expected_dict
+
+
+def check_score_accuracy_module(module) -> float:
+    try:
+        final_score = module["final_score"]
+        final_weight = module["final_weight"]
+        midterm_score = module["midterm_score"]
+        midterm_weight = module["midterm_weight"]
+        module_score = (
+            midterm_score * midterm_weight / 100
+            + final_score * final_weight / 100
+        )
+
+        return mathtools.round_half_up(module_score)
+    except TypeError:
+        return -1
