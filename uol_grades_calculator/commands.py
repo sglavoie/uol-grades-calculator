@@ -89,6 +89,9 @@ def generate_sample(config, force_overwrite=False) -> bool:
 
 
 def check_score_accuracy_all_modules(grades) -> dict:
+    if not os.path.exists(grades.config.path):
+        return None
+
     expected_dict = {}
     for module, values in grades.data.items():
         conditions = [
