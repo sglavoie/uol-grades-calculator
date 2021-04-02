@@ -6,6 +6,7 @@ Manage the configuration file.
 from pathlib import Path
 
 # Third-party library imports
+import click
 import yaml
 
 # Local imports
@@ -30,7 +31,9 @@ class Config:
                 self.verify()
                 return self.config
         except FileNotFoundError:
-            print(f"Configuration file not found: {self.path}")
+            click.secho(
+                f"Configuration file not found: {self.path}", fg="bright_red"
+            )
             return None
 
     def verify(self) -> bool:

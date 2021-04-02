@@ -21,50 +21,70 @@ def summarize(grades):
         return
 
     prettyp = pprint.PrettyPrinter(indent=2)
-    print("Modules taken:")
+    click.secho("Modules taken:", fg="bright_blue")
     prettyp.pprint(grades.get_list_of_finished_modules())
-    print("Number of modules done:", grades.get_num_of_finished_modules())
-    print("Scores so far:", grades.get_module_scores_of_finished_modules())
-    print(
-        f"\nWeighted average: {grades.weighted_average}"
-        f" (ECTS: {grades.get_ects_equivalent_score(grades.weighted_average)},"
-        f" US: {grades.get_us_letter_equivalent_score(grades.weighted_average)})"
+    click.secho(
+        f"Number of modules done: {grades.get_num_of_finished_modules()}",
+        fg="bright_yellow",
     )
-    print(
-        f"Unweighted average: {grades.unweighted_average}"
-        f" (ECTS: {grades.get_ects_equivalent_score(grades.unweighted_average)},"
-        f" US: {grades.get_us_letter_equivalent_score(grades.unweighted_average)})"
+    click.secho(
+        f"Scores so far: {grades.get_module_scores_of_finished_modules()}",
+        fg="bright_blue",
     )
-    print("\nClassification:", grades.get_classification())
-    print("\nECTS grade equivalence:")
+    click.secho(f"\nWeighted average: {grades.weighted_average}", fg="bright_green")
+    click.secho(
+        f" ECTS: {grades.get_ects_equivalent_score(grades.weighted_average)}",
+        fg="bright_blue",
+    )
+    click.secho(
+        f" US: {grades.get_us_letter_equivalent_score(grades.weighted_average)}",
+        fg="bright_yellow",
+    )
+    click.secho(
+        f"\nUnweighted average: {grades.unweighted_average}", fg="bright_green"
+    )
+    click.secho(
+        f" ECTS: {grades.get_ects_equivalent_score(grades.unweighted_average)}",
+        fg="bright_blue",
+    )
+    click.secho(
+        f" US: {grades.get_us_letter_equivalent_score(grades.unweighted_average)}",
+        fg="bright_yellow",
+    )
+    click.secho(f"\nClassification: {grades.get_classification()}", fg="bright_blue")
+    click.secho("\nECTS grade equivalence:", fg="bright_yellow")
     prettyp.pprint(
         grades.get_module_scores_of_finished_modules_for_system(system="ECTS")
     )
-    print("\nUS grade equivalence:")
+    click.secho("\nUS grade equivalence:", fg="bright_blue")
     prettyp.pprint(
         grades.get_module_scores_of_finished_modules_for_system(system="US")
     )
-    print(f"\nGPA: {grades.get_us_gpa()} (US) – {grades.get_uk_gpa()} (UK)")
-    print(
-        f"Total credits done: {grades.get_total_credits()} / 360",
+    click.secho(
+        f"\nGPA: {grades.get_us_gpa()} (US) – {grades.get_uk_gpa()} (UK)",
+        fg="bright_yellow",
+    )
+    click.secho(
+        f"Total credits done: {grades.get_total_credits()} / 360 "
         f"({grades.get_percentage_degree_done()}%)",
+        fg="bright_blue",
     )
 
 
 def generate_sample(config, force_overwrite=False) -> bool:
     """Generate a sample grades YAML config file."""
     if not force_overwrite and os.path.exists(config.path):
-        print(f"Will not overwrite existing {config.path}")
+        click.secho(f"Will not overwrite existing {config.path}", fg="bright_yellow")
         return False
 
     template = "uol_grades_calculator/grades-template.yml"
     template_location = Path().absolute() / template
 
     if force_overwrite:
-        print(f"Overwriting {config.path}")
+        click.secho(f"Overwriting {config.path}", fg="bright_blue")
 
     shutil.copyfile(template_location, config.path)
-    print("→ Configuration file generated.")
+    click.secho("→ Configuration file generated.", fg="bright_green")
     return True
 
 
@@ -90,10 +110,10 @@ def check_score_accuracy_all_modules(grades) -> dict:
             }
             click.secho(
                 f"{module}: {actual_score}% actual [expected {expected_score}%]",
-                fg="red",
+                fg="bright_red",
             )
     if not expected_dict:
-        click.secho("All module scores are accurate!", fg="green")
+        click.secho("All module scores are accurate!", fg="bright_green")
     return expected_dict
 
 
