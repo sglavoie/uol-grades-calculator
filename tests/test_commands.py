@@ -10,6 +10,7 @@ import pytest
 
 # Local imports
 from uol_grades_calculator import commands
+from uol_grades_calculator.utils import commands_helpers
 
 
 def test_generate_sample_does_not_overwrite_existing_location(
@@ -54,11 +55,11 @@ def test_check_score_accuracy_module(
         "midterm_score": midterm_score,
         "midterm_weight": midterm_weight,
     }
-    assert commands.check_score_accuracy_module(module) == expected_score
+    assert commands_helpers.check_score_accuracy_module(module) == expected_score
 
 
 def test_check_score_accuracy_all_modules(local_partial_grades_inaccurate):
-    result = commands.check_score_accuracy_all_modules(local_partial_grades_inaccurate)
+    result = commands.check_score_accuracy(local_partial_grades_inaccurate)
     expected_dict = {
         "Algorithms and Data Structures I": {
             "actual": 88,

@@ -12,7 +12,7 @@ import shutil
 import click
 
 # Local imports
-from uol_grades_calculator.utils import mathtools
+from uol_grades_calculator.utils import commands_helpers
 
 
 def summarize(grades):
@@ -31,7 +31,9 @@ def summarize(grades):
         f"Scores so far: {grades.get_module_scores_of_finished_modules()}",
         fg="bright_blue",
     )
-    click.secho(f"\nWeighted average: {grades.weighted_average}", fg="bright_green")
+    click.secho(
+        f"\nWeighted average: {grades.weighted_average}", fg="bright_green"
+    )
     click.secho(
         f" ECTS: {grades.get_ects_equivalent_score(grades.weighted_average)}",
         fg="bright_blue",
@@ -51,7 +53,9 @@ def summarize(grades):
         f" US: {grades.get_us_letter_equivalent_score(grades.unweighted_average)}",
         fg="bright_yellow",
     )
-    click.secho(f"\nClassification: {grades.get_classification()}", fg="bright_blue")
+    click.secho(
+        f"\nClassification: {grades.get_classification()}", fg="bright_blue"
+    )
     click.secho("\nECTS grade equivalence:", fg="bright_yellow")
     prettyp.pprint(
         grades.get_module_scores_of_finished_modules_for_system(system="ECTS")
@@ -74,7 +78,9 @@ def summarize(grades):
 def generate_sample(config, force_overwrite=False) -> bool:
     """Generate a sample grades YAML config file."""
     if not force_overwrite and os.path.exists(config.path):
-        click.secho(f"Will not overwrite existing {config.path}", fg="bright_yellow")
+        click.secho(
+            f"Will not overwrite existing {config.path}", fg="bright_yellow"
+        )
         return False
 
     template = "uol_grades_calculator/grades-template.yml"
@@ -88,7 +94,7 @@ def generate_sample(config, force_overwrite=False) -> bool:
     return True
 
 
-def check_score_accuracy_all_modules(grades) -> dict:
+def check_score_accuracy(grades) -> dict:
     if not os.path.exists(grades.config.path):
         return None
 
@@ -104,7 +110,7 @@ def check_score_accuracy_all_modules(grades) -> dict:
         if not all(conditions):
             continue
 
-        expected_score = check_score_accuracy_module(values)
+        expected_score = commands_helpers.check_score_accuracy_module(values)
         actual_score = values["module_score"]
         if not expected_score == actual_score:
             expected_dict[module] = {
@@ -118,19 +124,3 @@ def check_score_accuracy_all_modules(grades) -> dict:
     if not expected_dict:
         click.secho("All module scores are accurate!", fg="bright_green")
     return expected_dict
-
-
-def check_score_accuracy_module(module) -> float:
-    try:
-        final_score = module["final_score"]
-        final_weight = module["final_weight"]
-        midterm_score = module["midterm_score"]
-        midterm_weight = module["midterm_weight"]
-        module_score = (
-            midterm_score * midterm_weight / 100
-            + final_score * final_weight / 100
-        )
-
-        return mathtools.round_half_up(module_score)
-    except TypeError:
-        return -1

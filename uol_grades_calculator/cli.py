@@ -55,4 +55,4 @@ def check():
 @pass_grades
 def score_accuracy(grades):
     """Check for rounding errors when averaging module score."""
-    commands.check_score_accuracy_all_modules(grades)
+    commands.check_score_accuracy(grades)
