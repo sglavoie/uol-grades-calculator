@@ -1,0 +1,65 @@
+---
+Module 1: # valid
+  final_score: 65
+  final_weight: 50
+  midterm_score: 79
+  midterm_weight: 50
+  module_score:
+  level: 4
+Module 2: # valid
+  final_score: 60
+  final_weight: 50
+  midterm_score:
+  midterm_weight: 50
+  module_score:
+  level: 4
+Module 3: # valid
+  final_score:
+  final_weight: 50
+  midterm_score: 75
+  midterm_weight: 50
+  module_score:
+  level: 4
+Module 4: # invalid: module_score should be empty
+  final_score:
+  final_weight: 50
+  midterm_score: 60
+  midterm_weight: 50
+  module_score: 80
+  level: 4
+Module 5: # invalid: module_score should be empty
+  final_score: 80
+  final_weight: 50
+  midterm_score: 60
+  midterm_weight: 50
+  module_score: 82
+  level: 4
+Module 6: # invalid: module_score should be empty
+  final_score: 80
+  final_weight: 50
+  midterm_score:
+  midterm_weight: 50
+  module_score: 85
+  level: 4
+Module 7: # invalid: not enough data
+  level: 4
+Module 8: # invalid: not enough data
+  module_score:
+Module 9: # invalid: missing "level"
+  final_score:
+  final_weight: 50
+  midterm_score: 60
+  midterm_weight: 50
+  module_score:
+Module 10: # invalid: missing "level"
+  final_score: 60
+  final_weight: 50
+  midterm_score:
+  midterm_weight: 50
+  module_score:
+Module 11: # invalid: missing "level"
+  final_score: 70
+  final_weight: 50
+  midterm_score: 60
+  midterm_weight: 50
+  module_score:

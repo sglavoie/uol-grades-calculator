@@ -14,6 +14,9 @@ FIXTURE_GRADES_PATH = "tests/fixtures/yaml/grades.yml"
 FIXTURE_PARTIAL_GRADES_INACCURATE_PATH = (
     "tests/fixtures/yaml/partial_grades_inaccurate.yml"
 )
+FIXTURE_GRADES_MODULES_IN_PROGRESS_PATH = (
+    "tests/fixtures/yaml/modules_in_progress.yml"
+)
 
 
 @pytest.fixture(scope="module")
@@ -27,7 +30,9 @@ def local_grades():
 @pytest.fixture(scope="module")
 def local_partial_grades_inaccurate():
     """Return an instance of the Grades class as a fixture with few UoL modules."""
-    config_path = pathlib.Path().absolute() / FIXTURE_PARTIAL_GRADES_INACCURATE_PATH
+    config_path = (
+        pathlib.Path().absolute() / FIXTURE_PARTIAL_GRADES_INACCURATE_PATH
+    )
     return Grades(config_path=config_path)
 
 
@@ -37,3 +42,13 @@ def local_config():
     for the function."""
     config_path = pathlib.Path().absolute() / FIXTURE_GRADES_PATH
     return Config(config_path=config_path)
+
+
+@pytest.fixture(scope="module")
+def grades_modules_in_progress():
+    """Return an instance of the Grades class containing modules taken,
+    including modules in progress."""
+    config_path = (
+        pathlib.Path().absolute() / FIXTURE_GRADES_MODULES_IN_PROGRESS_PATH
+    )
+    return Grades(config_path=config_path)
