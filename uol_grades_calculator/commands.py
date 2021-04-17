@@ -12,7 +12,7 @@ import shutil
 import click
 
 # Local imports
-from uol_grades_calculator.utils import commands_helpers
+from uol_grades_calculator.utils import commands_helpers, grades_helpers
 
 
 def check_score_accuracy(grades) -> dict:
@@ -87,6 +87,8 @@ def summarize_done(grades):
         return
 
     prettyp = pprint.PrettyPrinter(indent=2)
+    wavg = grades.weighted_average
+
     click.secho("Modules taken:", fg="bright_blue")
     prettyp.pprint(grades.get_list_of_finished_modules())
     click.secho(
@@ -98,29 +100,29 @@ def summarize_done(grades):
         fg="bright_blue",
     )
     click.secho(
-        f"\nWeighted average: {grades.weighted_average}", fg="bright_green"
+        f"\nWeighted average: {wavg}", fg="bright_green"
     )
     click.secho(
-        f" ECTS: {grades.get_ects_equivalent_score(grades.weighted_average)}",
+        f" ECTS: {grades_helpers.get_ects_equivalent_score(wavg)}",
         fg="bright_blue",
     )
     click.secho(
-        f" US: {grades.get_us_letter_equivalent_score(grades.weighted_average)}",
+        f" US: {grades_helpers.get_us_letter_equivalent_score(wavg)}",
         fg="bright_yellow",
     )
     click.secho(
         f"\nUnweighted average: {grades.unweighted_average}", fg="bright_green"
     )
     click.secho(
-        f" ECTS: {grades.get_ects_equivalent_score(grades.unweighted_average)}",
+        f" ECTS: {grades_helpers.get_ects_equivalent_score(grades.unweighted_average)}",
         fg="bright_blue",
     )
     click.secho(
-        f" US: {grades.get_us_letter_equivalent_score(grades.unweighted_average)}",
+        f" US: {grades_helpers.get_us_letter_equivalent_score(grades.unweighted_average)}",
         fg="bright_yellow",
     )
     click.secho(
-        f"\nClassification: {grades.get_classification()}", fg="bright_blue"
+        f"\nClassification (weighted): {grades_helpers.get_classification(wavg)}", fg="bright_blue"
     )
     click.secho("\nECTS grade equivalence:", fg="bright_yellow")
     prettyp.pprint(
@@ -131,7 +133,8 @@ def summarize_done(grades):
         grades.get_module_scores_of_finished_modules_for_system(system="US")
     )
     click.secho(
-        f"\nGPA: {grades.get_us_gpa()} (US) – {grades.get_uk_gpa()} (UK)",
+        f"\nGPA (weighted): {grades_helpers.get_us_gpa(wavg)} US – "
+        f"{grades_helpers.get_uk_gpa(wavg)} UK",
         fg="bright_yellow",
     )
     click.secho(
@@ -156,11 +159,11 @@ def summarize_progress(grades):
         fg="bright_green",
     )
     click.secho(
-        f" ECTS: {grades.get_ects_equivalent_score(wavg)}",
+        f" ECTS: {grades_helpers.get_ects_equivalent_score(wavg)}",
         fg="bright_blue",
     )
     click.secho(
-        f" US: {grades.get_us_letter_equivalent_score(wavg)}",
+        f" US: {grades_helpers.get_us_letter_equivalent_score(wavg)}",
         fg="bright_yellow",
     )
 
@@ -170,15 +173,15 @@ def summarize_progress(grades):
         fg="bright_green",
     )  # DONE
     click.secho(
-        f" ECTS: {grades.get_ects_equivalent_score(uavg)}",
+        f" ECTS: {grades_helpers.get_ects_equivalent_score(uavg)}",
         fg="bright_blue",
     )
     click.secho(
-        f" US: {grades.get_us_letter_equivalent_score(uavg)}",
+        f" US: {grades_helpers.get_us_letter_equivalent_score(uavg)}",
         fg="bright_yellow",
     )
     click.secho(
-        f"\nClassification: {grades.get_classification_in_progress()}",
+        f"\nClassification (weighted): {grades_helpers.get_classification(wavg)}",
         fg="bright_blue",
     )
     click.secho("\nECTS grade equivalence:", fg="bright_yellow")
@@ -190,7 +193,7 @@ def summarize_progress(grades):
         grades.get_scores_of_modules_in_progress_for_system(system="US")
     )
     click.secho(
-        f"\nGPA: {grades.get_us_gpa(in_progress=True)} (US) – "
-        f"{grades.get_uk_gpa(in_progress=True)} (UK)",
+        f"\nGPA (weighted): {grades_helpers.get_us_gpa(wavg)} US – "
+        f"{grades_helpers.get_uk_gpa(wavg)} UK",
         fg="bright_yellow",
     )
