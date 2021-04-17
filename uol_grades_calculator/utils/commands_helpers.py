@@ -2,7 +2,7 @@
 from uol_grades_calculator.utils import mathtools
 
 
-def check_score_accuracy_module(module) -> float:
+def get_module_score(module) -> float:
     try:
         final_score = module["final_score"]
         final_weight = module["final_weight"]
@@ -13,6 +13,11 @@ def check_score_accuracy_module(module) -> float:
             + final_score * final_weight / 100
         )
 
-        return mathtools.round_half_up(module_score)
+        return module_score
     except TypeError:
         return -1
+
+
+def get_module_score_rounded_up(module) -> float:
+    module_score = get_module_score(module)
+    return mathtools.round_half_up(module_score)

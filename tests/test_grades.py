@@ -31,7 +31,7 @@ import pytest
 def test_grades_module_scores_are_valid(
     local_grades, module_score, expected_bool
 ):
-    assert local_grades.module_score_is_valid(module_score) == expected_bool
+    assert local_grades.score_is_valid(module_score) == expected_bool
 
 
 class TestDataIsRetrievedCorrectly:
@@ -111,6 +111,39 @@ class TestDataIsRetrievedCorrectly:
             assert local_grades.get_list_of_finished_modules() == expected_list
 
     @staticmethod
+    def test_get_list_of_modules_in_progress(grades_modules_in_progress):
+        expected_list = [
+            {
+                "Module 1": {
+                    "final_score": 65,
+                    "final_weight": 70,
+                    "midterm_score": 79,
+                    "midterm_weight": 30,
+                    "level": 4,
+                }
+            },
+            {"Module 2": {"final_score": 60, "final_weight": 50, "level": 5}},
+            {
+                "Module 3": {
+                    "midterm_score": 75,
+                    "midterm_weight": 50,
+                    "level": 6,
+                }
+            },
+        ]
+        assert (
+            grades_modules_in_progress.get_list_of_modules_in_progress()
+            == expected_list
+        )
+
+    @staticmethod
+    def test_get_scores_of_modules_in_progress(grades_modules_in_progress):
+        results = (
+            grades_modules_in_progress.get_scores_of_modules_in_progress()
+        )
+        assert results == [69.2, 60, 75]
+
+    @staticmethod
     def test_get_module_scores_of_finished_modules(local_grades):
         expected_list = [100, 80, 75.5, 0]
         with patch.dict(
@@ -127,7 +160,8 @@ class TestDataIsRetrievedCorrectly:
             clear=True,
         ):
             assert (
-                local_grades.get_module_scores_of_finished_modules() == expected_list
+                local_grades.get_module_scores_of_finished_modules()
+                == expected_list
             )
 
 
@@ -220,6 +254,30 @@ class TestDataIsCalculatedWell:
             assert local_grades.calculate_weighted_average() == 0
 
     @staticmethod
+    def test_calculate_unweighted_average_in_progress(
+        grades_modules_in_progress,
+    ):
+        # finished : [80, 82, 85]
+        # in progress: [69.2, 60, 75]
+        # average of all that: 75.67
+        result = (
+            grades_modules_in_progress.calculate_unweighted_average_in_progress()
+        )
+        assert result == 75.2
+
+    @staticmethod
+    def test_calculate_weighted_average_in_progress(
+        grades_modules_in_progress,
+    ):
+        # finished : [80, 82, 85], respectively [L4, L4, L4]
+        # in progress: [69.2, 60, 75], respectively [L4, L5, L6]
+        # weighted average of all that: 72.60
+        result = (
+            grades_modules_in_progress.calculate_weighted_average_in_progress()
+        )
+        assert result == 72.60
+
+    @staticmethod
     @pytest.mark.parametrize(
         "module_score,expected_class",
         [
@@ -238,7 +296,9 @@ class TestDataIsCalculatedWell:
             (0, "Fail"),
         ],
     )
-    def test_classification(local_grades, module_score, expected_class, monkeypatch):
+    def test_classification(
+        local_grades, module_score, expected_class, monkeypatch
+    ):
         monkeypatch.setattr(
             local_grades, "weighted_average", module_score, raising=True
         )
@@ -312,6 +372,79 @@ class TestDataIsCalculatedWell:
             local_grades, "weighted_average", module_score, raising=True
         )
         assert local_grades.get_us_gpa() == expected_gpa
+
+    @staticmethod
+    @pytest.mark.parametrize(
+        "score,expected_gpa",
+        [
+            (100, 4),
+            (70, 4),
+            (69.9, 3.7),
+            (65, 3.7),
+            (64.5, 3.3),
+            (60, 3.3),
+            (59, 3),
+            (55, 3),
+            (54.6, 2.7),
+            (50, 2.7),
+            (49.7, 2.3),
+            (45, 2.3),
+            (44.8, 2),
+            (40, 2),
+            (39.9, 1),
+            (35, 1),
+            (34.8, 0),
+            (0, 0),
+        ],
+    )
+    def test_uk_gpa_in_progress(
+        local_grades, score, expected_gpa, monkeypatch
+    ):
+        monkeypatch.setattr(
+            local_grades, "weighted_average_in_progress", score, raising=True
+        )
+        assert local_grades.get_uk_gpa(in_progress=True) == expected_gpa
+
+    @staticmethod
+    @pytest.mark.parametrize(
+        "score,expected_gpa",
+        [
+            (100, 4.0),
+            (93, 4.0),
+            (92, 3.7),
+            (90, 3.7),
+            (89, 3.3),
+            (87, 3.3),
+            (86, 3.0),
+            (83, 3.0),
+            (82, 2.7),
+            (80, 2.7),
+            (79, 2.3),
+            (77, 2.3),
+            (76, 2.0),
+            (73, 2.0),
+            (72, 1.7),
+            (70, 1.7),
+            (69, 1.3),
+            (67, 1.3),
+            (66, 1.0),
+            (63, 1.0),
+            (62, 0.7),
+            (60, 0.7),
+            (59, 0),
+            (29, 0),
+            (0, 0),
+        ],
+    )
+    def test_us_gpa_in_progress(
+        local_grades, score, expected_gpa, monkeypatch
+    ):
+        """Use the standard 4.0 GPA scale with pluses and minuses:
+        A/A-, B+/B/B-, etc."""
+        monkeypatch.setattr(
+            local_grades, "weighted_average_in_progress", score, raising=True
+        )
+        assert local_grades.get_us_gpa(in_progress=True) == expected_gpa
 
     @staticmethod
     @pytest.mark.parametrize(
@@ -423,13 +556,121 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            out = local_grades.get_module_scores_of_finished_modules_for_system(
+            out = (
+                local_grades.get_module_scores_of_finished_modules_for_system(
+                    system="US"
+                )
+            )
+            assert out == expected_module_scores
+
+    @staticmethod
+    def test_get_scores_of_modules_in_progress_for_system_us(local_grades):
+        expected_module_scores = {
+            "Module 1": "A",
+            "Module 3": "B",
+            "Module 4": "C",
+        }
+        with patch.dict(
+            local_grades.data,
+            {
+                "Module 1": {
+                    "final_score": 95.2,
+                    "final_weight": 70,
+                    "level": 4,
+                },
+                "Module 2": {
+                    "module_score": -1,
+                    "level": 4,
+                },  # not counted: i.e. N/A
+                "Module 3": {
+                    "midterm_score": 85.5,
+                    "midterm_weight": 50,
+                    "level": 4,
+                },
+                "Module 4": {
+                    "final_score": 70,
+                    "final_weight": 70,
+                    "midterm_score": 80,
+                    "midterm_weight": 30,
+                    "level": 4,
+                },
+                "Module 5": {
+                    "module_score": 59.2,
+                    "level": 4,
+                },  # not counted: module_score is present
+                "Module 6": {
+                    "module_score": 59.2,
+                    "final_score": 59.2,
+                    "final_weight": 70,
+                    "midterm_score": 59.2,
+                    "midterm_weight": 30,
+                    "level": 4,
+                },  # not counted: module_score is present
+            },
+            clear=True,
+        ):
+            out = local_grades.get_scores_of_modules_in_progress_for_system(
                 system="US"
             )
             assert out == expected_module_scores
 
     @staticmethod
-    def test_get_module_scores_of_finished_modules_for_system_ects(local_grades):
+    def test_get_scores_of_modules_in_progress_for_system_ects(
+        local_grades,
+    ):
+        expected_module_scores = {
+            "Module 1": "A",
+            "Module 3": "A",
+            "Module 4": "C",
+        }
+        with patch.dict(
+            local_grades.data,
+            {
+                "Module 1": {
+                    "final_score": 95.2,
+                    "final_weight": 70,
+                    "level": 4,
+                },
+                "Module 2": {
+                    "module_score": -1,
+                    "level": 4,
+                },  # not counted: i.e. N/A
+                "Module 3": {
+                    "midterm_score": 85.5,
+                    "midterm_weight": 50,
+                    "level": 4,
+                },
+                "Module 4": {
+                    "final_score": 55,
+                    "final_weight": 70,
+                    "midterm_score": 54,
+                    "midterm_weight": 30,
+                    "level": 4,
+                },
+                "Module 5": {
+                    "module_score": 59.2,
+                    "level": 4,
+                },  # not counted: module_score is present
+                "Module 6": {
+                    "module_score": 59.2,
+                    "final_score": 59.2,
+                    "final_weight": 70,
+                    "midterm_score": 59.2,
+                    "midterm_weight": 30,
+                    "level": 4,
+                },  # not counted: module_score is present
+            },
+            clear=True,
+        ):
+            out = local_grades.get_scores_of_modules_in_progress_for_system(
+                system="ECTS"
+            )
+            assert out == expected_module_scores
+
+    @staticmethod
+    def test_get_module_scores_of_finished_modules_for_system_ects(
+        local_grades,
+    ):
         expected_module_scores = {
             "Module 1": "A",
             "Module 2": "N/A",
@@ -452,8 +693,10 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            out = local_grades.get_module_scores_of_finished_modules_for_system(
-                system="ECTS"
+            out = (
+                local_grades.get_module_scores_of_finished_modules_for_system(
+                    system="ECTS"
+                )
             )
             assert out == expected_module_scores
 
@@ -535,5 +778,7 @@ class TestDataIsCalculatedWell:
     def test_get_percentage_degree_done(
         local_grades, num_credits, exp_percentage, monkeypatch
     ):
-        monkeypatch.setattr(local_grades, "total_credits", num_credits, raising=True)
+        monkeypatch.setattr(
+            local_grades, "total_credits", num_credits, raising=True
+        )
         assert local_grades.get_percentage_degree_done() == exp_percentage

@@ -46,7 +46,7 @@ def test_generate_sample_creates_file_if_it_does_not_exist(
         (67.8, 30, 72.5, None, -1),  # missing midterm_weight
     ],
 )
-def test_check_score_accuracy_module(
+def test_get_module_score_rounded_up(
     final_score, final_weight, midterm_score, midterm_weight, expected_score
 ):
     module = {
@@ -55,7 +55,7 @@ def test_check_score_accuracy_module(
         "midterm_score": midterm_score,
         "midterm_weight": midterm_weight,
     }
-    assert commands_helpers.check_score_accuracy_module(module) == expected_score
+    assert commands_helpers.get_module_score_rounded_up(module) == expected_score
 
 
 def test_check_score_accuracy_all_modules(local_partial_grades_inaccurate):

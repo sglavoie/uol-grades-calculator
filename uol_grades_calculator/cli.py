@@ -28,11 +28,33 @@ def cli(ctx, config):
     ctx.obj = Grades(config_path=config)
 
 
-@cli.command()
-@pass_grades
-def summarize(grades):
+@cli.group()
+def summarize():
     """Print a summary of the progress made so far."""
-    commands.summarize(grades)
+
+
+@summarize.command(name="all")
+@pass_grades
+def all_(grades):
+    """Output includes modules done as well as those in progress."""
+    commands.summarize_all(grades)
+
+
+@summarize.command()
+@pass_grades
+def done(grades):
+    """Output includes only modules that are done and dusted."""
+    commands.summarize_done(grades)
+
+
+@summarize.command()
+@pass_grades
+def progress(grades):
+    """Output includes only modules that are in progress.
+
+    In progress means there is no value provided for `module_score` yet
+    for a given module."""
+    commands.summarize_progress(grades)
 
 
 @cli.command()
@@ -47,9 +69,11 @@ def generate_sample(grades, force_overwrite):
     """Generate a sample grades YAML config file."""
     commands.generate_sample(grades.config, force_overwrite=force_overwrite)
 
+
 @cli.group()
 def check():
     """Perform sanity checks against the results generated."""
+
 
 @check.command()
 @pass_grades

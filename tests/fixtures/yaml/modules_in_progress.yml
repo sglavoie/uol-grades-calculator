@@ -1,9 +1,9 @@
 ---
 Module 1: # valid
   final_score: 65
-  final_weight: 50
+  final_weight: 70
   midterm_score: 79
-  midterm_weight: 50
+  midterm_weight: 30
   module_score:
   level: 4
 Module 2: # valid
@@ -12,14 +12,14 @@ Module 2: # valid
   midterm_score:
   midterm_weight: 50
   module_score:
-  level: 4
+  level: 5
 Module 3: # valid
   final_score:
   final_weight: 50
   midterm_score: 75
   midterm_weight: 50
   module_score:
-  level: 4
+  level: 6
 Module 4: # invalid: module_score should be empty
   final_score:
   final_weight: 50
