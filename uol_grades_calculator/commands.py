@@ -100,9 +100,7 @@ def summarize_done(grades):
         f"Scores so far: {grades.get_module_scores_of_finished_modules()}",
         fg="bright_blue",
     )
-    click.secho(
-        f"\nWeighted average: {wavg}", fg="bright_green"
-    )
+    click.secho(f"\nWeighted average: {wavg}", fg="bright_green")
     click.secho(
         f" ECTS: {grades_helpers.get_ects_equivalent_score(wavg)}",
         fg="bright_blue",
@@ -123,7 +121,8 @@ def summarize_done(grades):
         fg="bright_yellow",
     )
     click.secho(
-        f"\nClassification (weighted): {grades_helpers.get_classification(wavg)}", fg="bright_blue"
+        f"\nClassification (weighted): {grades_helpers.get_classification(wavg)}",
+        fg="bright_blue",
     )
     click.secho("\nECTS grade equivalence:", fg="bright_yellow")
     prettyp.pprint(

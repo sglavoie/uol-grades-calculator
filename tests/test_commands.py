@@ -55,19 +55,15 @@ def test_get_module_score_rounded_up(
         "midterm_score": midterm_score,
         "midterm_weight": midterm_weight,
     }
-    assert commands_helpers.get_module_score_rounded_up(module) == expected_score
+    assert (
+        commands_helpers.get_module_score_rounded_up(module) == expected_score
+    )
 
 
 def test_check_score_accuracy_all_modules(local_partial_grades_inaccurate):
     result = commands.check_score_accuracy(local_partial_grades_inaccurate)
     expected_dict = {
-        "Algorithms and Data Structures I": {
-            "actual": 88,
-            "expected": 89
-        },
-        "Web Development": {
-            "actual": 77,
-            "expected": 76
-        }
+        "Algorithms and Data Structures I": {"actual": 88, "expected": 89},
+        "Web Development": {"actual": 77, "expected": 76},
     }
     assert result == expected_dict

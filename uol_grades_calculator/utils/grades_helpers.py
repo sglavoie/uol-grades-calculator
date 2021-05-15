@@ -176,6 +176,7 @@ def get_uk_gpa(average) -> float:
         result = 4
     return round(result, 2)
 
+
 def get_us_gpa(average) -> float:
     """Return the GPA as calculated in the US."""
     result = 0
@@ -202,6 +203,7 @@ def get_us_gpa(average) -> float:
     if average >= 93:
         result = 4
     return round(result, 2)
+
 
 def get_classification(average) -> str:
     """Return a string containing the classification of the student
