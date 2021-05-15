@@ -1,0 +1,8 @@
+YAML node,Value,Example(s),Optional*
+``completion_date``,Date as a **string**: `YYYY-MM`,``2020-01``,Yes
+``final_score``,**Float**: *range* 0.00–100.00,"``50``, ``50.5``, ``90.56``",Yes
+``final_weight``,**Integer** expressing a percentage: *range* 0–100,"``0``, ``40``, ``80``, ``100``",Yes
+``midterm_score``,**Float**: *range* 0.00–100.00,"``50``, ``50.5``, ``90.56``",Yes
+``midterm_weight``,**Integer** expressing a percentage: *range* 0–100,"``0``, ``40``, ``80``, ``100``",Yes
+``module_score``,**Float**: *range* 0.00–100.00,"``50``, ``50.5``, ``90.56``",**No**
+``level``,"**Integer**: choose *strictly* from ``4``, ``5`` or ``6``","``4``, ``5``, ``6``",**No**

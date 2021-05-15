@@ -55,8 +55,9 @@ def generate_sample(config, force_overwrite=False) -> bool:
         )
         return False
 
-    template = "uol_grades_calculator/grades-template.yml"
-    template_location = Path().absolute() / template
+    # The directory containing this file
+    here = Path(__file__).parent
+    template_location = here / "grades-template.yml"
 
     if force_overwrite:
         click.secho(f"Overwriting {config.path}", fg="bright_blue")

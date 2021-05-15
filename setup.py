@@ -1,9 +1,15 @@
 import pathlib
+import os
 from setuptools import find_packages, setup
-from uol_grades_calculator import __version__
 
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
+
+with open(
+    os.path.join(HERE, "uol_grades_calculator", "__version__.py")
+) as fp:
+    about = {}
+    exec(fp.read(), about)
 
 # The text of the README file
 README = (HERE / "README.md").read_text()
@@ -11,7 +17,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="uol-grades-calculator",
-    version=__version__,
+    version=about["__version__"],
     description="Grades calculator for the BSc Computer Science at the University of London",
     long_description=README,
     long_description_content_type="text/markdown",
