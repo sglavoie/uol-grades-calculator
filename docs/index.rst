@@ -8,6 +8,7 @@ Welcome to UoL Grades Calculator's documentation!
 
 .. toctree::
     :hidden:
+    :titlesonly:
 
     commands
     developers
