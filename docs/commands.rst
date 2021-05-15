@@ -1,9 +1,3 @@
-.. toctree::
-    :hidden:
-
-    developers
-
-
 Available commands
 ==================
 
