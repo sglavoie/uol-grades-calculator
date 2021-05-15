@@ -48,7 +48,7 @@ Generating modules documentation
 .. code-block:: bash
 
     $ cd docs/
-    $ sphinx-apidoc -f -M -P -o ./source ../uol_grades_calculator
+    $ sphinx-apidoc -f -M -P -d 1 -o ./source ../uol_grades_calculator
 
 
 .. list-table::
@@ -65,3 +65,5 @@ Generating modules documentation
      - include "_private" modules
    * - ``-o``
      - output directory (``docs/source/``)
+   * - ``-d``
+     - maximum depth of submodules to show in the TOC
