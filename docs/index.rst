@@ -175,6 +175,8 @@ Example output::
 
 Example output::
 
+    $ ugc generate-sample
+
     Configuration file not found: /home/sglavoie/.grades.yml
     → Configuration file generated.
 
