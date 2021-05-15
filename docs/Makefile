@@ -11,6 +11,8 @@ BUILDDIR      = _build
 # Put it first so that "make" without argument is like "make help".
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+docs:
+	sphinx-apidoc -f -M -P -d 1 -T -o "$(SOURCEDIR)/source" ../uol_grades_calculator
 
 .PHONY: help Makefile
 
