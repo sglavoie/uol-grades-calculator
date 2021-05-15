@@ -40,3 +40,28 @@ The tool can then be uninstalled using the following command:
 .. code-block:: bash
 
     $ python setup.py develop --uninstall
+
+
+Generating modules documentation
+--------------------------------
+
+.. code-block:: bash
+
+    $ cd docs/
+    $ sphinx-apidoc -f -M -P -o ./source ../uol_grades_calculator
+
+
+.. list-table::
+   :widths: 25 75
+   :header-rows: 1
+
+   * - Flag
+     - Description
+   * - ``-f``
+     - overwrite existing files
+   * - ``-M``
+     - put module documentation before submodule
+   * - ``-P``
+     - include "_private" modules
+   * - ``-o``
+     - output directory (``docs/source/``)
