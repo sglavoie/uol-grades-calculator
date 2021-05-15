@@ -42,16 +42,19 @@ The tool can then be uninstalled using the following command:
     $ python setup.py develop --uninstall
 
 
+Documentation
+-------------
+
 Generating modules documentation
---------------------------------
+................................
 
 .. code-block:: bash
 
     $ cd docs/
-    $ sphinx-apidoc -f -M -P -d 1 -o ./source ../uol_grades_calculator
+    $ make docs
 
 
-.. list-table::
+.. list-table:: Current options passed to build the docs
    :widths: 25 75
    :header-rows: 1
 
@@ -66,4 +69,18 @@ Generating modules documentation
    * - ``-o``
      - output directory (``docs/source/``)
    * - ``-d``
-     - maximum depth of submodules to show in the TOC
+     - maximum depth of submodules to show in the TOC (set to ``1``)
+   * - ``-T``
+     - do not add a TOC for the modules
+
+
+Rebuilding documentation
+........................
+
+.. code-block:: bash
+
+    $ cd docs/
+    $ make html
+
+
+If something is not rendered even after a force-refresh, try running ``make clean html`` instead: there can be instances where changes are not applied due to the local cache.
