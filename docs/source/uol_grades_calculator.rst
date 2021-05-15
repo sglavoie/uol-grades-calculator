@@ -27,15 +27,6 @@ uol\_grades\_calculator.\_\_main\_\_ module
    :show-inheritance:
    :private-members:
 
-uol\_grades\_calculator.\_\_version\_\_ module
-----------------------------------------------
-
-.. automodule:: uol_grades_calculator.__version__
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
-
 uol\_grades\_calculator.cli module
 ----------------------------------
 
