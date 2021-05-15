@@ -14,15 +14,7 @@ Welcome to UoL Grades Calculator's documentation!
 Grades Calculator
 =================
 
-.. image:: https://img.shields.io/pypi/v/uol-grades-calculator.svg
-  :target: https://pypi.python.org/pypi/uol-grades-calculator
-  :alt: PyPi badge
-
-.. image:: https://readthedocs.org/projects/uol-grades-calculator/badge/?version=latest
-  :target: https://uol-grades-calculator.readthedocs.io/en/latest/?badge=latest
-  :alt: Documentation Status
-
-Simple script to get information about progress made in a BSc Computer Science at the University of London (calculations are specific to this particular degree).
+This tool is all about getting information and generating insights from the progress made in a `BSc Computer Science at the University of London <https://london.ac.uk/courses/computer-science>`_ (calculations are specific to this particular degree).
 
 Requirements
 ============
