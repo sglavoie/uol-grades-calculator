@@ -83,4 +83,4 @@ Rebuilding documentation
     $ make html
 
 
-If something is not rendered even after a force-refresh, try running ``make clean html`` instead: there can be instances where changes are not applied due to the local cache.
+If something is not rendered even after a force-refresh (such as when editing the config file or adding custom CSS), try running ``make clean html`` instead: there can be instances where changes are not applied due to the local cache.

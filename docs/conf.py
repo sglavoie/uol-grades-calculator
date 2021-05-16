@@ -26,9 +26,7 @@ author = "Sebastien Lavoie"
 # The full version, including alpha/beta/rc tags
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
-with open(
-    os.path.join(HERE, "..", "ugc", "__init__.py")
-) as fp:
+with open(os.path.join(HERE, "..", "ugc", "__init__.py")) as fp:
     about = {}
     exec(fp.read(), about)
 release = about["__version__"]
@@ -43,6 +41,10 @@ extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
+
+html_css_files = [
+    "css/custom.css",
+]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.

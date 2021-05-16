@@ -1,0 +1,26 @@
+svg {
+  width: 800px;
+  height: auto;
+}
+
+div.body {
+  max-width: 1200px;
+}
+
+div.bodywrapper {
+  margin: 0 0 0 300px;
+}
+
+div.document {
+  width: 98%;
+  margin: 30px auto 0 auto;
+}
+
+div.sphinxsidebar {
+    width: 260px;
+}
+
+div.footer {
+    width: 1200px;
+    margin: 30px auto 30px auto;
+}
