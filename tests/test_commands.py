@@ -9,8 +9,8 @@ import os
 import pytest
 
 # Local imports
-from uol_grades_calculator import commands
-from uol_grades_calculator.utils import commands_helpers
+from ugc import commands
+from ugc.utils import commands_helpers
 
 
 def test_generate_sample_does_not_overwrite_existing_location(

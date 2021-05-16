@@ -8,8 +8,8 @@ to this particular degree).
 import os
 
 # Local imports
-from uol_grades_calculator.config import Config
-from uol_grades_calculator.utils import (
+from ugc.config import Config
+from ugc.utils import (
     grades_helpers,
     mathtools,
 )

@@ -12,7 +12,7 @@ BUILDDIR      = _build
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 docs:
-	sphinx-apidoc -f -M -P -d 1 -T -o "$(SOURCEDIR)/source" ../uol_grades_calculator
+	sphinx-apidoc -f -M -P -d 1 -T -o "$(SOURCEDIR)/source" ../ugc
 
 .PHONY: help Makefile
 

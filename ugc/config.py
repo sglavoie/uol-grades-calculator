@@ -10,7 +10,7 @@ import click
 import yaml
 
 # Local imports
-from uol_grades_calculator.errors import ConfigValidationError
+from ugc.errors import ConfigValidationError
 
 
 class Config:

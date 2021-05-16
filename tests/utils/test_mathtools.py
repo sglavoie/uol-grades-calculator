@@ -6,7 +6,7 @@ Test utils/mathtools.py
 import pytest
 
 # Local imports
-from uol_grades_calculator.utils import mathtools
+from ugc.utils import mathtools
 
 
 @pytest.mark.parametrize(

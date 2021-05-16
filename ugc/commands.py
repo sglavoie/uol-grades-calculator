@@ -12,7 +12,7 @@ import shutil
 import click
 
 # Local imports
-from uol_grades_calculator.utils import commands_helpers, grades_helpers
+from ugc.utils import commands_helpers, grades_helpers
 
 
 def check_score_accuracy(grades) -> dict:

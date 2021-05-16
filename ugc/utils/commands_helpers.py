@@ -1,5 +1,5 @@
 # Local imports
-from uol_grades_calculator.utils import mathtools
+from ugc.utils import mathtools
 
 
 def get_module_score(module) -> float:

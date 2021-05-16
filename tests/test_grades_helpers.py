@@ -2,7 +2,7 @@
 import pytest
 
 # Local imports
-from uol_grades_calculator.utils import grades_helpers
+from ugc.utils import grades_helpers
 
 
 @pytest.mark.parametrize(

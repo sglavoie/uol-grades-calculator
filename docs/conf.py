@@ -27,7 +27,7 @@ author = "Sebastien Lavoie"
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
 with open(
-    os.path.join(HERE, "..", "uol_grades_calculator", "__init__.py")
+    os.path.join(HERE, "..", "ugc", "__init__.py")
 ) as fp:
     about = {}
     exec(fp.read(), about)

@@ -12,8 +12,8 @@ Welcome to UoL Grades Calculator's documentation!
 
     commands
     developers
-    source/uol_grades_calculator
-    source/uol_grades_calculator.utils
+    source/ugc
+    source/ugc.utils
 
 
 Grades Calculator

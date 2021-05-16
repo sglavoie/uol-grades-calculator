@@ -9,8 +9,8 @@ from pathlib import Path
 import click
 
 # Local imports
-from uol_grades_calculator import commands
-from uol_grades_calculator.grades import Grades
+from ugc import commands
+from ugc.grades import Grades
 
 
 pass_grades = click.make_pass_decorator(Grades, ensure=True)

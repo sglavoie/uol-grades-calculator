@@ -9,8 +9,8 @@ from pathlib import Path
 import pytest
 
 # Local imports
-from uol_grades_calculator.config import Config
-from uol_grades_calculator.errors import ConfigValidationError
+from ugc.config import Config
+from ugc.errors import ConfigValidationError
 
 
 def test_self_path_is_set_to_custom_path():

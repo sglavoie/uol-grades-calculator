@@ -1,4 +1,4 @@
-from uol_grades_calculator.utils import commands_helpers
+from ugc.utils import commands_helpers
 
 
 def get_weight_of(level: int) -> int:

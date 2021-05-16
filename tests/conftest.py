@@ -7,8 +7,8 @@ import pathlib
 import pytest
 
 # Local imports
-from uol_grades_calculator.config import Config
-from uol_grades_calculator.grades import Grades
+from ugc.config import Config
+from ugc.grades import Grades
 
 FIXTURE_GRADES_PATH = "tests/fixtures/yaml/grades.yml"
 FIXTURE_PARTIAL_GRADES_INACCURATE_PATH = (

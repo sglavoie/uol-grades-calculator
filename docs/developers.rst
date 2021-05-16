@@ -33,7 +33,7 @@ Building the application once (no need to rebuild to test changes on the source 
     $ python setup.py develop
 
 
-Then the command ``ugc`` (short for ``uol_grades_calculator``) becomes available on the command-line. Type ``ugc --help`` for more information.
+Then the command ``ugc`` (short for ``uol grades calculator``) becomes available on the command-line. Type ``ugc --help`` for more information.
 
 The tool can then be uninstalled using the following command:
 
