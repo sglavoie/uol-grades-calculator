@@ -59,6 +59,13 @@ class Config:
 
         for idx, line in enumerate(content):
             if not line.startswith(expected_start_lines[idx]):
+                # Legacy situation here :)
+                if (
+                    line == "Numerical Mathematics:"
+                    and expected_start_lines[idx]
+                    == "Computational Mathematics"
+                ):
+                    continue
                 raise ConfigValidationError(
                     f"Line {idx + 1} does not match "
                     f"the template. Expected '{expected_start_lines[idx]}', "
@@ -138,14 +145,14 @@ class Config:
         for module in all_modules:
             if (
                 module not in self.config.keys()
-                and module != "Numerical Mathematics"
+                and module != "Computational Mathematics"
             ):
                 raise ConfigValidationError(
                     f"Module '{module}' not found in configuration file"
                     f"({self.path}). Make sure the spelling is correct."
                 )
         for module in self.config.keys():
-            if module not in all_modules:
+            if module not in all_modules and module != "Numerical Mathematics":
                 raise ConfigValidationError(
                     f"Module '{module}' not expected in"
                     f"configuration file ({self.path})."
@@ -179,6 +186,8 @@ class Config:
             "Final Project": 6,
         }
         for module, values in self.config.items():
+            if module == "Numerical Mathematics":
+                module = "Computational Mathematics"
             if (
                 values is None
                 or not values.get("level")
