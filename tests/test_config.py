@@ -33,6 +33,10 @@ def test_bad_format_grades_yml_raises_ConfigValidationError(local_bad_config):
     with pytest.raises(ConfigValidationError):
         local_bad_config.load()
 
+def test_config_file_exists_but_is_empty_raises_ConfigValidationError(local_config):
+    local_config.path = Path(__file__).parent / "fixtures/yaml/empty.yml"
+    with pytest.raises(ConfigValidationError):
+        local_config.load()
 
 @pytest.mark.parametrize(
     "final_weight,midterm_weight,expected_value",
@@ -85,7 +89,7 @@ def test_check_total_weight_sums_up_100_all_modules_raises_error(local_config):
             "module1": {"final_weight": 40, "midterm_weight": 60},  # OK
             "module2": {"final_weight": 30, "midterm_weight": 60},  # not 100
         }
-        local_config.config = config_false
+        local_config.data = config_false
         assert local_config.check_total_weight_sums_up_100_in_all_modules()
 
 
@@ -93,54 +97,49 @@ def test_check_total_weight_sums_up_100_all_modules(local_config):
     config_true_1 = {
         "module1": {},  # missing both values is OK
     }
-    local_config.config = config_true_1
+    local_config.data = config_true_1
     assert local_config.check_total_weight_sums_up_100_in_all_modules()
 
     config_true_2 = {
         "module1": {"final_weight": 40, "midterm_weight": 60},
         "module2": {"final_weight": 50, "midterm_weight": 50},
     }
-    local_config.config = config_true_2
+    local_config.data = config_true_2
     assert local_config.check_total_weight_sums_up_100_in_all_modules()
 
 
-def test_all_modules_are_found_with_valid_names_returns_True(
-    local_config, grades_levels
-):
-    local_config.config = grades_levels
+def test_all_modules_are_found_with_valid_names_returns_True(local_config):
+    local_config.data = local_config.default.copy()
     assert local_config.all_modules_are_found_with_valid_names()
 
 
 def test_all_modules_are_found_with_missing_modules_raises_ConfigValidationError(
-    local_config, grades_levels
+    local_config,
 ):
     with pytest.raises(ConfigValidationError):
-        local_config.config = grades_levels.copy()
-        local_config.config.pop("Final Project")  # missing one module
+        local_config.default.pop("Final Project")  # missing one module
         # print(config_false_1)
         local_config.all_modules_are_found_with_valid_names()
 
 
 def test_all_modules_are_found_with_extra_modules_raises_ConfigValidationError(
-    local_config, grades_levels
+    local_config,
 ):
     with pytest.raises(ConfigValidationError):
-        local_config.config = grades_levels.copy()
-        local_config.config["Module 24"] = {}  # nonexistent module
+        local_config.data = local_config.default.copy()
+        local_config.data["Module 24"] = {}  # nonexistent module
         local_config.all_modules_are_found_with_valid_names()
 
 
-def test_all_modules_are_set_to_correct_level_returns_True(
-    local_config, grades_levels
-):
-    local_config.config = grades_levels
+def test_all_modules_are_set_to_correct_level_returns_True(local_config):
+    local_config.data = local_config.default.copy()
     assert local_config.all_modules_are_set_to_correct_level()
 
 
 def test_all_modules_are_set_to_correct_level_raises_ConfigValidationError_on_missing(
-    local_config, grades_levels
+    local_config,
 ):
     with pytest.raises(ConfigValidationError):
-        local_config.config = grades_levels
-        local_config.config["Discrete Mathematics"] = None
+        local_config.data = local_config.default.copy()
+        local_config.data["Discrete Mathematics"] = None
         local_config.all_modules_are_set_to_correct_level()
