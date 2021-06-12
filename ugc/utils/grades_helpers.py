@@ -58,7 +58,7 @@ def get_us_letter_equivalent_score(score: float) -> str:
     return "F"
 
 
-def get_ects_equivalent_score(score: int) -> str:
+def get_ects_equivalent_score(score: float) -> str:
     """Return the grade in the ECTS equivalent form.
     Range from A to E/F."""
     if score >= 70:
@@ -75,6 +75,7 @@ def get_ects_equivalent_score(score: int) -> str:
 
 
 def get_score_of_module_in_progress(module: dict) -> float:
+    result = -1
     for values in module.values():
         if values.get("final_score") and values.get("midterm_score"):
             result = commands_helpers.get_module_score(values)
@@ -148,6 +149,8 @@ def get_total_score_modules_in_progress(modules: list) -> float:
                 module_score = final
             elif midterm is not None:
                 module_score = midterm
+            else:
+                module_score = -1
             try:
                 total += module_score * level * extra
             except TypeError:

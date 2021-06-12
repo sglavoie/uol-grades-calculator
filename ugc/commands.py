@@ -17,7 +17,7 @@ from ugc.utils import commands_helpers, grades_helpers
 
 def check_score_accuracy(grades) -> dict:
     if not os.path.exists(grades.config.path):
-        return None
+        return {}
 
     expected_dict = {}
     for module, values in grades.data.items():

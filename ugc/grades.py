@@ -213,7 +213,7 @@ class Grades:
         converted_scores = {}
         if system == "US":
             to_run = grades_helpers.get_us_letter_equivalent_score
-        elif system == "ECTS":
+        else:
             to_run = grades_helpers.get_ects_equivalent_score
         for module in finished_modules:
             for module_name, module_score in module.items():
@@ -231,7 +231,7 @@ class Grades:
         converted_scores = {}
         if system == "US":
             to_run = grades_helpers.get_us_letter_equivalent_score
-        elif system == "ECTS":
+        else:
             to_run = grades_helpers.get_ects_equivalent_score
         for module in modules:
             module_name = list(module.keys())[0]

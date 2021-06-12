@@ -23,7 +23,7 @@ class Config:
         else:
             self.path = f"{str(Path.home())}/.grades.yml"
 
-    def load(self) -> None:
+    def load(self) -> dict:
         """Load grades from a YAML file."""
         try:
             with open(self.path) as gfile:
@@ -34,7 +34,7 @@ class Config:
             click.secho(
                 f"Configuration file not found: {self.path}", fg="bright_red"
             )
-            return None
+            return {}
 
     def verify(self) -> bool:
         """Check that the config file contains valid data.
