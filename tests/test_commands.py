@@ -60,8 +60,22 @@ def test_get_module_score_rounded_up(
     )
 
 
-def test_check_score_accuracy_all_modules(local_partial_grades_inaccurate):
-    result = commands.check_score_accuracy(local_partial_grades_inaccurate)
+def test_check_score_accuracy_all_modules(local_grades):
+    local_grades.config.data["Algorithms and Data Structures I"] = {
+        "final_score": 99,
+        "final_weight": 50,
+        "midterm_score": 78.5,
+        "midterm_weight": 50,
+        "module_score": 88,
+    }
+    local_grades.config.data["Web Development"] = {
+        "final_score": 90,
+        "final_weight": 50,
+        "midterm_score": 61,
+        "midterm_weight": 50,
+        "module_score": 77,
+    }
+    result = commands.check_score_accuracy(local_grades)
     expected_dict = {
         "Algorithms and Data Structures I": {"actual": 88, "expected": 89},
         "Web Development": {"actual": 77, "expected": 76},

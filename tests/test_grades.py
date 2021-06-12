@@ -56,10 +56,35 @@ class TestDataIsRetrievedCorrectly:
             assert local_grades.get_list_of_finished_modules() == expected_list
 
     @staticmethod
-    def test_get_list_of_modules_in_progress(grades_modules_in_progress):
+    def test_get_list_of_modules_in_progress(local_grades):
+        local_grades.data["Algorithms and Data Structures I"] = {
+            "final_score": 65,
+            "final_weight": 70,
+            "midterm_score": 79,
+            "midterm_weight": 30,
+            "module_score": None,
+            "level": 4,
+        }
+        local_grades.data["Agile Software Projects"] = {
+            "final_score": None,
+            "final_weight": 70,
+            "midterm_score": 60,
+            "midterm_weight": 30,
+            "module_score": None,
+            "level": 5,
+        }
+        local_grades.data["Algorithms and Data Structures II"] = {
+            "final_score": None,
+            "final_weight": 50,
+            "midterm_score": 75,
+            "midterm_weight": 50,
+            "module_score": None,
+            "level": 5,
+        }
+
         expected_list = [
             {
-                "Module 1": {
+                "Algorithms and Data Structures I": {
                     "final_score": 65,
                     "final_weight": 70,
                     "midterm_score": 79,
@@ -67,24 +92,51 @@ class TestDataIsRetrievedCorrectly:
                     "level": 4,
                 }
             },
-            {"Module 2": {"final_score": 60, "final_weight": 50, "level": 5}},
             {
-                "Module 3": {
+                "Agile Software Projects": {
+                    "midterm_score": 60,
+                    "midterm_weight": 30,
+                    "level": 5,
+                }
+            },
+            {
+                "Algorithms and Data Structures II": {
                     "midterm_score": 75,
                     "midterm_weight": 50,
-                    "level": 6,
+                    "level": 5,
                 }
             },
         ]
-        assert (
-            grades_modules_in_progress.get_list_of_modules_in_progress()
-            == expected_list
-        )
+        assert local_grades.get_list_of_modules_in_progress() == expected_list
 
     @staticmethod
-    def test_get_scores_of_modules_in_progress(grades_modules_in_progress):
+    def test_get_scores_of_modules_in_progress(local_grades):
+        local_grades.data["Algorithms and Data Structures I"] = {
+            "final_score": 65,
+            "final_weight": 70,
+            "midterm_score": 79,
+            "midterm_weight": 30,
+            "module_score": None,
+            "level": 4,
+        }
+        local_grades.data["Agile Software Projects"] = {
+            "final_score": None,
+            "final_weight": 70,
+            "midterm_score": 60,
+            "midterm_weight": 30,
+            "module_score": None,
+            "level": 5,
+        }
+        local_grades.data["Algorithms and Data Structures II"] = {
+            "final_score": None,
+            "final_weight": 50,
+            "midterm_score": 75,
+            "midterm_weight": 50,
+            "module_score": None,
+            "level": 5,
+        }
         results = (
-            grades_modules_in_progress.get_scores_of_modules_in_progress()
+            local_grades.get_scores_of_modules_in_progress()
         )
         assert results == [69.2, 60, 75]
 
@@ -200,27 +252,127 @@ class TestDataIsCalculatedWell:
 
     @staticmethod
     def test_calculate_unweighted_average_in_progress(
-        grades_modules_in_progress,
+        local_grades,
     ):
-        # finished : [80, 82, 85]
         # in progress: [69.2, 60, 75]
+        local_grades.data["Algorithms and Data Structures I"] = {
+            "final_score": 65,
+            "final_weight": 70,
+            "midterm_score": 79,
+            "midterm_weight": 30,
+            "module_score": None,
+            "level": 4,
+        }
+        local_grades.data["Agile Software Projects"] = {
+            "final_score": None,
+            "final_weight": 70,
+            "midterm_score": 60,
+            "midterm_weight": 30,
+            "module_score": None,
+            "level": 5,
+        }
+        local_grades.data["Algorithms and Data Structures II"] = {
+            "final_score": None,
+            "final_weight": 50,
+            "midterm_score": 75,
+            "midterm_weight": 50,
+            "module_score": None,
+            "level": 5,
+        }
+
+        # finished : [80, 82, 85]
+        local_grades.data["How Computers Work"] = {
+            "final_score": None,
+            "final_weight": 50,
+            "midterm_score": 60,
+            "midterm_weight": 50,
+            "module_score": 80,
+            "level": 4,
+        }
+        local_grades.data["Introduction to Programming I"] = {
+            "final_score": 80,
+            "final_weight": 50,
+            "midterm_score": 60,
+            "midterm_weight": 50,
+            "module_score": 82,
+            "level": 4,
+        }
+        local_grades.data["Computational Mathematics"] = {
+            "final_score": 80,
+            "final_weight": 50,
+            "midterm_score": None,
+            "midterm_weight": 50,
+            "module_score": 85,
+            "level": 4,
+        }
+
         # average of all that: 75.67
         result = (
-            grades_modules_in_progress.calculate_unweighted_average_in_progress()
+            local_grades.calculate_unweighted_average_in_progress()
         )
         assert result == 75.2
 
     @staticmethod
     def test_calculate_weighted_average_in_progress(
-        grades_modules_in_progress,
+        local_grades,
     ):
+        # in progress: [69.2, 60, 75], respectively [L4, L5, L5]
+        local_grades.data["Algorithms and Data Structures I"] = {
+            "final_score": 65,
+            "final_weight": 70,
+            "midterm_score": 79,
+            "midterm_weight": 30,
+            "module_score": None,
+            "level": 4,
+        }
+        local_grades.data["Agile Software Projects"] = {
+            "final_score": None,
+            "final_weight": 70,
+            "midterm_score": 60,
+            "midterm_weight": 30,
+            "module_score": None,
+            "level": 5,
+        }
+        local_grades.data["Algorithms and Data Structures II"] = {
+            "final_score": None,
+            "final_weight": 50,
+            "midterm_score": 75,
+            "midterm_weight": 50,
+            "module_score": None,
+            "level": 5,
+        }
+
         # finished : [80, 82, 85], respectively [L4, L4, L4]
-        # in progress: [69.2, 60, 75], respectively [L4, L5, L6]
-        # weighted average of all that: 72.60
+        local_grades.data["How Computers Work"] = {
+            "final_score": None,
+            "final_weight": 50,
+            "midterm_score": 60,
+            "midterm_weight": 50,
+            "module_score": 80,
+            "level": 4,
+        }
+        local_grades.data["Introduction to Programming I"] = {
+            "final_score": 80,
+            "final_weight": 50,
+            "midterm_score": 60,
+            "midterm_weight": 50,
+            "module_score": 82,
+            "level": 4,
+        }
+        local_grades.data["Computational Mathematics"] = {
+            "final_score": 80,
+            "final_weight": 50,
+            "midterm_score": None,
+            "midterm_weight": 50,
+            "module_score": 85,
+            "level": 4,
+        }
+
+        # weighted average of all that: 72.12
         result = (
-            grades_modules_in_progress.calculate_weighted_average_in_progress()
+            local_grades.calculate_weighted_average_in_progress()
         )
-        assert result == 72.60
+        assert result == 72.12
 
     @staticmethod
     def test_get_module_scores_of_finished_modules_for_system_us(local_grades):
