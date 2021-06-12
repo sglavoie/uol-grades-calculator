@@ -11,12 +11,21 @@ import click
 # Local imports
 from ugc import commands
 from ugc.grades import Grades
+from ugc.utils import cli_helpers
 
 
 pass_grades = click.make_pass_decorator(Grades, ensure=True)
 
 
 @click.group()
+@click.option(
+    "--version",
+    is_flag=True,
+    callback=cli_helpers.print_version,
+    expose_value=False,
+    is_eager=True,
+    help="Print the program version and exit.",
+)
 @click.option(
     "--config",
     default=f"{str(Path.home())}/.grades.yml",
