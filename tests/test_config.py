@@ -33,10 +33,14 @@ def test_bad_format_grades_yml_raises_ConfigValidationError(local_bad_config):
     with pytest.raises(ConfigValidationError):
         local_bad_config.load()
 
-def test_config_file_exists_but_is_empty_raises_ConfigValidationError(local_config):
+
+def test_config_file_exists_but_is_empty_raises_ConfigValidationError(
+    local_config,
+):
     local_config.path = Path(__file__).parent / "fixtures/yaml/empty.yml"
     with pytest.raises(ConfigValidationError):
         local_config.load()
+
 
 @pytest.mark.parametrize(
     "final_weight,midterm_weight,expected_value",
@@ -106,6 +110,20 @@ def test_check_total_weight_sums_up_100_all_modules(local_config):
     }
     local_config.data = config_true_2
     assert local_config.check_total_weight_sums_up_100_in_all_modules()
+
+
+def test_check_score_accuracy_raises_error_on_RPLed_module_with_scores(
+    local_config,
+):
+    with pytest.raises(ConfigValidationError):
+        local_config.data["How Computers Work"] = {
+            "final_score": 50,  # Should be None
+            "final_weight": 50,
+            "midterm_score": 50,  # Should be None
+            "midterm_weight": 50,
+            "module_score": -1,
+        }
+        local_config.check_score_accuracy_raises_error_on_RPLed_module_with_scores()
 
 
 def test_all_modules_are_found_with_valid_names_returns_True(local_config):

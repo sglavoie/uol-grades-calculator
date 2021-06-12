@@ -53,12 +53,15 @@ class Config:
         functions will throw an error if the config is not valid."""
         self.check_config_is_not_empty()
         self.check_total_weight_sums_up_100_in_all_modules()
+        self.check_score_accuracy_raises_error_on_RPLed_module_with_scores()
         self.all_modules_are_found_with_valid_names()
         self.all_modules_are_set_to_correct_level()
-    
+
     def check_config_is_not_empty(self) -> bool:
         if self.data is None:
-            raise ConfigValidationError(f"Configuration file is empty ({self.path}).")
+            raise ConfigValidationError(
+                f"Configuration file is empty ({self.path})."
+            )
         return True
 
     def check_config_format_is_syntactically_correct(self) -> bool:
@@ -88,6 +91,21 @@ class Config:
                 values, module
             ):
                 return False
+        return True
+
+    def check_score_accuracy_raises_error_on_RPLed_module_with_scores(
+        self,
+    ) -> bool:
+        for module, values in self.data.items():
+            if values.get("module_score") == -1:  # module RPLed
+                fs = values.get("final_score")
+                ms = values.get("midterm_score")
+                if fs or ms:
+                    raise ConfigValidationError(
+                        f"Module '{module}' is marked for RPL. No score "
+                        f"should be given. Got final_score={fs}, "
+                        f"midterm_score={ms}"
+                    )
         return True
 
     @staticmethod
