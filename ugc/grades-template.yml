@@ -7,6 +7,14 @@ Algorithms and Data Structures I:
   midterm_weight: 50
   module_score:
   level: 4
+Computational Mathematics:
+  completion_date:
+  final_score:
+  final_weight: 50
+  midterm_score:
+  midterm_weight: 50
+  module_score:
+  level: 4
 Discrete Mathematics:
   completion_date:
   final_score:
@@ -39,14 +47,6 @@ Introduction to Programming I:
   midterm_weight: 50
   module_score:
   level: 4
-Numerical Mathematics:
-  completion_date:
-  final_score:
-  final_weight: 50
-  midterm_score:
-  midterm_weight: 50
-  module_score:
-  level: 4
 Introduction to Programming II:
   completion_date:
   final_score:
@@ -63,20 +63,20 @@ Web Development:
   midterm_weight: 30
   module_score:
   level: 4
-Algorithms and Data Structures II:
-  completion_date:
-  final_score:
-  final_weight: 50
-  midterm_score:
-  midterm_weight: 50
-  module_score:
-  level: 5
 Agile Software Projects:
   completion_date:
   final_score:
   final_weight: 70
   midterm_score:
   midterm_weight: 30
+  module_score:
+  level: 5
+Algorithms and Data Structures II:
+  completion_date:
+  final_score:
+  final_weight: 50
+  midterm_score:
+  midterm_weight: 50
   module_score:
   level: 5
 Computer Security:
@@ -87,7 +87,7 @@ Computer Security:
   midterm_weight: 50
   module_score:
   level: 5
-Databases networks and the web:
+Databases Networks and the Web:
   completion_date:
   final_score:
   final_weight: 50
@@ -127,7 +127,31 @@ Software Design and Development:
   midterm_weight: 50
   module_score:
   level: 5
+Artificial Intelligence:
+  completion_date:
+  final_score:
+  final_weight: 50
+  midterm_score:
+  midterm_weight: 50
+  module_score:
+  level: 6
+Data Science:
+  completion_date:
+  final_score:
+  final_weight: 50
+  midterm_score:
+  midterm_weight: 50
+  module_score:
+  level: 6
 Databases and Advanced Data Techniques:
+  completion_date:
+  final_score:
+  final_weight: 50
+  midterm_score:
+  midterm_weight: 50
+  module_score:
+  level: 6
+Intelligent Signal Processing:
   completion_date:
   final_score:
   final_weight: 50
@@ -143,15 +167,7 @@ Machine Learning and Neural Networks:
   midterm_weight: 50
   module_score:
   level: 6
-Artificial Intelligence:
-  completion_date:
-  final_score:
-  final_weight:
-  midterm_score:
-  midterm_weight:
-  module_score:
-  level: 6
-Intelligent Signal Processing:
+Natural Language Processing:
   completion_date:
   final_score:
   final_weight: 50
@@ -159,27 +175,11 @@ Intelligent Signal Processing:
   midterm_weight: 50
   module_score:
   level: 6
-Natural Language Processing:
-  completion_date:
-  final_score:
-  final_weight:
-  midterm_score:
-  midterm_weight:
-  module_score:
-  level: 6
-Elective Module:
-  completion_date:
-  final_score:
-  final_weight:
-  midterm_score:
-  midterm_weight:
-  module_score:
-  level: 6
 Final Project:
   completion_date:
   final_score:
-  final_weight:
+  final_weight: 50
   midterm_score:
-  midterm_weight:
+  midterm_weight: 50
   module_score:
   level: 6

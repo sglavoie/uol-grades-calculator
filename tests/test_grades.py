@@ -59,7 +59,7 @@ class TestDataIsRetrievedCorrectly:
     def test_get_list_of_modules_in_progress(grades_modules_in_progress):
         expected_list = [
             {
-                "Module 1": {
+                "Algorithms and Data Structures I": {
                     "final_score": 65,
                     "final_weight": 70,
                     "midterm_score": 79,
@@ -67,12 +67,18 @@ class TestDataIsRetrievedCorrectly:
                     "level": 4,
                 }
             },
-            {"Module 2": {"final_score": 60, "final_weight": 50, "level": 5}},
             {
-                "Module 3": {
+                "Agile Software Projects": {
+                    "midterm_score": 60,
+                    "midterm_weight": 30,
+                    "level": 5,
+                }
+            },
+            {
+                "Algorithms and Data Structures II": {
                     "midterm_score": 75,
                     "midterm_weight": 50,
-                    "level": 6,
+                    "level": 5,
                 }
             },
         ]
@@ -215,12 +221,12 @@ class TestDataIsCalculatedWell:
         grades_modules_in_progress,
     ):
         # finished : [80, 82, 85], respectively [L4, L4, L4]
-        # in progress: [69.2, 60, 75], respectively [L4, L5, L6]
-        # weighted average of all that: 72.60
+        # in progress: [69.2, 75, 60], respectively [L4, L5, L5]
+        # weighted average of all that: 72.12
         result = (
             grades_modules_in_progress.calculate_weighted_average_in_progress()
         )
-        assert result == 72.60
+        assert result == 72.12
 
     @staticmethod
     def test_get_module_scores_of_finished_modules_for_system_us(local_grades):
