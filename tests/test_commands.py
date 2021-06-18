@@ -60,6 +60,32 @@ def test_get_module_score_rounded_up(
     )
 
 
+@pytest.mark.parametrize(
+    "final_score,final_weight,midterm_score,midterm_weight,expected_score",
+    [
+        (92, 70, 30, 30, 39),  # midterm < 35, final > 40: FAIL, capped at 39
+        (34, 50, 99, 50, 39),  # FAIL: capped at 39
+        (38, 50, 39, 50, 39),  # 35 < midterm < 40 + 35 < final < 40: FAIL
+        (35, 70, 49, 30, 39),  # FAIL (avg. < 40)
+        (38, 70, 42, 30, 39),  # FAIL (avg. < 40)
+        (40, 50, 40, 50, 40),  # OK...
+        (35, 70, 50, 30, 40),  # OK (39.5 → 40)
+    ],
+)
+def test_get_module_score_with_failing_module(
+    final_score, final_weight, midterm_score, midterm_weight, expected_score
+):
+    module = {
+        "final_score": final_score,
+        "final_weight": final_weight,
+        "midterm_score": midterm_score,
+        "midterm_weight": midterm_weight,
+    }
+    assert (
+        commands_helpers.get_module_score_rounded_up(module) == expected_score
+    )
+
+
 def test_check_score_accuracy_all_modules(local_grades):
     local_grades.config.data["Algorithms and Data Structures I"] = {
         "final_score": 99,

@@ -13,6 +13,9 @@ def get_module_score(module) -> float:
             + final_score * final_weight / 100
         )
 
+        if midterm_score < 35 or final_score < 35:
+            return 39  # automatic FAIL
+
         return module_score
     except TypeError:
         return -1
