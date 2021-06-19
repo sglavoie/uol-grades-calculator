@@ -80,6 +80,10 @@ def summarize_done(grades):
     """Print a summary of the progress made so far for modules that are done
     and dusted."""
 
+    if not grades.get_list_of_finished_modules():
+        click.secho("No modules done. Good luck in your journey!", fg="bright_blue")
+        return
+
     prettyp = pprint.PrettyPrinter(indent=2)
     wavg = grades.weighted_average
 

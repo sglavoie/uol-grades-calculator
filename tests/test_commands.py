@@ -115,3 +115,28 @@ def test_summarize_progress_shows_no_progress_when_none_exists(
     commands.summarize_progress(local_grades)
     captured = capsys.readouterr()
     assert captured.out == "No modules in progress.\n"
+
+
+def test_summarize_done_shows_no_progress_when_none_exists(
+    local_grades, capsys
+):
+    commands.summarize_done(local_grades)
+    captured = capsys.readouterr()
+    assert captured.out == "No modules done. Good luck in your journey!\n"
+
+
+def test_summarize_all_shows_no_progress_when_none_exists(
+    local_grades, capsys
+):
+    expected_output = """\
+Modules completed
+============================================================
+No modules done. Good luck in your journey!
+
+Modules in progress
+============================================================
+No modules in progress.
+"""
+    commands.summarize_all(local_grades)
+    captured = capsys.readouterr()
+    assert captured.out == expected_output
