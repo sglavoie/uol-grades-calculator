@@ -107,3 +107,11 @@ def test_check_score_accuracy_all_modules(local_grades):
         "Web Development": {"actual": 77, "expected": 76},
     }
     assert result == expected_dict
+
+
+def test_summarize_progress_shows_no_progress_when_none_exists(
+    local_grades, capsys
+):
+    commands.summarize_progress(local_grades)
+    captured = capsys.readouterr()
+    assert captured.out == "No modules in progress.\n"

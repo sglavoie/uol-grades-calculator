@@ -148,6 +148,10 @@ def summarize_progress(grades):
     """Print a summary of only the modules that are currently in progress."""
     if not os.path.exists(grades.config.path):
         return
+    
+    if not grades.get_list_of_modules_in_progress():
+        click.secho("No modules in progress.", fg="bright_blue")
+        return
 
     prettyp = pprint.PrettyPrinter(indent=2)
     click.secho("Modules in progress:", fg="bright_blue")
