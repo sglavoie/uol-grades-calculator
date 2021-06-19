@@ -56,6 +56,7 @@ class Config:
         self.check_score_accuracy_raises_error_on_RPLed_module_with_scores()
         self.all_modules_are_found_with_valid_names()
         self.all_modules_are_set_to_correct_level()
+        self.all_modules_have_valid_float_scores_and_weights()
 
     def check_config_is_not_empty(self) -> bool:
         if self.data is None:
@@ -176,4 +177,43 @@ class Config:
                     f"Module '{module}' contains an invalid level value "
                     f"(expected '{levels[module]}')."
                 )
+        return True
+
+    def all_modules_have_valid_float_scores_and_weights(self) -> bool:
+        keys = (
+            "final_score",
+            "final_weight",
+            "midterm_score",
+            "midterm_weight",
+            "module_score",
+        )
+        for module, values in self.data.items():
+            for key in keys:
+                value = values.get(key)
+
+                # ignore None values here: they will be handled elsewhere
+                # as part of other checks if necessary
+                if value is None:
+                    continue
+
+                # only possible valid values are float and int
+                if not isinstance(value, int) and not isinstance(value, float):
+                    raise ConfigValidationError(
+                        f"Module '{module}' contains an invalid value for "
+                        f"'{key}': got '{value}'"
+                    )
+
+                # a value <0 or >100 will be rejected, but if it's the
+                # module_score, it could be -1 if the module has been RPLed
+                # (checked elsewhere in `verify` function above)
+                if (value > 100 or value < 0 and key != "module_score") or (
+                    key == "module_score"
+                    and value > 100
+                    or value < 0
+                    and value != -1
+                ):
+                    raise ConfigValidationError(
+                        f"Module '{module}' contains an invalid value for "
+                        f"'{key}'. Got '{value}'."
+                    )
         return True

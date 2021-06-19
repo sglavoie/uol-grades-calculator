@@ -161,3 +161,80 @@ def test_all_modules_are_set_to_correct_level_raises_ConfigValidationError_on_mi
         local_config.data = local_config.default.copy()
         local_config.data["Discrete Mathematics"] = None
         local_config.all_modules_are_set_to_correct_level()
+
+
+def test_all_modules_have_float_scores_and_weights_returns_True(local_config):
+    local_config.data["Discrete Mathematics"] = {
+        "final_score": 60.5,
+        "final_weight": 50,
+        "midterm_score": 62,
+        "midterm_weight": 50,
+        "module_score": 61,
+    }
+    local_config.data["How Computers Work"] = {
+        "final_score": 100,
+        "final_weight": 50,
+        "midterm_score": 100,
+        "midterm_weight": 50,
+        "module_score": 100,
+    }
+    assert local_config.all_modules_have_valid_float_scores_and_weights()
+
+
+@pytest.mark.parametrize(
+    "final_score",
+    [
+        "abcde",
+        set(),
+        complex("1+2j"),
+        [1, 2, 3],
+        (2, 5),
+        {1: 2},
+        range(10),
+        len,
+        b"2",
+    ],
+)
+def test_all_modules_have_valid_float_scores_and_weights_raises_ConfigValidationError_on_type_error(
+    local_config, final_score
+):
+    with pytest.raises(ConfigValidationError):
+        local_config.data["Discrete Mathematics"] = {
+            "final_score": final_score,
+            "final_weight": 50,
+            "midterm_score": 62,
+            "midterm_weight": 50,
+            "module_score": 61,
+        }
+        assert local_config.all_modules_have_valid_float_scores_and_weights()
+
+
+def test_all_modules_have_valid_float_scores_and_weights_does_not_raise_error_when_None_is_found(
+    local_config,
+):
+    local_config.data["Discrete Mathematics"] = {
+        "final_score": 90,
+        "final_weight": 50,
+        "midterm_score": None,
+        "midterm_weight": 50,
+        "module_score": 76,
+    }
+    assert local_config.all_modules_have_valid_float_scores_and_weights()
+
+
+@pytest.mark.parametrize(
+    "module_score",
+    [101, -2],
+)
+def test_all_modules_have_valid_float_scores_and_weights_raises_ConfigValidationError_on_value_error(
+    local_config, module_score
+):
+    with pytest.raises(ConfigValidationError):
+        local_config.data["Discrete Mathematics"] = {
+            "final_score": 90,
+            "final_weight": 50,
+            "midterm_score": None,
+            "midterm_weight": 50,
+            "module_score": module_score,
+        }
+        local_config.all_modules_have_valid_float_scores_and_weights()
