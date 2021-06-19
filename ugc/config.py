@@ -37,10 +37,11 @@ class Config:
         """Load grades from a YAML file."""
         try:
             open(self.path)
-        except FileNotFoundError:
+        except FileNotFoundError as e:
             click.secho(
                 f"Configuration file not found: {self.path}", fg="bright_red"
             )
+            raise e
 
         with open(self.path) as gfile:
             self.check_config_format_is_syntactically_correct()

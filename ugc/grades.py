@@ -19,6 +19,16 @@ class Grades:
     def __init__(self, config_path=None) -> None:
         """Set some default values before loading any grades."""
         self.config = Config(config_path=config_path)
+
+        # Return before raising an error with a config file not found
+        # so we can run the `generate-sample` command.
+        # Otherwise, trying to load the config file will unsurprisingly
+        # not work...
+        try:
+            self.config.load()
+        except FileNotFoundError:
+            return
+
         self.data = self.config.load()
         self.total_credits = 0
 
