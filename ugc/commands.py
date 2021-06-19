@@ -16,9 +16,6 @@ from ugc.utils import commands_helpers, grades_helpers
 
 
 def check_score_accuracy(grades) -> dict:
-    if not os.path.exists(grades.config.path):
-        return {}
-
     expected_dict = {}
     for module, values in grades.data.items():
         conditions = [
@@ -69,8 +66,6 @@ def generate_sample(config, force_overwrite=False) -> bool:
 
 def summarize_all(grades: object, symbol: str = "=", repeat: int = 60) -> None:
     """Print a summary of modules done and in progress."""
-    if not os.path.exists(grades.config.path):
-        return
 
     click.secho("Modules completed", fg="cyan")
     click.secho(symbol * repeat, fg="cyan")
@@ -84,8 +79,6 @@ def summarize_all(grades: object, symbol: str = "=", repeat: int = 60) -> None:
 def summarize_done(grades):
     """Print a summary of the progress made so far for modules that are done
     and dusted."""
-    if not os.path.exists(grades.config.path):
-        return
 
     prettyp = pprint.PrettyPrinter(indent=2)
     wavg = grades.weighted_average
@@ -146,9 +139,7 @@ def summarize_done(grades):
 
 def summarize_progress(grades):
     """Print a summary of only the modules that are currently in progress."""
-    if not os.path.exists(grades.config.path):
-        return
-    
+
     if not grades.get_list_of_modules_in_progress():
         click.secho("No modules in progress.", fg="bright_blue")
         return

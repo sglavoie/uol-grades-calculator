@@ -27,7 +27,9 @@ class Grades:
         try:
             self.config.load()
         except FileNotFoundError:
+            self.config_exists = False
             return
+        self.config_exists = True
 
         self.data = self.config.load()
         self.total_credits = 0

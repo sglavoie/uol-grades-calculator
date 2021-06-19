@@ -41,6 +41,7 @@ class Config:
             click.secho(
                 f"Configuration file not found: {self.path}", fg="bright_red"
             )
+            click.secho("Try `ugc generate-sample --help`", fg="bright_blue")
             raise e
 
         with open(self.path) as gfile:
