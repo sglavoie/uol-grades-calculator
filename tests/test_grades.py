@@ -375,6 +375,52 @@ class TestDataIsCalculatedWell:
         assert result == 72.12
 
     @staticmethod
+    def test_calculate_weighted_average_in_progress_only(
+        local_grades,
+    ):
+        # in progress: [69.2, 60, 75], respectively [L4, L5, L5]
+        local_grades.data["Algorithms and Data Structures I"] = {
+            "final_score": 65,
+            "final_weight": 70,
+            "midterm_score": 79,
+            "midterm_weight": 30,
+            "module_score": None,
+            "level": 4,
+        }
+        local_grades.data["Agile Software Projects"] = {
+            "final_score": None,
+            "final_weight": 70,
+            "midterm_score": 60,
+            "midterm_weight": 30,
+            "module_score": None,
+            "level": 5,
+        }
+        local_grades.data["Algorithms and Data Structures II"] = {
+            "final_score": None,
+            "final_weight": 50,
+            "midterm_score": 75,
+            "midterm_weight": 50,
+            "module_score": None,
+            "level": 5,
+        }
+
+        # finished : [80], [L4]
+        local_grades.data["How Computers Work"] = {
+            "final_score": None,
+            "final_weight": 50,
+            "midterm_score": 60,
+            "midterm_weight": 50,
+            "module_score": 80,
+            "level": 4,
+        }
+        # weighted average of modules in progress: 67.74
+        result = (
+            local_grades.calculate_weighted_average_in_progress_only()
+        )
+        assert result == 67.74
+
+
+    @staticmethod
     def test_get_module_scores_of_finished_modules_for_system_us(local_grades):
         expected_module_scores = {
             "Module 1": "A",
