@@ -15,14 +15,14 @@ FIXTURE_CONFIG_PATH = (
 )
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="module")
 def local_grades():
     """Return an instance of the Grades class as a fixture available
     for a module."""
     return Grades(config_path=FIXTURE_CONFIG_PATH)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="module")
 def local_config():
     """Return an instance of the Config class as a fixture available
     for a module."""
