@@ -54,15 +54,6 @@ ugc.config module
    :show-inheritance:
    :private-members:
 
-ugc.errors module
------------------
-
-.. automodule:: ugc.errors
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:
-
 ugc.grades module
 -----------------
 
