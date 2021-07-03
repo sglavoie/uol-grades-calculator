@@ -4,9 +4,7 @@ List the commands available from the CLI: one per function.
 
 # Standard library imports
 import os
-from pathlib import Path
 import pprint
-import shutil
 
 # Third-party library imports
 import click
