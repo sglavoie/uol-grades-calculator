@@ -44,24 +44,32 @@ def check_score_accuracy(grades) -> dict:
     return expected_dict
 
 
-def generate_sample(config, force_overwrite=False) -> bool:
+def generate_sample(config) -> bool:
     """Generate a sample grades YAML config file."""
-    if not force_overwrite and os.path.exists(config.path):
+    if os.path.exists(config.path):
         click.secho(
             f"Will not overwrite existing {config.path}", fg="bright_yellow"
         )
         return False
 
-    # The directory containing this file
-    here = Path(__file__).parent
-    template_location = here / "grades-template.yml"
-
-    if force_overwrite:
-        click.secho(f"Overwriting {config.path}", fg="bright_blue")
-
-    shutil.copyfile(template_location, config.path)
-    click.secho("→ Configuration file generated.", fg="bright_green")
+    commands_helpers.generate_sample_copy_config_file_and_print_message(
+        config_path=config.path
+    )
     return True
+
+
+def generate_sample_overwrite(config) -> None:
+    """Generate a sample grades YAML config file: overwrite if it exists."""
+    file_existed = os.path.exists(config.path)
+
+    if file_existed:
+        click.secho(f"Overwriting {config.path}", fg="bright_blue")
+    else:
+        click.secho(f"Creating {config.path}", fg="bright_blue")
+
+    commands_helpers.generate_sample_copy_config_file_and_print_message(
+        config_path=config.path
+    )
 
 
 def summarize_all(grades: object, symbol: str = "=", repeat: int = 60) -> None:

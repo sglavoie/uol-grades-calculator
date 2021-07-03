@@ -1,3 +1,7 @@
+# Standard library imports
+from pathlib import Path
+import shutil
+
 # Local imports
 from ugc.utils import mathtools
 from ugc.utils import grades_helpers
@@ -120,3 +124,12 @@ def print_classification_equivalence_gpa_in_progress(
         f"{grades_helpers.get_uk_gpa(wavg)} UK",
         fg="bright_yellow",
     )
+
+
+def generate_sample_copy_config_file_and_print_message(config_path):
+    # The directory containing this file
+    here = Path(__file__).parent
+    template_location = here / "../grades-template.yml"
+
+    shutil.copyfile(template_location, config_path)
+    click.secho("→ Configuration file generated.", fg="bright_green")

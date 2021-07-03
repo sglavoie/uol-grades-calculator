@@ -102,7 +102,9 @@ def progress(ctx, grades, avg_progress_only):
 @pass_grades
 def generate_sample(grades, force_overwrite):
     """Generate a sample grades YAML config file."""
-    commands.generate_sample(grades.config, force_overwrite=force_overwrite)
+    if force_overwrite:
+        return commands.generate_sample_overwrite(grades.config)
+    return commands.generate_sample(grades.config)
 
 
 @cli.group()
