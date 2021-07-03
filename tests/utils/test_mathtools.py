@@ -53,7 +53,7 @@ def test_hypothesis_round_half_up_with_integers(number, decimals):
 
 
 @given(
-    st.floats(min_value=1_000_001, max_value=1_000_001),
+    st.just(1_000_001),
     st.integers(min_value=0, max_value=10),
 )
 @settings(max_examples=10)
