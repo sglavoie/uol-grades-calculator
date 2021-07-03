@@ -47,31 +47,32 @@ def score_is_valid(module_score: float) -> bool:
 def get_us_letter_equivalent_score(score: float) -> str:
     """Get the letter equivalent in the US grading system for a given
     score."""
-    if score >= 93:
-        return "A"
-    if score >= 90:
-        return "A-"
-    if score >= 87:
-        return "B+"
-    if score >= 83:
-        return "B"
-    if score >= 80:
-        return "B-"
-    if score >= 77:
-        return "C+"
-    if score >= 73:
-        return "C"
-    if score >= 70:
-        return "C-"
-    if score >= 67:
-        return "D+"
-    if score >= 63:
-        return "D"
-    if score >= 60:
-        return "D-"
+    str_score = "F"
     if score == -1:  # RPL: score is not applicable
-        return "N/A"
-    return "F"
+        str_score = "N/A"
+    elif score >= 93:
+        str_score = "A"
+    elif score >= 90:
+        str_score = "A-"
+    elif score >= 87:
+        str_score = "B+"
+    elif score >= 83:
+        str_score = "B"
+    elif score >= 80:
+        str_score = "B-"
+    elif score >= 77:
+        str_score = "C+"
+    elif score >= 73:
+        str_score = "C"
+    elif score >= 70:
+        str_score = "C-"
+    elif score >= 67:
+        str_score = "D+"
+    elif score >= 63:
+        str_score = "D"
+    elif score >= 60:
+        str_score = "D-"
+    return str_score
 
 
 def get_ects_equivalent_score(score: float) -> str:
