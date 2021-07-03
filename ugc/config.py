@@ -216,12 +216,16 @@ class Config:
                 # a value <0 or >100 will be rejected, but if it's the
                 # module_score, it could be -1 if the module has been RPLed
                 # (checked elsewhere in `verify` function above)
-                if (value > 100 or value < 0 and key != "module_score") or (
+                value_out_of_bounds = (
+                    value > 100 or value < 0 and key != "module_score"
+                )
+                module_score_out_of_bounds = (
                     key == "module_score"
                     and value > 100
                     or value < 0
                     and value != -1
-                ):
+                )
+                if (value_out_of_bounds) or module_score_out_of_bounds:
                     raise ConfigValidationError(
                         f"Module '{module}' contains an invalid value for "
                         f"'{key}'. Got '{value}'."
