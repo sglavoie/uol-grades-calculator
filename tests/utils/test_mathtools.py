@@ -4,7 +4,7 @@ Test utils/mathtools.py
 
 # Third-party library imports
 from hypothesis import given, settings
-from hypothesis.strategies import integers, floats
+from hypothesis import strategies as st
 import pytest
 
 # Local imports
@@ -28,7 +28,7 @@ def test_round_half_up(number, decimals, expected_value):
     assert result == expected_value
 
 
-@given(integers(), integers(min_value=11))
+@given(st.integers(), st.integers(min_value=11))
 def test_hypothesis_round_half_up_with_integers_raises_ValueError_on_large_decimals(
     number, decimals
 ):
@@ -36,7 +36,7 @@ def test_hypothesis_round_half_up_with_integers_raises_ValueError_on_large_decim
         mathtools.round_half_up(number, decimals)
 
 
-@given(integers(), integers(max_value=-1))
+@given(st.integers(), st.integers(max_value=-1))
 def test_hypothesis_round_half_up_with_integers_and_negative_decimals(
     number, decimals
 ):
@@ -44,15 +44,17 @@ def test_hypothesis_round_half_up_with_integers_and_negative_decimals(
         mathtools.round_half_up(number, decimals)
 
 
-@given(integers(max_value=1_000_000), integers(min_value=0, max_value=10))
+@given(
+    st.integers(max_value=1_000_000), st.integers(min_value=0, max_value=10)
+)
 @settings(max_examples=10)
 def test_hypothesis_round_half_up_with_integers(number, decimals):
     mathtools.round_half_up(number, decimals)
 
 
 @given(
-    floats(min_value=1_000_001, max_value=1_000_001),
-    integers(min_value=0, max_value=10),
+    st.floats(min_value=1_000_001, max_value=1_000_001),
+    st.integers(min_value=0, max_value=10),
 )
 @settings(max_examples=10)
 def test_hypothesis_round_half_up_with_floats_raises_ValueError_on_large_number(
