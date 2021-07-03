@@ -43,7 +43,10 @@ class Grades:
         """Perform basic calculations required for most commands."""
         self.unweighted_average = self.calculate_unweighted_average()
         self.unweighted_average_in_progress = (
-            self.calculate_unweighted_average_in_progress()
+            self.calculate_unweighted_average_including_in_progress()
+        )
+        self.unweighted_average_in_progress_only = (
+            self.calculate_unweighted_average_in_progress_only()
         )
         self.weighted_average = self.calculate_weighted_average()
         self.weighted_average_in_progress = (
@@ -65,7 +68,7 @@ class Grades:
             )
         )
 
-    def calculate_unweighted_average_in_progress(self) -> float:
+    def calculate_unweighted_average_including_in_progress(self) -> float:
         """Return the unweighted average across all completed modules and
         those in progress."""
         module_scores = self.get_module_scores_of_finished_modules()
@@ -77,6 +80,28 @@ class Grades:
                 sum(module_scores) / len(module_scores), 2
             )
         )
+
+    def calculate_unweighted_average_in_progress_only(self) -> float:
+        """Return the unweighted average across modules in progress only."""
+        (
+            modules_in_progress,
+            score_progress,
+        ) = self._get_unweighted_data_of_modules_in_progress()
+        return (
+            0
+            if not modules_in_progress
+            else round(score_progress / len(modules_in_progress), 2)
+        )
+
+    def _get_unweighted_data_of_modules_in_progress(self) -> tuple:
+        modules_in_progress = []
+        modules_in_progress.extend(self.get_list_of_modules_in_progress())
+        score_progress = (
+            grades_helpers.get_unweighted_total_score_modules_in_progress(
+                modules_in_progress
+            )
+        )
+        return modules_in_progress, score_progress
 
     def get_module_scores_of_finished_modules(self) -> list:
         """Return a list of floats with the score obtained in each module."""
@@ -181,7 +206,7 @@ class Grades:
             modules_in_progress,
             weight_progress,
             score_progress,
-        ) = self._get_data_of_modules_in_progress()
+        ) = self._get_weighted_data_of_modules_in_progress()
 
         modules_all = []
         modules_all.extend(modules_in_progress)
@@ -197,21 +222,23 @@ class Grades:
             modules_in_progress,
             weight_progress,
             score_progress,
-        ) = self._get_data_of_modules_in_progress()
+        ) = self._get_weighted_data_of_modules_in_progress()
         return (
             0
             if not modules_in_progress
             else round(score_progress / weight_progress, 2)
         )
 
-    def _get_data_of_modules_in_progress(self) -> tuple:
+    def _get_weighted_data_of_modules_in_progress(self) -> tuple:
         modules_in_progress = []
         modules_in_progress.extend(self.get_list_of_modules_in_progress())
         weight_progress = grades_helpers.get_total_weight_modules_in_progress(
             modules_in_progress
         )
-        score_progress = grades_helpers.get_total_score_modules_in_progress(
-            modules_in_progress
+        score_progress = (
+            grades_helpers.get_weighted_total_score_modules_in_progress(
+                modules_in_progress
+            )
         )
         return modules_in_progress, weight_progress, score_progress
 

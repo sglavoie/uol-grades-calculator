@@ -308,7 +308,7 @@ class TestDataIsCalculatedWell:
 
         # average of all that: 75.67
         result = (
-            local_grades.calculate_unweighted_average_in_progress()
+            local_grades.calculate_unweighted_average_including_in_progress()
         )
         assert result == 75.2
 

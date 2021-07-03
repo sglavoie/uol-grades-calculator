@@ -81,14 +81,16 @@ def summarize_done(grades):
     and dusted."""
 
     if not grades.get_list_of_finished_modules():
-        click.secho("No modules done. Good luck in your journey!", fg="bright_blue")
+        click.secho(
+            "No modules done. Good luck in your journey!", fg="bright_blue"
+        )
         return
 
-    prettyp = pprint.PrettyPrinter(indent=2)
+    pretty_printer = pprint.PrettyPrinter(indent=2)
     wavg = grades.weighted_average
 
     click.secho("Modules taken:", fg="bright_blue")
-    prettyp.pprint(grades.get_list_of_finished_modules())
+    pretty_printer.pprint(grades.get_list_of_finished_modules())
     click.secho(
         f"Number of modules done: {grades.get_num_of_finished_modules()}",
         fg="bright_yellow",
@@ -117,23 +119,11 @@ def summarize_done(grades):
         f" US: {grades_helpers.get_us_letter_equivalent_score(grades.unweighted_average)}",
         fg="bright_yellow",
     )
-    click.secho(
-        f"\nClassification (weighted): {grades_helpers.get_classification(wavg)}",
-        fg="bright_blue",
+
+    commands_helpers.print_classification_equivalence_gpa(
+        pretty_printer, grades, wavg
     )
-    click.secho("\nECTS grade equivalence:", fg="bright_yellow")
-    prettyp.pprint(
-        grades.get_module_scores_of_finished_modules_for_system(system="ECTS")
-    )
-    click.secho("\nUS grade equivalence:", fg="bright_blue")
-    prettyp.pprint(
-        grades.get_module_scores_of_finished_modules_for_system(system="US")
-    )
-    click.secho(
-        f"\nGPA (weighted): {grades_helpers.get_us_gpa(wavg)} US – "
-        f"{grades_helpers.get_uk_gpa(wavg)} UK",
-        fg="bright_yellow",
-    )
+
     click.secho(
         f"Total credits done: {grades.get_total_credits()} / 360 "
         f"({grades.get_percentage_degree_done()}%)",
@@ -143,56 +133,42 @@ def summarize_done(grades):
 
 def summarize_progress(grades):
     """Print a summary of only the modules that are currently in progress."""
-
-    if not grades.get_list_of_modules_in_progress():
-        click.secho("No modules in progress.", fg="bright_blue")
+    if commands_helpers.there_are_no_modules_in_progress(grades):
         return
 
-    prettyp = pprint.PrettyPrinter(indent=2)
-    click.secho("Modules in progress:", fg="bright_blue")
-    prettyp.pprint(grades.get_list_of_modules_in_progress())
+    pretty_printer = pprint.PrettyPrinter(indent=2)
+
+    commands_helpers.print_modules_in_progress(pretty_printer, grades)
 
     wavg = grades.weighted_average_in_progress
-    click.secho(
-        f"\nWeighted average (including modules in progress): {wavg}",
-        fg="bright_green",
-    )
-    click.secho(
-        f" ECTS: {grades_helpers.get_ects_equivalent_score(wavg)}",
-        fg="bright_blue",
-    )
-    click.secho(
-        f" US: {grades_helpers.get_us_letter_equivalent_score(wavg)}",
-        fg="bright_yellow",
-    )
+    commands_helpers.print_weighted_average_in_progress(wavg)
 
     uavg = grades.unweighted_average_in_progress
-    click.secho(
-        f"\nUnweighted average (including modules in progress): {uavg}",
-        fg="bright_green",
-    )  # DONE
-    click.secho(
-        f" ECTS: {grades_helpers.get_ects_equivalent_score(uavg)}",
-        fg="bright_blue",
+    commands_helpers.print_unweighted_average_in_progress(uavg)
+
+    commands_helpers.print_classification_equivalence_gpa_in_progress(
+        pretty_printer, grades, wavg
     )
-    click.secho(
-        f" US: {grades_helpers.get_us_letter_equivalent_score(uavg)}",
-        fg="bright_yellow",
+
+
+def summarize_progress_avg_progress_only(grades):
+    if commands_helpers.there_are_no_modules_in_progress(grades):
+        return
+
+    pretty_printer = pprint.PrettyPrinter(indent=2)
+
+    commands_helpers.print_modules_in_progress(pretty_printer, grades)
+
+    wavg = grades.weighted_average_in_progress_only
+    commands_helpers.print_weighted_average_in_progress(
+        wavg, only_in_progress=True
     )
-    click.secho(
-        f"\nClassification (weighted): {grades_helpers.get_classification(wavg)}",
-        fg="bright_blue",
+
+    uavg = grades.unweighted_average_in_progress_only
+    commands_helpers.print_unweighted_average_in_progress(
+        uavg, only_in_progress=True
     )
-    click.secho("\nECTS grade equivalence:", fg="bright_yellow")
-    prettyp.pprint(
-        grades.get_scores_of_modules_in_progress_for_system(system="ECTS")
-    )
-    click.secho("\nUS grade equivalence:", fg="bright_blue")
-    prettyp.pprint(
-        grades.get_scores_of_modules_in_progress_for_system(system="US")
-    )
-    click.secho(
-        f"\nGPA (weighted): {grades_helpers.get_us_gpa(wavg)} US – "
-        f"{grades_helpers.get_uk_gpa(wavg)} UK",
-        fg="bright_yellow",
+
+    commands_helpers.print_classification_equivalence_gpa_in_progress(
+        pretty_printer, grades, wavg
     )

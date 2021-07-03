@@ -135,7 +135,7 @@ def get_total_weight_modules_in_progress(modules: list) -> float:
     return total_weight
 
 
-def get_total_score_modules_in_progress(modules: list) -> float:
+def get_weighted_total_score_modules_in_progress(modules: list) -> float:
     total = 0
     for module in modules:
         for key, values in module.items():
@@ -153,6 +153,26 @@ def get_total_score_modules_in_progress(modules: list) -> float:
                 module_score = -1
             try:
                 total += module_score * level * extra
+            except TypeError:
+                pass
+    return total
+
+def get_unweighted_total_score_modules_in_progress(modules: list) -> float:
+    total = 0
+    for module in modules:
+        for values in module.values():
+            final = values.get("final_score")
+            midterm = values.get("midterm_score")
+            if final is not None and midterm is not None:
+                module_score = commands_helpers.get_module_score(values)
+            elif final is not None:
+                module_score = final
+            elif midterm is not None:
+                module_score = midterm
+            else:
+                module_score = -1
+            try:
+                total += module_score
             except TypeError:
                 pass
     return total

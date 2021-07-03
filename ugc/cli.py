@@ -74,14 +74,22 @@ def done(ctx, grades):
 
 
 @summarize.command()
+@click.option(
+    "--avg-progress-only",
+    "-o",
+    is_flag=True,
+    help="Print the program version and exit.",
+)
 @pass_grades
 @run_if_config_exists
-def progress(ctx, grades):
+def progress(ctx, grades, avg_progress_only):
     """Output includes only modules that are in progress.
 
     In progress means there is no value provided for `module_score` yet
     for a given module."""
-    commands.summarize_progress(grades)
+    if avg_progress_only:
+        return commands.summarize_progress_avg_progress_only(grades)
+    return commands.summarize_progress(grades)
 
 
 @cli.command()
