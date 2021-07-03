@@ -87,7 +87,7 @@ Example output::
         progress  Output includes only modules that are in progress.
 
 
-Example output::
+Example output 1::
 
     $ ugc summarize done
 
@@ -197,3 +197,32 @@ Example output::
 
     GPA (weighted): 4 US – 4 UK
     Total credits done: 150 / 360 (41.67%)
+
+
+Example output 2::
+
+    $ ugc summarize progress --avg-progress-only
+
+    Modules in progress:
+    [ { 'Software Design and Development': { 'level': 5,
+                                            'midterm_score': 88,
+                                            'midterm_weight': 50}},
+    {'Virtual Reality': {'level': 6, 'midterm_score': 85, 'midterm_weight': 50}}]
+
+    Weighted average (only for modules in progress): 86.12
+    ECTS: A
+    US: B
+
+    Unweighted average (only for modules in progress): 86.5
+    ECTS: A
+    US: B
+
+    Classification (weighted): First Class Honours
+
+    ECTS grade equivalence:
+    {'Software Design and Development': 'A', 'Virtual Reality': 'A'}
+
+    US grade equivalence:
+    {'Software Design and Development': 'B+', 'Virtual Reality': 'B'}
+
+    GPA (weighted): 3 US – 4 UK
