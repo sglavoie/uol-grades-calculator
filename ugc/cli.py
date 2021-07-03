@@ -10,10 +10,8 @@ from pathlib import Path
 import click
 
 # Local imports
-from ugc import commands
+from ugc import __version__, commands
 from ugc.grades import Grades
-from ugc.utils import cli_helpers
-
 
 pass_grades = click.make_pass_decorator(Grades, ensure=True)
 
@@ -32,11 +30,19 @@ def run_if_config_exists(f):
     return update_wrapper(new_func, f)
 
 
+def print_version(context, param, value):
+    "Print the program version and exit."
+    if not value or context.resilient_parsing:
+        return
+    click.echo(__version__)
+    context.exit()
+
+
 @click.group()
 @click.option(
     "--version",
     is_flag=True,
-    callback=cli_helpers.print_version,
+    callback=print_version,
     expose_value=False,
     is_eager=True,
     help="Print the program version and exit.",
