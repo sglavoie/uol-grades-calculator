@@ -1,4 +1,20 @@
-from ugc.utils import commands_helpers
+def get_module_score(module) -> float:
+    try:
+        final_score = module["final_score"]
+        final_weight = module["final_weight"]
+        midterm_score = module["midterm_score"]
+        midterm_weight = module["midterm_weight"]
+        module_score = (
+            midterm_score * midterm_weight / 100
+            + final_score * final_weight / 100
+        )
+
+        if midterm_score < 35 or final_score < 35:
+            return 39  # automatic FAIL
+
+        return module_score
+    except TypeError:
+        return -1
 
 
 def get_weight_of(level: int) -> int:
@@ -78,7 +94,7 @@ def get_score_of_module_in_progress(module: dict) -> float:
     result = -1
     for values in module.values():
         if values.get("final_score") and values.get("midterm_score"):
-            result = commands_helpers.get_module_score(values)
+            result = get_module_score(values)
         elif values.get("final_score"):
             result = values["final_score"]
         elif values.get("midterm_score"):
@@ -144,7 +160,7 @@ def get_weighted_total_score_modules_in_progress(modules: list) -> float:
             level = get_weight_of(values.get("level"))
             extra = 2 if key.lower() == "final project" else 1
             if final is not None and midterm is not None:
-                module_score = commands_helpers.get_module_score(values)
+                module_score = get_module_score(values)
             elif final is not None:
                 module_score = final
             elif midterm is not None:
@@ -157,6 +173,7 @@ def get_weighted_total_score_modules_in_progress(modules: list) -> float:
                 pass
     return total
 
+
 def get_unweighted_total_score_modules_in_progress(modules: list) -> float:
     total = 0
     for module in modules:
@@ -164,7 +181,7 @@ def get_unweighted_total_score_modules_in_progress(modules: list) -> float:
             final = values.get("final_score")
             midterm = values.get("midterm_score")
             if final is not None and midterm is not None:
-                module_score = commands_helpers.get_module_score(values)
+                module_score = get_module_score(values)
             elif final is not None:
                 module_score = final
             elif midterm is not None:

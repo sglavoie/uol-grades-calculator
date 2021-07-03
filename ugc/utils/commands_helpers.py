@@ -2,35 +2,16 @@
 from pathlib import Path
 import shutil
 
+# Third-party library imports
+import click
+
 # Local imports
 from ugc.utils import mathtools
 from ugc.utils import grades_helpers
 
-# Third-party library imports
-import click
-
-
-def get_module_score(module) -> float:
-    try:
-        final_score = module["final_score"]
-        final_weight = module["final_weight"]
-        midterm_score = module["midterm_score"]
-        midterm_weight = module["midterm_weight"]
-        module_score = (
-            midterm_score * midterm_weight / 100
-            + final_score * final_weight / 100
-        )
-
-        if midterm_score < 35 or final_score < 35:
-            return 39  # automatic FAIL
-
-        return module_score
-    except TypeError:
-        return -1
-
 
 def get_module_score_rounded_up(module) -> float:
-    module_score = get_module_score(module)
+    module_score = grades_helpers.get_module_score(module)
     return mathtools.round_half_up(module_score)
 
 
