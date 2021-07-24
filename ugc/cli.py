@@ -84,7 +84,7 @@ def done(ctx, grades):
     "--avg-progress-only",
     "-o",
     is_flag=True,
-    help="Print the program version and exit.",
+    help="Show the average for modules in progress only.",
 )
 @pass_grades
 @run_if_config_exists

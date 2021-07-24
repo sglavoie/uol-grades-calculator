@@ -97,7 +97,7 @@ Example output::
     given module.
 
     Options:
-    -o, --avg-progress-only  Print the program version and exit.
+    -o, --avg-progress-only  Show the average for modules in progress only.
     --help                   Show this message and exit.
 
 
