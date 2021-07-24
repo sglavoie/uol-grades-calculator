@@ -44,19 +44,17 @@ class Config:
     def load(self) -> dict:
         """Load grades from a YAML file."""
         try:
-            open(self.path)
+            with open(self.path) as gfile:
+                self.check_config_format_is_syntactically_correct()
+                self.data = yaml.safe_load(gfile)
+                self.verify()
+                return self.data
         except FileNotFoundError as e:
             click.secho(
                 f"Configuration file not found: {self.path}", fg="bright_red"
             )
             click.secho("Try `ugc generate-sample --help`", fg="bright_blue")
             raise e
-
-        with open(self.path) as gfile:
-            self.check_config_format_is_syntactically_correct()
-            self.data = yaml.safe_load(gfile)
-            self.verify()
-            return self.data
 
     def verify(self) -> None:
         """Check that the config file contains valid data. One of the
@@ -158,14 +156,14 @@ class Config:
         all_modules = self.default.keys()
         for module in all_modules:
             if (
-                module not in self.data.keys()
+                module not in self.data
                 and module != "Computational Mathematics"
             ):
                 raise ConfigValidationError(
                     f"Module '{module}' not found in configuration file "
                     f"({self.path}). Make sure the spelling is correct."
                 )
-        for module in self.data.keys():
+        for module in self.data:
             if module not in all_modules and module != "Numerical Mathematics":
                 raise ConfigValidationError(
                     f"Module '{module}' not expected in "

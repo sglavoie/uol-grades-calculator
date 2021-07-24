@@ -135,9 +135,7 @@ class TestDataIsRetrievedCorrectly:
             "module_score": None,
             "level": 5,
         }
-        results = (
-            local_grades.get_scores_of_modules_in_progress()
-        )
+        results = local_grades.get_scores_of_modules_in_progress()
         assert results == [69.2, 60, 75]
 
     @staticmethod
@@ -369,9 +367,7 @@ class TestDataIsCalculatedWell:
         }
 
         # weighted average of all that: 72.12
-        result = (
-            local_grades.calculate_weighted_average_in_progress()
-        )
+        result = local_grades.calculate_weighted_average_in_progress()
         assert result == 72.12
 
     @staticmethod
@@ -414,11 +410,8 @@ class TestDataIsCalculatedWell:
             "level": 4,
         }
         # weighted average of modules in progress: 67.74
-        result = (
-            local_grades.calculate_weighted_average_in_progress_only()
-        )
+        result = local_grades.calculate_weighted_average_in_progress_only()
         assert result == 67.74
-
 
     @staticmethod
     def test_get_module_scores_of_finished_modules_for_system_us(local_grades):
