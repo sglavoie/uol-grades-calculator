@@ -87,142 +87,60 @@ Example output::
         progress  Output includes only modules that are in progress.
 
 
+    $ ugc summarize progress --help
+
+    Usage: ugc summarize progress [OPTIONS]
+
+    Output includes only modules that are in progress.
+
+    In progress means there is no value provided for `module_score` yet for a
+    given module.
+
+    Options:
+    -o, --avg-progress-only  Print the program version and exit.
+    --help                   Show this message and exit.
+
+
 Example output 1::
 
     $ ugc summarize done
 
-    Modules taken:
-    [ { 'Algorithms and Data Structures I': { 'completion_date': '2020-03',
-                                            'final_score': 92,
-                                            'final_weight': 50,
-                                            'level': 4,
-                                            'midterm_score': 98,
-                                            'midterm_weight': 50,
-                                            'module_score': 95}},
-    { 'Discrete Mathematics': { 'completion_date': '2020-03',
-                                'final_score': 100,
-                                'final_weight': 50,
-                                'level': 4,
-                                'midterm_score': 99,
-                                'midterm_weight': 50,
-                                'module_score': 100}},
-    { 'Fundamentals of Computer Science': { 'completion_date': '2020-09',
-                                            'final_score': 98,
-                                            'final_weight': 50,
-                                            'level': 4,
-                                            'midterm_score': 98,
-                                            'midterm_weight': 50,
-                                            'module_score': 98}},
-    { 'How Computers Work': { 'completion_date': '2018-12',
-                                'level': 4,
-                                'module_score': -1}},
-    { 'Introduction to Programming I': { 'completion_date': '2019-09',
-                                        'final_score': 100,
-                                        'final_weight': 50,
-                                        'level': 4,
-                                        'midterm_score': 100,
-                                        'midterm_weight': 50,
-                                        'module_score': 100}},
-    { 'Numerical Mathematics': { 'completion_date': '2019-09',
-                                'final_score': 61,
-                                'final_weight': 50,
-                                'level': 4,
-                                'midterm_score': 99,
-                                'midterm_weight': 50,
-                                'module_score': 80}},
-    { 'Introduction to Programming II': { 'completion_date': '2020-03',
-                                            'final_score': 98,
-                                            'final_weight': 70,
-                                            'level': 4,
-                                            'midterm_score': 100,
-                                            'midterm_weight': 30,
-                                            'module_score': 99}},
-    { 'Web Development': { 'completion_date': '2019-09',
-                            'final_score': 87,
-                            'final_weight': 70,
-                            'level': 4,
-                            'midterm_score': 86,
-                            'midterm_weight': 30,
-                            'module_score': 87}},
-    { 'Algorithms and Data Structures II': { 'completion_date': '2020-09',
-                                            'final_score': 92,
-                                            'final_weight': 50,
-                                            'level': 5,
-                                            'midterm_score': 92,
-                                            'midterm_weight': 50,
-                                            'module_score': 92}},
-    { 'Object Oriented Programming': { 'completion_date': '2020-09',
-                                        'final_score': 96,
-                                        'final_weight': 50,
-                                        'level': 5,
-                                        'midterm_score': 96,
-                                        'midterm_weight': 50,
-                                        'module_score': 96}}]
-    Number of modules done: 10
-    Scores so far: [95, 100, 98, 100, 80, 99, 87, 92, 96]
+    +-------------------+---------+-----------------------------------+---------+--------+------+
+    | Completion date   |   Level | Module name                       | Score   | ECTS   | US   |
+    |-------------------+---------+-----------------------------------+---------+--------+------|
+    | 2018-12           |       4 | How Computers Work                | N/A     | N/A    | N/A  |
+    | 2019-09           |       4 | Introduction to Programming I     | 100     | A      | A    |
+    | 2019-09           |       4 | Numerical Mathematics             | 80      | A      | B-   |
+    | 2019-09           |       4 | Web Development                   | 87      | A      | B+   |
+    | 2020-03           |       4 | Algorithms and Data Structures I  | 95      | A      | A    |
+    | 2020-03           |       4 | Discrete Mathematics              | 100     | A      | A    |
+    | 2020-03           |       4 | Introduction to Programming II    | 99      | A      | A    |
+    | 2020-09           |       4 | Fundamentals of Computer Science  | 98      | A      | A    |
+    | 2020-09           |       5 | Algorithms and Data Structures II | 92      | A      | A-   |
+    | 2020-09           |       5 | Object Oriented Programming       | 96      | A      | A    |
+    | 2021-03           |       5 | Agile Software Projects           | 86      | A      | B    |
+    | 2021-03           |       5 | Graphics Programming              | 98      | A      | A    |
+    | 2021-03           |       5 | Programming with Data             | 86      | A      | B    |
+    +-------------------+---------+-----------------------------------+---------+--------+------+
 
-    Weighted average: 94.08
-    ECTS: A
-    US: A
-
-    Unweighted average: 94.11
-    ECTS: A
-    US: A
-
+    Weighted average: 92.41 (ECTS: A, US: A-)
+    Unweighted average: 93.08 (ECTS: A, US: A)
     Classification (weighted): First Class Honours
-
-    ECTS grade equivalence:
-    { 'Algorithms and Data Structures I': 'A',
-    'Algorithms and Data Structures II': 'A',
-    'Discrete Mathematics': 'A',
-    'Fundamentals of Computer Science': 'A',
-    'How Computers Work': 'N/A',
-    'Introduction to Programming I': 'A',
-    'Introduction to Programming II': 'A',
-    'Numerical Mathematics': 'A',
-    'Object Oriented Programming': 'A',
-    'Web Development': 'A'}
-
-    US grade equivalence:
-    { 'Algorithms and Data Structures I': 'A',
-    'Algorithms and Data Structures II': 'A-',
-    'Discrete Mathematics': 'A',
-    'Fundamentals of Computer Science': 'A',
-    'How Computers Work': 'N/A',
-    'Introduction to Programming I': 'A',
-    'Introduction to Programming II': 'A',
-    'Numerical Mathematics': 'B-',
-    'Object Oriented Programming': 'A',
-    'Web Development': 'B+'}
-
-    GPA (weighted): 4 US – 4 UK
-    Total credits done: 150 / 360 (41.67%)
+    GPA (weighted): 3.7 US – 4 UK
+    Total credits done: 195 / 360 (54.17%)
 
 
 Example output 2::
 
-    $ ugc summarize progress --avg-progress-only
+    $ ugc summarize progress
 
-    Modules in progress:
-    [ { 'Software Design and Development': { 'level': 5,
-                                            'midterm_score': 88,
-                                            'midterm_weight': 50}},
-    {'Virtual Reality': {'level': 6, 'midterm_score': 85, 'midterm_weight': 50}}]
+    +---------------------------------+---------+-----------+--------+------+
+    | Module name                     |   Level |   Midterm | ECTS   | US   |
+    |---------------------------------+---------+-----------+--------+------|
+    | Computer Security               |       5 |       100 | A      | A    |
+    | Databases Networks and the Web  |       5 |        90 | A      | A-   |
+    | Software Design and Development |       5 |        88 | A      | B+   |
+    +---------------------------------+---------+-----------+--------+------+
 
-    Weighted average (only for modules in progress): 86.12
-    ECTS: A
-    US: B
-
-    Unweighted average (only for modules in progress): 86.5
-    ECTS: A
-    US: B
-
-    Classification (weighted): First Class Honours
-
-    ECTS grade equivalence:
-    {'Software Design and Development': 'A', 'Virtual Reality': 'A'}
-
-    US grade equivalence:
-    {'Software Design and Development': 'B+', 'Virtual Reality': 'B'}
-
-    GPA (weighted): 3 US – 4 UK
+    Weighted average (including modules in progress): 92.48 (ECTS: A, US: A-)
+    Unweighted average (including modules in progress): 93.0 (ECTS: A, US: A)

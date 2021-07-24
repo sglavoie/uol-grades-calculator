@@ -4,7 +4,6 @@ List the commands available from the CLI: one per function.
 
 # Standard library imports
 import os
-import pprint
 
 # Third-party library imports
 import click
@@ -72,68 +71,64 @@ def generate_sample_overwrite(config) -> None:
 
 def summarize_all(grades: object, symbol: str = "=", repeat: int = 80) -> None:
     """Print a summary of modules done and in progress."""
-
-    click.secho("Modules completed", fg="cyan")
-    click.secho(symbol * repeat, fg="cyan")
+    click.secho("Modules completed", fg="bright_cyan")
+    click.secho(symbol * repeat, fg="bright_cyan")
     summarize_done(grades)
 
-    click.secho("\nModules in progress", fg="cyan")
-    click.secho(symbol * repeat, fg="cyan")
+    click.secho("\nModules in progress", fg="bright_cyan")
+    click.secho(symbol * repeat, fg="bright_cyan")
     summarize_progress(grades)
 
 
 def summarize_done(grades):
     """Print a summary of the progress made so far for modules that are done
     and dusted."""
+    finished_modules = grades.get_list_of_finished_modules()
 
-    if not grades.get_list_of_finished_modules():
+    if not finished_modules:
         click.secho(
             "No modules done. Good luck in your journey!", fg="bright_blue"
         )
         return
+    modules = grades_helpers.get_grades_list_as_list_of_dicts(finished_modules)
 
-    pretty_printer = pprint.PrettyPrinter(indent=2)
+    df = commands_helpers.get_modules_done_dataframe(grades, modules)
+    commands_helpers.pprint_dataframe(df)
+
+    # Store all the data we want to print
     wavg = grades.weighted_average
+    uavg = grades.unweighted_average
+    wects = grades_helpers.get_ects_equivalent_score(wavg)
+    uects = grades_helpers.get_ects_equivalent_score(uavg)
+    wus = grades_helpers.get_us_letter_equivalent_score(wavg)
+    uus = grades_helpers.get_us_letter_equivalent_score(uavg)
+    wclass = grades_helpers.get_classification(wavg)
+    wgpa_us = grades_helpers.get_us_gpa(wavg)
+    wgpa_uk = grades_helpers.get_uk_gpa(wavg)
+    total_credits = grades.get_total_credits()
+    pct_done = grades.get_percentage_degree_done()
 
-    click.secho("Modules taken:", fg="bright_blue")
-    pretty_printer.pprint(grades.get_list_of_finished_modules())
     click.secho(
-        f"Number of modules done: {grades.get_num_of_finished_modules()}",
-        fg="bright_yellow",
+        f"\nWeighted average: {wavg} (ECTS: {wects}, US: {wus})",
+        fg="bright_green",
     )
     click.secho(
-        f"Scores so far: {grades.get_module_scores_of_finished_modules()}",
-        fg="bright_blue",
-    )
-    click.secho(f"\nWeighted average: {wavg}", fg="bright_green")
-    click.secho(
-        f" ECTS: {grades_helpers.get_ects_equivalent_score(wavg)}",
-        fg="bright_blue",
-    )
-    click.secho(
-        f" US: {grades_helpers.get_us_letter_equivalent_score(wavg)}",
-        fg="bright_yellow",
-    )
-    click.secho(
-        f"\nUnweighted average: {grades.unweighted_average}", fg="bright_green"
-    )
-    click.secho(
-        f" ECTS: {grades_helpers.get_ects_equivalent_score(grades.unweighted_average)}",
-        fg="bright_blue",
-    )
-    click.secho(
-        f" US: {grades_helpers.get_us_letter_equivalent_score(grades.unweighted_average)}",
+        f"Unweighted average: {uavg} (ECTS: {uects}, US: {uus})",
         fg="bright_yellow",
     )
 
-    commands_helpers.print_classification_equivalence_gpa(
-        pretty_printer, grades, wavg
+    click.secho(
+        f"Classification (weighted): {wclass}",
+        fg="bright_blue",
+    )
+    click.secho(
+        f"GPA (weighted): {wgpa_us} US – {wgpa_uk} UK",
+        fg="magenta",
     )
 
     click.secho(
-        f"Total credits done: {grades.get_total_credits()} / 360 "
-        f"({grades.get_percentage_degree_done()}%)",
-        fg="bright_blue",
+        f"Total credits done: {total_credits} / 360 ({pct_done}%)",
+        fg="cyan",
     )
 
 
@@ -142,39 +137,36 @@ def summarize_progress(grades):
     if commands_helpers.there_are_no_modules_in_progress(grades):
         return
 
-    pretty_printer = pprint.PrettyPrinter(indent=2)
-
-    commands_helpers.print_modules_in_progress(pretty_printer, grades)
+    df_all_scores, _ = commands_helpers.get_modules_in_progress_dataframe(
+        grades
+    )
+    commands_helpers.pprint_dataframe(df_all_scores)
 
     wavg = grades.weighted_average_in_progress
-    commands_helpers.print_weighted_average_in_progress(wavg)
-
     uavg = grades.unweighted_average_in_progress
+    commands_helpers.print_weighted_average_in_progress(wavg)
     commands_helpers.print_unweighted_average_in_progress(uavg)
-
-    commands_helpers.print_classification_equivalence_gpa_in_progress(
-        pretty_printer, grades, wavg
-    )
 
 
 def summarize_progress_avg_progress_only(grades):
     if commands_helpers.there_are_no_modules_in_progress(grades):
         return
 
-    pretty_printer = pprint.PrettyPrinter(indent=2)
-
-    commands_helpers.print_modules_in_progress(pretty_printer, grades)
+    (
+        df_all_scores,
+        in_progress,
+    ) = commands_helpers.get_modules_in_progress_dataframe(grades)
+    commands_helpers.pprint_dataframe(df_all_scores)
 
     wavg = grades.weighted_average_in_progress_only
-    commands_helpers.print_weighted_average_in_progress(
-        wavg, only_in_progress=True
-    )
-
     uavg = grades.unweighted_average_in_progress_only
-    commands_helpers.print_unweighted_average_in_progress(
-        uavg, only_in_progress=True
-    )
 
-    commands_helpers.print_classification_equivalence_gpa_in_progress(
-        pretty_printer, grades, wavg
-    )
+    # No need to display if there's only one module: there's no average
+    # to calculate
+    if len(in_progress) > 1:
+        commands_helpers.print_weighted_average_in_progress(
+            wavg, only_in_progress=True
+        )
+        commands_helpers.print_unweighted_average_in_progress(
+            uavg, only_in_progress=True
+        )

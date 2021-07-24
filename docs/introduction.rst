@@ -114,5 +114,5 @@ Demo
 
 .. raw:: html
 
-    <!-- Demo of v0.5.2 -->
-    <script id="asciicast-vPb76ILpzp2d38DbOQngrlxmm" src="https://asciinema.org/a/vPb76ILpzp2d38DbOQngrlxmm.js" async></script>
+    <!-- Demo of v0.8.0 -->
+    <script id="asciicast-zwozjpOa0twETKgtmqlpuMaor" src="https://asciinema.org/a/zwozjpOa0twETKgtmqlpuMaor.js" async></script>
