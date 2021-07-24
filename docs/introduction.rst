@@ -1,7 +1,7 @@
 Requirements
 ============
 
-Python 3.6 and above. This is it!
+Python 3.7 and above. This is it!
 
 
 Install and uninstall
