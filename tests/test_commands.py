@@ -130,11 +130,11 @@ def test_summarize_all_shows_no_progress_when_none_exists(
 ):
     expected_output = """\
 Modules completed
-============================================================
+================================================================================
 No modules done. Good luck in your journey!
 
 Modules in progress
-============================================================
+================================================================================
 No modules in progress.
 """
     commands.summarize_all(local_grades)

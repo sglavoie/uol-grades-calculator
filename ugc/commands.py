@@ -70,7 +70,7 @@ def generate_sample_overwrite(config) -> None:
     )
 
 
-def summarize_all(grades: object, symbol: str = "=", repeat: int = 60) -> None:
+def summarize_all(grades: object, symbol: str = "=", repeat: int = 80) -> None:
     """Print a summary of modules done and in progress."""
 
     click.secho("Modules completed", fg="cyan")
