@@ -258,3 +258,11 @@ def get_classification(average) -> str:
     if average >= 40:
         return "Third Class Honours"
     return "Fail"
+
+def get_grades_list_as_list_of_dicts(grades: list) -> list:
+    list_of_dicts = []
+    for module in grades:
+        for key, value in module.items():
+            value.update({"module_name": key})
+            list_of_dicts.append(value)
+    return list_of_dicts

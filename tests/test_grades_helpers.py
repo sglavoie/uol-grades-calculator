@@ -262,3 +262,24 @@ def test_us_gpa_in_progress(average, expected_gpa):
 )
 def test_classification(average, expected_class):
     assert grades_helpers.get_classification(average) == expected_class
+
+
+def test_get_grades_as_list_of_dicts():
+    expected_list = [
+        {"module_name": "Module 1", "module_score": 100, "level": 4},
+        {"module_name": "Module 2", "module_score": -1, "level": 4},
+        {"module_name": "Module 3", "module_score": 80, "level": 4},
+        {"module_name": "Module 4", "module_score": 75.5, "level": 5},
+        {"module_name": "Module 5", "module_score": 0, "level": 4},
+    ]
+    grades = [
+        {"Module 1": {"module_score": 100, "level": 4}},
+        {"Module 2": {"module_score": -1, "level": 4}},
+        {"Module 3": {"module_score": 80, "level": 4}},
+        {"Module 4": {"module_score": 75.5, "level": 5}},
+        {"Module 5": {"module_score": 0, "level": 4}},
+    ]
+    assert (
+        grades_helpers.get_grades_list_as_list_of_dicts(grades)
+        == expected_list
+    )
