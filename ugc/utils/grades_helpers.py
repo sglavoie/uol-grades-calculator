@@ -20,13 +20,8 @@ def get_module_score(module) -> float:
 def get_weight_of(level: int) -> int:
     """Return the weight of a given `level`. The ratio is 1:3:5 for
     modules of L4:L5:L6 respectively."""
-    if level == 4:
-        return 1
-    if level == 5:
-        return 3
-    if level == 6:
-        return 5
-    return 0
+    levels = {4: 1, 5: 3, 6: 5}
+    return levels[level] if isinstance(level, int) and level in levels else 0
 
 
 def score_is_valid(module_score: float) -> bool:
@@ -128,11 +123,12 @@ def get_total_score_modules_finished(modules: list) -> float:
             module_score = values.get("module_score")
             level = get_weight_of(values.get("level"))
             extra = 2 if key.lower() == "final project" else 1
-            if "module_score" in values and module_score >= 0:
-                try:
-                    total += module_score * level * extra
-                except TypeError:
-                    pass
+            if not ("module_score" in values and module_score >= 0):
+                continue
+            try:
+                total += module_score * level * extra
+            except TypeError:
+                pass
     return total
 
 
@@ -258,6 +254,7 @@ def get_classification(average) -> str:
     if average >= 40:
         return "Third Class Honours"
     return "Fail"
+
 
 def get_grades_list_as_list_of_dicts(grades: list) -> list:
     list_of_dicts = []

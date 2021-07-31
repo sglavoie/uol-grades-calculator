@@ -27,7 +27,7 @@ def check_score_accuracy(grades) -> dict:
 
         expected_score = commands_helpers.get_module_score_rounded_up(values)
         actual_score = values["module_score"]
-        if not expected_score == actual_score:
+        if expected_score != actual_score:
             expected_dict[module] = {
                 "actual": actual_score,
                 "expected": expected_score,
@@ -57,9 +57,7 @@ def generate_sample(config) -> bool:
 
 def generate_sample_overwrite(config) -> None:
     """Generate a sample grades YAML config file: overwrite if it exists."""
-    file_existed = os.path.exists(config.path)
-
-    if file_existed:
+    if os.path.exists(config.path):
         click.secho(f"Overwriting {config.path}", fg="bright_blue")
     else:
         click.secho(f"Creating {config.path}", fg="bright_blue")
@@ -83,9 +81,7 @@ def summarize_all(grades: object, symbol: str = "=", repeat: int = 80) -> None:
 def summarize_done(grades):
     """Print a summary of the progress made so far for modules that are done
     and dusted."""
-    finished_modules = grades.get_list_of_finished_modules()
-
-    if not finished_modules:
+    if not (finished_modules := grades.get_list_of_finished_modules()):
         click.secho(
             "No modules done. Good luck in your journey!", fg="bright_blue"
         )
@@ -105,8 +101,8 @@ def summarize_done(grades):
     wclass = grades_helpers.get_classification(wavg)
     wgpa_us = grades_helpers.get_us_gpa(wavg)
     wgpa_uk = grades_helpers.get_uk_gpa(wavg)
-    total_credits = grades.get_total_credits()
-    pct_done = grades.get_percentage_degree_done()
+    total_credits = grades.total_credits
+    pct_done = grades.get_percentage_degree_done(total_credits)
 
     click.secho(
         f"\nWeighted average: {wavg} (ECTS: {wects}, US: {wus})",
@@ -143,7 +139,7 @@ def summarize_progress(grades):
     commands_helpers.pprint_dataframe(df_all_scores)
 
     wavg = grades.weighted_average_in_progress
-    uavg = grades.unweighted_average_in_progress
+    uavg = grades.unweighted_average_including_in_progress
     commands_helpers.print_weighted_average_in_progress(wavg)
     commands_helpers.print_unweighted_average_in_progress(uavg)
 

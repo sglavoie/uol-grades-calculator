@@ -3,10 +3,6 @@ Command-line application to get information about progress made in a BSc
 Computer Science at the University of London (calculations are specific
 to this particular degree).
 """
-
-# Standard library imports
-import os
-
 # Local imports
 from ugc.config import Config
 from ugc.utils import (
@@ -32,32 +28,22 @@ class Grades:
         self.config_exists = True
 
         self.data = self.config.load()
-        self.total_credits = 0
 
-        # Avoid running calculations if the config file is not found
-        # Otherwise, this will throw errors when running some commands
-        if os.path.exists(self.config.path):
-            self.load()
+    @property
+    def weighted_average_in_progress_only(self) -> float:
+        (
+            modules_in_progress,
+            weight_progress,
+            score_progress,
+        ) = self._get_weighted_data_of_modules_in_progress()
+        return (
+            0
+            if not modules_in_progress
+            else round(score_progress / weight_progress, 2)
+        )
 
-    def load(self) -> None:
-        """Perform basic calculations required for most commands."""
-        self.unweighted_average = self.calculate_unweighted_average()
-        self.unweighted_average_in_progress = (
-            self.calculate_unweighted_average_including_in_progress()
-        )
-        self.unweighted_average_in_progress_only = (
-            self.calculate_unweighted_average_in_progress_only()
-        )
-        self.weighted_average = self.calculate_weighted_average()
-        self.weighted_average_in_progress = (
-            self.calculate_weighted_average_in_progress()
-        )
-        self.weighted_average_in_progress_only = (
-            self.calculate_weighted_average_in_progress_only()
-        )
-        self.total_credits = self.get_total_credits()
-
-    def calculate_unweighted_average(self) -> float:
+    @property
+    def unweighted_average(self) -> float:
         """Return the unweighted average across all completed modules."""
         module_scores = self.get_module_scores_of_finished_modules()
         return (
@@ -68,7 +54,8 @@ class Grades:
             )
         )
 
-    def calculate_unweighted_average_including_in_progress(self) -> float:
+    @property
+    def unweighted_average_including_in_progress(self) -> float:
         """Return the unweighted average across all completed modules and
         those in progress."""
         module_scores = self.get_module_scores_of_finished_modules()
@@ -81,7 +68,8 @@ class Grades:
             )
         )
 
-    def calculate_unweighted_average_in_progress_only(self) -> float:
+    @property
+    def unweighted_average_in_progress_only(self) -> float:
         """Return the unweighted average across modules in progress only."""
         (
             modules_in_progress,
@@ -92,6 +80,58 @@ class Grades:
             if not modules_in_progress
             else round(score_progress / len(modules_in_progress), 2)
         )
+
+    @property
+    def weighted_average(self) -> float:
+        modules = self.get_list_of_finished_modules()
+        module_scores = self.get_module_scores_of_finished_modules()
+        total_weight = grades_helpers.get_total_weight_modules_finished(
+            modules
+        )
+        total_score = grades_helpers.get_total_score_modules_finished(modules)
+
+        return 0 if not module_scores else round(total_score / total_weight, 2)
+
+    @property
+    def weighted_average_in_progress(self) -> float:
+        modules_finished = []
+        modules_finished.extend(self.get_list_of_finished_modules())
+        weight_finished = grades_helpers.get_total_weight_modules_finished(
+            modules_finished
+        )
+        score_finished = grades_helpers.get_total_score_modules_finished(
+            modules_finished
+        )
+
+        (
+            modules_in_progress,
+            weight_progress,
+            score_progress,
+        ) = self._get_weighted_data_of_modules_in_progress()
+
+        modules_all = []
+        modules_all.extend(modules_in_progress)
+        modules_all.extend(modules_finished)
+
+        total_weight = weight_finished + weight_progress
+        total_score = score_finished + score_progress
+
+        return 0 if not modules_all else round(total_score / total_weight, 2)
+
+    @property
+    def total_credits(self) -> int:
+        """Get the total number of credits gotten so far as an integer."""
+        total_credits = 0
+        for subject_name, details in self.data.items():
+            if details.get("module_score"):
+                module_score = details["module_score"]
+                if module_score == -1 or module_score >= 40:
+                    # This won't be -1 but it does not matter
+                    if subject_name.lower() == "final project":
+                        total_credits += 30
+                    else:
+                        total_credits += 15
+        return total_credits
 
     def _get_unweighted_data_of_modules_in_progress(self) -> tuple:
         modules_in_progress = []
@@ -182,53 +222,6 @@ class Grades:
 
         return modules_scores
 
-    def calculate_weighted_average(self) -> float:
-        modules = self.get_list_of_finished_modules()
-        module_scores = self.get_module_scores_of_finished_modules()
-        total_weight = grades_helpers.get_total_weight_modules_finished(
-            modules
-        )
-        total_score = grades_helpers.get_total_score_modules_finished(modules)
-
-        return 0 if not module_scores else round(total_score / total_weight, 2)
-
-    def calculate_weighted_average_in_progress(self) -> float:
-        modules_finished = []
-        modules_finished.extend(self.get_list_of_finished_modules())
-        weight_finished = grades_helpers.get_total_weight_modules_finished(
-            modules_finished
-        )
-        score_finished = grades_helpers.get_total_score_modules_finished(
-            modules_finished
-        )
-
-        (
-            modules_in_progress,
-            weight_progress,
-            score_progress,
-        ) = self._get_weighted_data_of_modules_in_progress()
-
-        modules_all = []
-        modules_all.extend(modules_in_progress)
-        modules_all.extend(modules_finished)
-
-        total_weight = weight_finished + weight_progress
-        total_score = score_finished + score_progress
-
-        return 0 if not modules_all else round(total_score / total_weight, 2)
-
-    def calculate_weighted_average_in_progress_only(self) -> float:
-        (
-            modules_in_progress,
-            weight_progress,
-            score_progress,
-        ) = self._get_weighted_data_of_modules_in_progress()
-        return (
-            0
-            if not modules_in_progress
-            else round(score_progress / weight_progress, 2)
-        )
-
     def _get_weighted_data_of_modules_in_progress(self) -> tuple:
         modules_in_progress = []
         modules_in_progress.extend(self.get_list_of_modules_in_progress())
@@ -241,20 +234,6 @@ class Grades:
             )
         )
         return modules_in_progress, weight_progress, score_progress
-
-    def get_total_credits(self) -> int:
-        """Get the total number of credits gotten so far as an integer."""
-        self.total_credits = 0
-        for subject_name, details in self.data.items():
-            if details.get("module_score"):
-                module_score = details["module_score"]
-                if module_score == -1 or module_score >= 40:
-                    # This won't be -1 but it does not matter
-                    if subject_name.lower() == "final project":
-                        self.total_credits += 30
-                    else:
-                        self.total_credits += 15
-        return self.total_credits
 
     def get_num_of_finished_modules(self) -> int:
         """Return the number of modules completed with a score greater
@@ -301,9 +280,10 @@ class Grades:
             converted_scores[module_name] = to_run(result)
         return converted_scores
 
-    def get_percentage_degree_done(self) -> float:
+    @staticmethod
+    def get_percentage_degree_done(num_credits: int) -> float:
         """From the total number of credits, return the percentage done
         out of 360 credits."""
-        if self.total_credits > 360:
+        if num_credits > 360:
             return -1  # can't be more than what's available!
-        return round(self.total_credits / 360 * 100, 2)
+        return round(num_credits / 360 * 100, 2)

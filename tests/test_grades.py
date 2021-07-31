@@ -162,7 +162,7 @@ class TestDataIsRetrievedCorrectly:
 
 class TestDataIsCalculatedWell:
     @staticmethod
-    def test_calculate_unweighted_average(local_grades):
+    def test_unweighted_average(local_grades):
         with patch.dict(
             local_grades.data,
             {
@@ -176,7 +176,7 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            assert local_grades.calculate_unweighted_average() == 86.57
+            assert local_grades.unweighted_average == 86.57
         with patch.dict(
             local_grades.data,
             {
@@ -188,16 +188,16 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            assert local_grades.calculate_unweighted_average() == 93.97
+            assert local_grades.unweighted_average == 93.97
         with patch.dict(
             local_grades.data,
             {},
             clear=True,
         ):
-            assert local_grades.calculate_unweighted_average() == 0
+            assert local_grades.unweighted_average == 0
 
     @staticmethod
-    def test_calculate_weighted_average(
+    def test_weighted_average(
         local_grades,
     ):
         with patch.dict(
@@ -214,7 +214,7 @@ class TestDataIsCalculatedWell:
             clear=True,
         ):
             # skip module 3: `level` is expected
-            assert local_grades.calculate_weighted_average() == 84.78
+            assert local_grades.weighted_average == 84.78
         with patch.dict(
             local_grades.data,
             {
@@ -226,7 +226,7 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            assert local_grades.calculate_weighted_average() == 92.61
+            assert local_grades.weighted_average == 92.61
         with patch.dict(
             local_grades.data,
             {
@@ -240,13 +240,13 @@ class TestDataIsCalculatedWell:
         ):
             # weight of "Final Project" is twice that of another module level 6
             # (97.23 + 93.58 * 3 + 89 * 10) / 14
-            assert local_grades.calculate_weighted_average() == 90.57
+            assert local_grades.weighted_average == 90.57
         with patch.dict(
             local_grades.data,
             {},
             clear=True,
         ):
-            assert local_grades.calculate_weighted_average() == 0
+            assert local_grades.weighted_average == 0
 
     @staticmethod
     def test_calculate_unweighted_average_in_progress(
@@ -305,13 +305,11 @@ class TestDataIsCalculatedWell:
         }
 
         # average of all that: 75.67
-        result = (
-            local_grades.calculate_unweighted_average_including_in_progress()
-        )
+        result = local_grades.unweighted_average_including_in_progress
         assert result == 75.2
 
     @staticmethod
-    def test_calculate_weighted_average_in_progress(
+    def test_weighted_average_in_progress(
         local_grades,
     ):
         # in progress: [69.2, 60, 75], respectively [L4, L5, L5]
@@ -367,11 +365,11 @@ class TestDataIsCalculatedWell:
         }
 
         # weighted average of all that: 72.12
-        result = local_grades.calculate_weighted_average_in_progress()
+        result = local_grades.weighted_average_in_progress
         assert result == 72.12
 
     @staticmethod
-    def test_calculate_weighted_average_in_progress_only(
+    def test_weighted_average_in_progress_only(
         local_grades,
     ):
         # in progress: [69.2, 60, 75], respectively [L4, L5, L5]
@@ -410,7 +408,7 @@ class TestDataIsCalculatedWell:
             "level": 4,
         }
         # weighted average of modules in progress: 67.74
-        result = local_grades.calculate_weighted_average_in_progress_only()
+        result = local_grades.weighted_average_in_progress_only
         assert result == 67.74
 
     @staticmethod
@@ -599,7 +597,7 @@ class TestDataIsCalculatedWell:
             assert out == expected_module_scores
 
     @staticmethod
-    def test_get_total_credits(local_grades):
+    def test_total_credits(local_grades):
         with patch.dict(
             local_grades.data,
             {
@@ -610,7 +608,7 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            assert local_grades.get_total_credits() == 45
+            assert local_grades.total_credits == 45
         with patch.dict(
             local_grades.data,
             {
@@ -618,7 +616,7 @@ class TestDataIsCalculatedWell:
             },  # counts double
             clear=True,
         ):
-            assert local_grades.get_total_credits() == 30
+            assert local_grades.total_credits == 30
         with patch.dict(
             local_grades.data,
             {
@@ -629,7 +627,7 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            assert local_grades.get_total_credits() == 30
+            assert local_grades.total_credits == 30
         with patch.dict(
             local_grades.data,
             {
@@ -645,7 +643,7 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            assert local_grades.get_total_credits() == 60
+            assert local_grades.total_credits == 60
         with patch.dict(
             local_grades.data,
             {
@@ -656,7 +654,7 @@ class TestDataIsCalculatedWell:
             },
             clear=True,
         ):
-            assert local_grades.get_total_credits() == 15
+            assert local_grades.total_credits == 15
 
     @staticmethod
     @pytest.mark.parametrize(
@@ -674,9 +672,9 @@ class TestDataIsCalculatedWell:
         ],
     )
     def test_get_percentage_degree_done(
-        local_grades, num_credits, exp_percentage, monkeypatch
+        local_grades, num_credits, exp_percentage
     ):
-        monkeypatch.setattr(
-            local_grades, "total_credits", num_credits, raising=True
+        assert (
+            local_grades.get_percentage_degree_done(num_credits)
+            == exp_percentage
         )
-        assert local_grades.get_percentage_degree_done() == exp_percentage

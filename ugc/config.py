@@ -80,18 +80,19 @@ class Config:
             content = gfile.read().splitlines()
 
         for idx, line in enumerate(content):
-            if not line.startswith(self.template[idx]):
-                # Legacy situation here :)
-                if (
-                    line == "Numerical Mathematics:"
-                    and self.template[idx] == "Computational Mathematics:"
-                ):
-                    continue
-                raise ConfigValidationError(
-                    f"Line {idx + 1} does not match "
-                    f"the template. Expected '{self.template[idx]}', "
-                    f"got '{line}'"
-                )
+            if line.startswith(self.template[idx]):
+                continue
+            # Legacy situation here :)
+            if (
+                line == "Numerical Mathematics:"
+                and self.template[idx] == "Computational Mathematics:"
+            ):
+                continue
+            raise ConfigValidationError(
+                f"Line {idx + 1} does not match "
+                f"the template. Expected '{self.template[idx]}', "
+                f"got '{line}'"
+            )
         return True
 
     def check_total_weight_sums_up_100_in_all_modules(self) -> bool:
@@ -106,15 +107,16 @@ class Config:
         self,
     ) -> bool:
         for module, values in self.data.items():
-            if values.get("module_score") == -1:  # module RPLed
-                fs = values.get("final_score")
-                ms = values.get("midterm_score")
-                if fs or ms:
-                    raise ConfigValidationError(
-                        f"Module '{module}' is marked for RPL. No score "
-                        f"should be given. Got final_score={fs}, "
-                        f"midterm_score={ms}"
-                    )
+            if values.get("module_score") != -1:  # module not RPLed
+                continue
+            fs = values.get("final_score")
+            ms = values.get("midterm_score")
+            if fs or ms:
+                raise ConfigValidationError(
+                    f"Module '{module}' is marked for RPL. No score "
+                    f"should be given. Got final_score={fs}, "
+                    f"midterm_score={ms}"
+                )
         return True
 
     @staticmethod

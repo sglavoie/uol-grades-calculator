@@ -16,17 +16,17 @@ FIXTURE_CONFIG_PATH = (
 
 
 @pytest.fixture(scope="module")
-def local_grades():
+def local_grades(config_path=FIXTURE_CONFIG_PATH):
     """Return an instance of the Grades class as a fixture available
     for a module."""
-    return Grades(config_path=FIXTURE_CONFIG_PATH)
+    return Grades(config_path)
 
 
 @pytest.fixture(scope="module")
-def local_config():
+def local_config(config_path=FIXTURE_CONFIG_PATH):
     """Return an instance of the Config class as a fixture available
     for a module."""
-    return Config(config_path=FIXTURE_CONFIG_PATH)
+    return Config(config_path)
 
 
 @pytest.fixture(scope="module")
@@ -36,4 +36,4 @@ def local_bad_config():
     config_path = (
         pathlib.Path().absolute() / "tests/fixtures/yaml/bad_config.yml"
     )
-    return Config(config_path=config_path)
+    return Config(config_path)

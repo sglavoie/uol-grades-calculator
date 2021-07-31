@@ -19,10 +19,10 @@ def get_module_score_rounded_up(module) -> float:
 
 
 def there_are_no_modules_in_progress(grades) -> bool:
-    if not grades.get_list_of_modules_in_progress():
-        click.secho("No modules in progress.", fg="bright_blue")
-        return True
-    return False
+    if grades.get_list_of_modules_in_progress():
+        return False
+    click.secho("No modules in progress.", fg="bright_blue")
+    return True
 
 
 def print_modules_in_progress(pretty_printer, grades):
@@ -31,9 +31,7 @@ def print_modules_in_progress(pretty_printer, grades):
 
 
 def print_weighted_average_in_progress(wavg, only_in_progress=False) -> None:
-    msg = "including"
-    if only_in_progress:
-        msg = "only for"
+    msg = "only for" if only_in_progress else "including"
 
     wects = grades_helpers.get_ects_equivalent_score(wavg)
     wus = grades_helpers.get_us_letter_equivalent_score(wavg)
@@ -45,9 +43,7 @@ def print_weighted_average_in_progress(wavg, only_in_progress=False) -> None:
 
 
 def print_unweighted_average_in_progress(uavg, only_in_progress=False) -> None:
-    msg = "including"
-    if only_in_progress:
-        msg = "only for"
+    msg = "only for" if only_in_progress else "including"
 
     uects = grades_helpers.get_ects_equivalent_score(uavg)
     uus = grades_helpers.get_us_letter_equivalent_score(uavg)
@@ -59,8 +55,7 @@ def print_unweighted_average_in_progress(uavg, only_in_progress=False) -> None:
 
 
 def generate_sample_copy_config_file_and_print_message(config_path: str):
-    # The directory containing this file
-    here = Path(__file__).parent
+    here = Path(__file__).parent  # directory containing this file
     template_location = here / "../grades-template.yml"
 
     shutil.copyfile(template_location, config_path)
