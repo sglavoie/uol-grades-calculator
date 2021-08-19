@@ -1,3 +1,8 @@
+# Standard library imports
+from pathlib import Path
+import json
+
+
 def get_module_score(module) -> float:
     try:
         final_score = module["final_score"]
@@ -263,3 +268,11 @@ def get_grades_list_as_list_of_dicts(grades: list) -> list:
             value.update({"module_name": key})
             list_of_dicts.append(value)
     return list_of_dicts
+
+
+def load_short_module_names():
+    here = Path(__file__).parent  # directory containing this file
+    name_file = here / "../short_module_names.json"
+    with open(name_file) as nfile:
+        module_names = json.load(nfile)
+    return module_names
