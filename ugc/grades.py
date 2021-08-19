@@ -28,6 +28,7 @@ class Grades:
         self.config_exists = True
 
         self.data = self.config.load()
+        self.short_names = grades_helpers.load_short_module_names()
 
     @property
     def weighted_average_in_progress_only(self) -> float:
