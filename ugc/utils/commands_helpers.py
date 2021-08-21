@@ -1,8 +1,11 @@
 # Standard library imports
+from datetime import datetime
 from pathlib import Path
+import calendar
 import shutil
 
 # Third-party library imports
+from tabulate import tabulate
 import click
 import pandas as pd
 
@@ -10,7 +13,6 @@ import pandas as pd
 from ugc.grades import Grades
 from ugc.utils import mathtools
 from ugc.utils import grades_helpers
-from tabulate import tabulate
 
 
 def get_module_score_rounded_up(module) -> float:
@@ -174,3 +176,67 @@ def get_modules_in_progress_dataframe(grades: Grades) -> tuple:
     df_all_scores.rename(columns=renamed, inplace=True)
 
     return df_all_scores, in_progress
+
+
+def dataframe_map_module_to_weight(row) -> int:
+    """
+    Return the weight of a given module from a dataframe row based on the
+    module level and the module name (since the final project is worth more).
+
+    Args:
+        row (dataframe row): A row from a dataframe containing at least two
+                             columns, `Level` and `Module name`.
+
+    Returns:
+        int: Integer value corresponding to the weight of a module.
+    """
+    if row["Level"] == 4:
+        return 1
+    if row["Level"] == 5:
+        return 3
+    if row["Level"] == 6 and row["Module name"] != "Final Project":
+        return 5
+    return 10  # final project is worth twice as much as any other L6
+
+
+def dataframe_get_weighted_average(df, data_col, weight_col, by_col) -> float:
+    """
+    Calculate the weighted average in a dataframe from a numerical column
+    and an integer column (weight) where the results are grouped by the column
+    `by_col`.
+
+    Args:
+        df (DataFrame): Pandas dataframe, used to temporarily store new columns.
+        data_col (number): int or float column from a dataframe.
+        weight_col (number): int or float column from a dataframe.
+        by_col ([type]): A dataframe column from which weights should be grouped.
+
+    Returns:
+        float: Weighted average calculated from `data_col` and `weight_col`
+               and grouped by `by_col`.
+    """
+    df["_data_times_weight"] = df[data_col] * df[weight_col]
+    df["_weight_where_notnull"] = df[weight_col] * pd.notnull(df[data_col])
+    g = df.groupby(by_col)
+    result = g["_data_times_weight"].sum() / g["_weight_where_notnull"].sum()
+    del df["_data_times_weight"], df["_weight_where_notnull"]
+    return result
+
+
+def dataframe_parse_datetime_as_month_year(row) -> str:
+    """
+    Take in a dataframe row, get a timestamp from a column and return a
+    formatted string in the form MMM YYYY, where MMM is the abbreviation
+    of a month's name.
+
+    Args:
+        row: A dataframe row.
+
+    Returns:
+        str: A formatted string of the form "MMM YYYY".
+    """
+    date = str(row["Completion date"])[:10]  # slice YYYY-MM-DD only
+    date = datetime.strptime(date, "%Y-%m-%d")
+    year, month = date.year, date.month
+    month_name = calendar.month_abbr[month]
+    return f"{month_name} {year}"
