@@ -167,29 +167,44 @@ def plot_modules(grades: Grades, options: dict) -> None:
     # Get the current value of the labels
     handles, labels = plt.gca().get_legend_handles_labels()
 
-    # Plot the unweighted average per semester
-    average_over_time = df.groupby("Completion date").mean()
-    plt.plot(
-        average_over_time.index,
-        average_over_time["Score"],
-        color=colors[3],
-        linestyle="--",
-        linewidth=0.85,
-        alpha=0.75,
-    )
-
-    # Plot the weighted average per semester
+    # Used to plot multiple lines, so calculate those once and for all
     weighted_average = commands_helpers.dataframe_get_weighted_average(
         df, "Score", "Weight", "Completion date"
     )
-    plt.plot(
-        weighted_average.index,
-        weighted_average,
-        color=colors[4],
-        linestyle="dashdot",
-        linewidth=0.85,
-        alpha=0.75,
-    )
+    average_over_time = df.groupby("Completion date").mean()
+
+    if not options.get("no_avgs") and not options.get("no_unweighted_avg"):
+        # Plot the unweighted average per semester
+        plt.plot(
+            average_over_time.index,
+            average_over_time["Score"],
+            color=colors[3],
+            linestyle="--",
+            linewidth=0.85,
+            alpha=0.75,
+        )
+        # Manually add the other lines we're plotting to the legend
+        unweighted_semester = Line2D(
+            [0], [0], color=colors[3], linestyle="--", linewidth=0.85
+        )
+        handles.extend([unweighted_semester])
+        labels.extend(["Unweighted avg."])
+
+    if not options.get("no_avgs") and not options.get("no_weighted_avg"):
+        # Plot the weighted average per semester
+        plt.plot(
+            weighted_average.index,
+            weighted_average,
+            color=colors[4],
+            linestyle="dashdot",
+            linewidth=0.85,
+            alpha=0.75,
+        )
+        weighted_semester = Line2D(
+            [0], [0], color=colors[4], linestyle="dashdot", linewidth=0.85
+        )
+        handles.extend([weighted_semester])
+        labels.extend(["Weighted avg."])
 
     if not options.get("no_trend"):
         # Plot the trend line. First, convert the dates to numeric values.
@@ -217,7 +232,7 @@ def plot_modules(grades: Grades, options: dict) -> None:
         handles.extend([trendline])
         labels.extend(["Trend line"])
 
-    if not options.get("no_overall_avg"):
+    if not options.get("no_avgs") and not options.get("no_overall_avg"):
         # Plot an horizontal line showing the weighted average obtained over time
         x = np.array(weighted_average.index)
         y = [round(v, 2) for v in np.array(weighted_average)]
@@ -238,19 +253,10 @@ def plot_modules(grades: Grades, options: dict) -> None:
     # prepend with "Levels" to avoid adding a title to the legend
     labels = [f"Level {l}" if len(l) == 1 else l for l in labels]
 
-    # Manually add the other lines we're plotting to the legend
-    unweighted_semester = Line2D(
-        [0], [0], color=colors[3], linestyle="--", linewidth=0.85
-    )
-    weighted_semester = Line2D(
-        [0], [0], color=colors[4], linestyle="dashdot", linewidth=0.85
-    )
-    handles.extend([unweighted_semester, weighted_semester])
-    labels.extend(["Unweighted avg.", "Weighted avg."])
-
     # Draw the legend outside the figure as it tends to overlap with data
     plt.legend(
-        bbox_to_anchor=(1.02, 1),  # outside, top-right
+        bbox_to_anchor=(1.3, 0.8),  # outside, top-right
+        loc="upper right",
         shadow=True,
         borderaxespad=1,
         handles=handles,

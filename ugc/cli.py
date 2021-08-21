@@ -140,16 +140,34 @@ def plot():
     help="Specify the output quality in dots per inch.",
 )
 @click.option(
+    "--no-trend",
+    is_flag=True,
+    default=False,
+    help="Remove the trend line.",
+)
+@click.option(
+    "--no-avgs",
+    is_flag=True,
+    default=False,
+    help="Remove all unweighted and weighted average lines.",
+)
+@click.option(
     "--no-overall-avg",
     is_flag=True,
     default=False,
     help="Remove the weighted average obtained across the degree.",
 )
 @click.option(
-    "--no-trend",
+    "--no-weighted-avg",
     is_flag=True,
     default=False,
-    help="Remove the trend line.",
+    help="Remove the weighted average per semester.",
+)
+@click.option(
+    "--no-unweighted-avg",
+    is_flag=True,
+    default=False,
+    help="Remove the unweighted average per semester.",
 )
 @pass_grades
 @run_if_config_exists
