@@ -164,14 +164,35 @@ def plot_modules(grades: Grades, options: dict) -> None:
             label=name,
             alpha=1,
         )
-        # plt.annotate(group["Score"], (group["Completion date"], group["Score"]))
         x = np.array(group["Completion date"])
         y = np.array(group["Score"])
-        z = np.array(group["Short name"])
-        texts = [
-            (plt.text(x[i], y[i], f"{z[i]} ({y[i]})"))
-            for i, txt in enumerate(y)
-        ]
+
+        # With those options, there are no annotations to add, so just continue
+        if options.get("no_module_names") and options.get("no_grades"):
+            continue
+
+        if options.get("long_module_names"):
+            z = np.array(group["Module name"])
+        else:
+            z = np.array(group["Short name"])
+
+        # When no module names are displayed, we only display the grades. But
+        # when displaying the module names, check if we also want to display
+        # the grades.
+        if options.get("no_module_names"):
+            texts = [
+                (plt.text(x[i], y[i], f"{y[i]}")) for i, txt in enumerate(y)
+            ]
+        elif options.get("no_grades"):
+            texts = [
+                (plt.text(x[i], y[i], f"{z[i]}")) for i, txt in enumerate(y)
+            ]
+        else:
+            texts = [
+                (plt.text(x[i], y[i], f"{z[i]} ({y[i]})"))
+                for i, txt in enumerate(y)
+            ]
+
         all_texts.extend(texts)
 
     # Get the current value of the labels
