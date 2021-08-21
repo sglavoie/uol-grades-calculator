@@ -136,6 +136,7 @@ def plot():
     "-d",
     "--dpi",
     default=300,
+    show_default=True,
     type=click.IntRange(100, 1000),
     help="Specify the output quality in dots per inch.",
 )
