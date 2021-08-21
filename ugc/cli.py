@@ -204,6 +204,11 @@ def plot():
     default=False,
     help="Do not display the grade for any module.",
 )
+@click.option(
+    "--filename",
+    type=str,
+    help="Change the output file name.",
+)
 @pass_grades
 @run_if_config_exists
 def modules(ctx, grades, **kwargs):

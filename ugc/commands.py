@@ -4,6 +4,7 @@ List the commands available from the CLI: one per function.
 
 # Standard library imports
 from datetime import datetime
+from pathlib import Path
 import os
 
 # Third-party library imports
@@ -311,7 +312,23 @@ def plot_modules(grades: Grades, options: dict) -> None:
     adjust_text(all_texts)
 
     plt.tight_layout(pad=1)  # add some padding, otherwise the x-labels are cut
-    plt.savefig("test.png")  # save to current directory by default
+
+    # Save the results to the disk
+    default_filename = today + "_grades_over_time.png"
+    filename = (
+        options.get("filename", "")
+        if options.get("filename")
+        else default_filename
+    )
+
+    # Make sure we save the file extension if it wasn't passed in the
+    # `filename` option
+    if not filename.endswith(".png"):
+        filename += ".png"
+    plt.savefig(filename)  # save to current directory by default
+    click.secho(
+        f"Plot saved to {Path(os.getcwd()) / filename}", fg="bright_green"
+    )
 
 
 def summarize_all(grades: Grades, symbol: str = "=", repeat: int = 80) -> None:
