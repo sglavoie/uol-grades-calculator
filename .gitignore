@@ -1,8 +1,8 @@
 # Created by https://www.gitignore.io/api/code,python
 # Edit at https://www.gitignore.io/?templates=code,python
 
-# Personal info
-grades.yml
+# Ignore JupyterLab notebooks
+*.ipynb
 
 # Virtual environment
 .venv/
