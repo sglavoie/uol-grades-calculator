@@ -124,3 +124,16 @@ def check():
 def score_accuracy(ctx, grades):
     """Check for rounding errors when averaging module score."""
     commands.check_score_accuracy(grades)
+
+
+@cli.group()
+def plot():
+    """Plot progress made over time."""
+
+
+@plot.command()
+@pass_grades
+@run_if_config_exists
+def modules(ctx, grades):
+    """Produce a scatter plot showing all individual grades."""
+    commands.plot_modules(grades)

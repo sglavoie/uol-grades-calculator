@@ -3,12 +3,21 @@ List the commands available from the CLI: one per function.
 """
 
 # Standard library imports
+from datetime import datetime
 import os
 
 # Third-party library imports
 import click
+from matplotlib.lines import Line2D
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+# Avoid overlap with annotations (auto placement of text)
+from adjustText import adjust_text
 
 # Local imports
+from ugc.grades import Grades
 from ugc.utils import commands_helpers, grades_helpers
 
 
@@ -67,7 +76,207 @@ def generate_sample_overwrite(config) -> None:
     )
 
 
-def summarize_all(grades: object, symbol: str = "=", repeat: int = 80) -> None:
+def plot_modules(grades: Grades):
+    """
+    Plot modules over time with additional information and save the generated
+    plot to `path`. It might be a good idea to refactor this gigantic function
+    some day.
+
+    Args:
+        grades (Grades): ugc grades object.
+    """
+    # Set the stage by creating a dataframe to be used for plotting
+    finished_modules = grades.get_list_of_finished_modules()
+    modules = grades_helpers.get_grades_list_as_list_of_dicts(finished_modules)
+    df = commands_helpers.get_modules_done_dataframe(grades, modules)
+
+    # Drop unneeded columns
+    df = df.drop(["ECTS", "US"], axis=1)
+
+    # Convert column to datetime
+    df["Completion date"] = pd.to_datetime(
+        df["Completion date"], format="%Y-%m"
+    )
+
+    # Drop modules with invalid scores
+    df = df.replace("N/A", np.NaN).dropna()
+
+    # Get and set the weight for each module in a new column
+    df["Weight"] = df.apply(
+        commands_helpers.dataframe_map_module_to_weight, axis=1
+    )
+
+    # Set short module names so the graph is less cluttered
+    df["Short name"] = df.apply(
+        lambda row: grades.short_names[row["Module name"]], axis=1
+    )
+
+    # Set readable dates to be displayed on the x-axis
+    df["Date string"] = df.apply(
+        commands_helpers.dataframe_parse_datetime_as_month_year, axis=1
+    )
+
+    # Figure aspect ratio and output quality in dots per inch
+    plt.figure(figsize=(12, 6), dpi=600)
+
+    # Graph title
+    plt.title(
+        f"Scores over time as of {datetime.today().strftime('%Y-%m-%d')}"
+    )
+
+    # Store the annotations to be added to the graph (scores + module names)
+    all_texts = []
+
+    # Order in which colors will be applied
+    colors = (
+        "tab:blue",
+        "tab:orange",
+        "tab:purple",
+        "tab:green",
+        "tab:red",
+        "m",
+        "k",
+    )
+
+    # Give a different shape to the markers for each level in the degree
+    level_shapes = ("o", "^", "s")
+
+    # Iterate over each level in the degree
+    groups = df.groupby("Level")
+    for (name, group), color, shape in zip(groups, colors, level_shapes):
+        texts = []
+        plt.plot(
+            group["Completion date"],
+            group["Score"],
+            color=color,
+            marker=shape,
+            linestyle="",
+            label=name,
+            alpha=1,
+        )
+        # plt.annotate(group["Score"], (group["Completion date"], group["Score"]))
+        x = np.array(group["Completion date"])
+        y = np.array(group["Score"])
+        z = np.array(group["Short name"])
+        texts = [
+            (plt.text(x[i], y[i], f"{z[i]} ({y[i]})"))
+            for i, txt in enumerate(y)
+        ]
+        all_texts.extend(texts)
+
+    # Plot the unweighted average per semester
+    average_over_time = df.groupby("Completion date").mean()
+    plt.plot(
+        average_over_time.index,
+        average_over_time["Score"],
+        color=colors[3],
+        linestyle="--",
+        linewidth=0.85,
+        alpha=0.75,
+    )
+
+    # Plot the weighted average per semester
+    weighted_average = commands_helpers.dataframe_get_weighted_average(
+        df, "Score", "Weight", "Completion date"
+    )
+    plt.plot(
+        weighted_average.index,
+        weighted_average,
+        color=colors[4],
+        linestyle="dashdot",
+        linewidth=0.85,
+        alpha=0.75,
+    )
+
+    # Plot the trend line. First, convert the dates to numeric values.
+    dates = df.set_index("Completion date", append=False)
+    dates = dates.index.to_julian_date()
+    dates = dates.unique()
+
+    # Then, calculate the least squares polynomial fit and plot.
+    # https://numpy.org/doc/stable/reference/generated/numpy.polyfit.html
+    x = np.array(average_over_time.index)
+    y = [round(v, 2) for v in np.array(average_over_time["Score"])]
+    z = np.polyfit(dates, y, 1)
+    p = np.poly1d(z)
+    plt.plot(
+        x,
+        p(dates),
+        linestyle="dotted",
+        linewidth=1.25,
+        alpha=0.75,
+        color=colors[6],
+    )
+
+    # Plot an horizontal line showing the weighted average obtained over time
+    x = np.array(weighted_average.index)
+    y = [round(v, 2) for v in np.array(weighted_average)]
+    plt.plot(
+        x,
+        [round(weighted_average.mean(), 2)] * len(x),
+        linestyle="solid",
+        alpha=0.75,
+        linewidth=1.25,
+        color=colors[5],
+    )
+
+    # Get the current value of the labels
+    handles, labels = plt.gca().get_legend_handles_labels()
+
+    # prepend with "Levels" to avoid adding a title to the legend
+    labels = [f"Level {l}" for l in labels]
+
+    # Manually add the other lines we're plotting to the legend
+    unweighted_semester = Line2D(
+        [0], [0], color=colors[3], linestyle="--", linewidth=0.85
+    )
+    weighted_semester = Line2D(
+        [0], [0], color=colors[4], linestyle="dashdot", linewidth=0.85
+    )
+    weighted_degree = Line2D(
+        [0], [0], color=colors[5], linestyle="solid", linewidth=1.25
+    )
+    trendline = Line2D(
+        [0], [0], color=colors[6], linestyle="dotted", linewidth=1.25
+    )
+    handles.extend(
+        [unweighted_semester, weighted_semester, weighted_degree, trendline]
+    )
+    labels.extend(
+        [
+            "Unweighted avg.",
+            "Weighted avg.",
+            "Overall weighted avg.",
+            "Trend line",
+        ]
+    )
+
+    # Draw the legend outside the figure as it tends to overlap with data
+    plt.legend(
+        bbox_to_anchor=(1.02, 1),  # outside, top-right
+        shadow=True,
+        borderaxespad=1,
+        handles=handles,
+        labels=labels,
+    )
+
+    # Add a grid for readability and increase precision by enabling minor ticks
+    plt.grid(which="both", alpha=0.3, axis="y")
+    plt.grid(which="major", alpha=0.3, axis="x")
+    plt.minorticks_on()
+
+    # Rotate the labels to take less space and label them from the
+    # "Date string" column, which is easier to read
+    plt.xticks(rotation=60, ticks=x, labels=df["Date string"].unique())
+
+    # required to avoid overlap with labels in the figure
+    adjust_text(all_texts)
+
+    plt.tight_layout(pad=1)  # add some padding, otherwise the x-labels are cut
+    plt.savefig("test.png")  # save to current directory by default
+
+
+def summarize_all(grades: Grades, symbol: str = "=", repeat: int = 80) -> None:
     """Print a summary of modules done and in progress."""
     click.secho("Modules completed", fg="bright_cyan")
     click.secho(symbol * repeat, fg="bright_cyan")
