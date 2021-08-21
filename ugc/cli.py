@@ -209,6 +209,11 @@ def plot():
     type=str,
     help="Change the output file name.",
 )
+@click.option(
+    "--path",
+    type=str,
+    help="Set the output path to save the generated plot.",
+)
 @pass_grades
 @run_if_config_exists
 def modules(ctx, grades, **kwargs):

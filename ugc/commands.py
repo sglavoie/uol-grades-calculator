@@ -6,6 +6,7 @@ List the commands available from the CLI: one per function.
 from datetime import datetime
 from pathlib import Path
 import os
+import sys
 
 # Third-party library imports
 import click
@@ -325,10 +326,49 @@ def plot_modules(grades: Grades, options: dict) -> None:
     # `filename` option
     if not filename.endswith(".png"):
         filename += ".png"
-    plt.savefig(filename)  # save to current directory by default
-    click.secho(
-        f"Plot saved to {Path(os.getcwd()) / filename}", fg="bright_green"
-    )
+
+    filepath = Path(os.getcwd()) / filename
+
+    if options.get("path"):
+        if not os.path.exists(options.get("path", "")):
+            click.secho(
+                f"Cannot save to the path specified: {Path(options.get('path', '')) / filename}",
+                fg="bright_red",
+            )
+            click.secho(
+                "Make sure the output directory exists.",
+                fg="blue",
+            )
+            sys.exit()
+        else:
+            filepath = Path(options.get("path", "")) / filename
+
+    if os.path.exists(filepath):
+        click.secho(
+            f"The output destination file already exists: {filepath}",
+            fg="bright_yellow",
+        )
+
+        if not click.confirm(
+            "Would you like to overwrite this file?",
+            prompt_suffix=": ",
+            show_default=True,
+            err=False,
+        ):
+            click.secho(
+                "Aborting: the existing file was kept intact.",
+                fg="bright_blue",
+            )
+            sys.exit()
+
+    try:
+        plt.savefig(filepath)
+        click.secho(f"Plot saved to {filepath}", fg="bright_green")
+    except PermissionError:
+        click.secho(
+            f"PermissionError: could not save the output to {filepath}",
+            fg="bright_red",
+        )
 
 
 def summarize_all(grades: Grades, symbol: str = "=", repeat: int = 80) -> None:
