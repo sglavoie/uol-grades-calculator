@@ -75,11 +75,21 @@ def get_modules_done_dataframe(
 ) -> pd.DataFrame:
     df_modules_taken = pd.DataFrame(finished_modules)
 
-    # Drop unwanted columns (will take too much horizontal space)
-    df_modules_taken = df_modules_taken.drop(
-        ["final_weight", "midterm_weight", "midterm_score", "final_score"],
-        axis=1,
-    )
+    # Drop unwanted columns (will take too much horizontal space). These
+    # columns may not exist, so try dropping them one by one.
+    for column in [
+        "final_weight",
+        "midterm_weight",
+        "midterm_score",
+        "final_score",
+    ]:
+        try:
+            df_modules_taken = df_modules_taken.drop(
+                column,
+                axis=1,
+            )
+        except KeyError:
+            pass
 
     # Reorder remaining columns
     df_modules_taken = df_modules_taken[
