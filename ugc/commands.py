@@ -119,12 +119,22 @@ def plot_modules(grades: Grades, options: dict) -> None:
     # Figure aspect ratio and output quality in dots per inch
     plt.figure(figsize=(12, 6), dpi=options["dpi"])
 
-    # Graph title
-    plt.title(
-        f"Scores over time as of {datetime.today().strftime('%Y-%m-%d')}"
-    )
+    # Graph title: if the `title` option is passed, set the title to that and
+    # optionally append today's date if the `keep_date_in_title` option is set.
+    today = datetime.today().strftime("%Y-%m-%d")
+    if options.get("title") is not None:
+        plot_title = options.get("title", "")
+        if options.get("keep_date_in_title"):
+            plot_title += f" - {today}"
+    # Otherwise, contemplate the possibility of removing the date in the title.
+    else:
+        if not options.get("no_date_in_title"):
+            plot_title = f"Grades over time as of {today}"
+        else:
+            plot_title = "Grades over time"
+    plt.title(plot_title)
 
-    # Store the annotations to be added to the graph (scores + module names)
+    # Store the annotations to be added to the graph (grades + module names)
     all_texts = []
 
     # Order in which colors will be applied

@@ -169,6 +169,23 @@ def plot():
     default=False,
     help="Remove the unweighted average per semester.",
 )
+@click.option(
+    "--no-date-in-title",
+    is_flag=True,
+    default=False,
+    help="Remove the part `as of YYYY-MM-DD` in the title of the graph.",
+)
+@click.option(
+    "--title",
+    type=str,
+    help="Print a custom title for the graph.",
+)
+@click.option(
+    "--keep-date-in-title",
+    is_flag=True,
+    default=False,
+    help="Append today's date in the title when used with `--title`.",
+)
 @pass_grades
 @run_if_config_exists
 def modules(ctx, grades, **kwargs):
