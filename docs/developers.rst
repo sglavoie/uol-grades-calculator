@@ -73,6 +73,79 @@ Publishing the package to PyPI
     python -m twine upload dist/*
 
 
+Installing package from PyPI
+----------------------------
+
+Install from `test.pypi.org <https://test.pypi.org/project/uol-grades-calculator/>`_:
+
+- Activate a virtual environment, then:
+
+.. code-block:: bash
+
+    # Latest version
+    pip install -i https://test.pypi.org/simple/ uol-grades-calculator
+
+    # Specific version
+    pip install -i https://test.pypi.org/simple/ uol-grades-calculator==x.y.z
+
+
+Test as a module:
+
+.. code-block:: bash
+
+    python -m ugc
+
+
+Install from `pypi.org <https://pypi.org/project/uol-grades-calculator/>`_:
+
+.. code-block:: bash
+
+    # Latest version
+    pip install uol-grades-calculator
+
+    # Specific version
+    pip install uol-grades-calculator==x.y.z
+
+
+Adding ``ugc`` as a command
+---------------------------
+
+To avoid having to activate a virtual environment and calling the program as a module via ``python -m ugc``, one can create an alias or put a symbolic link in the ``$PATH`` to make the command ``ugc`` accessible.
+
+Creating an alias
+.................
+
+As a quick and dirty way to access ``ugc`` with an alias, a virtual environment can be activated and the Python interpreter can be called from that environment. Adding an alias like the following would do the trick:
+
+.. code-block:: bash
+
+    # Add to `~/.bash_aliases` or equivalent on your system
+    alias ugc=". /tmp/.venv/bin/activate && python -m ugc"
+
+
+Adding to the ``$PATH``
+.......................
+
+When developing locally and assuming all dependencies were installed inside a virtual environment:
+
+.. code-block:: bash
+
+    # Make sure the `ugc` package was installed to allow editing source code
+    # on the fly:
+    python setup.py develop
+
+    # Create a symbolic link from your virtual environment to a directory
+    # in your path. You can print it to see what it looks like:
+    echo $PATH
+
+    # For instance, if ~/.local/bin is in $PATH, something as follows would
+    # work, assuming the virtual environment is named `.venv`:
+    ln -s /path/to/uol_grades_calculator/.venv/bin/ugc ~/.local/bin/ugc
+
+    # Then `ugc` can be called as a regular program:
+    ugc
+
+
 Documentation
 -------------
 
