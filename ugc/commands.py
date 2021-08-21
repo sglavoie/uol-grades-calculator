@@ -76,7 +76,7 @@ def generate_sample_overwrite(config) -> None:
     )
 
 
-def plot_modules(grades: Grades):
+def plot_modules(grades: Grades, options: dict) -> None:
     """
     Plot modules over time with additional information and save the generated
     plot to `path`. It might be a good idea to refactor this gigantic function
@@ -117,7 +117,7 @@ def plot_modules(grades: Grades):
     )
 
     # Figure aspect ratio and output quality in dots per inch
-    plt.figure(figsize=(12, 6), dpi=600)
+    plt.figure(figsize=(12, 6), dpi=options["dpi"])
 
     # Graph title
     plt.title(
@@ -164,6 +164,9 @@ def plot_modules(grades: Grades):
         ]
         all_texts.extend(texts)
 
+    # Get the current value of the labels
+    handles, labels = plt.gca().get_legend_handles_labels()
+
     # Plot the unweighted average per semester
     average_over_time = df.groupby("Completion date").mean()
     plt.plot(
@@ -188,43 +191,52 @@ def plot_modules(grades: Grades):
         alpha=0.75,
     )
 
-    # Plot the trend line. First, convert the dates to numeric values.
-    dates = df.set_index("Completion date", append=False)
-    dates = dates.index.to_julian_date()
-    dates = dates.unique()
+    if not options.get("no_trend"):
+        # Plot the trend line. First, convert the dates to numeric values.
+        dates = df.set_index("Completion date", append=False)
+        dates = dates.index.to_julian_date()
+        dates = dates.unique()
 
-    # Then, calculate the least squares polynomial fit and plot.
-    # https://numpy.org/doc/stable/reference/generated/numpy.polyfit.html
-    x = np.array(average_over_time.index)
-    y = [round(v, 2) for v in np.array(average_over_time["Score"])]
-    z = np.polyfit(dates, y, 1)
-    p = np.poly1d(z)
-    plt.plot(
-        x,
-        p(dates),
-        linestyle="dotted",
-        linewidth=1.25,
-        alpha=0.75,
-        color=colors[6],
-    )
+        # Then, calculate the least squares polynomial fit and plot.
+        # https://numpy.org/doc/stable/reference/generated/numpy.polyfit.html
+        x = np.array(average_over_time.index)
+        y = [round(v, 2) for v in np.array(average_over_time["Score"])]
+        z = np.polyfit(dates, y, 1)
+        p = np.poly1d(z)
+        plt.plot(
+            x,
+            p(dates),
+            linestyle="dotted",
+            linewidth=1.25,
+            alpha=0.75,
+            color=colors[6],
+        )
+        trendline = Line2D(
+            [0], [0], color=colors[6], linestyle="dotted", linewidth=1.25
+        )
+        handles.extend([trendline])
+        labels.extend(["Trend line"])
 
-    # Plot an horizontal line showing the weighted average obtained over time
-    x = np.array(weighted_average.index)
-    y = [round(v, 2) for v in np.array(weighted_average)]
-    plt.plot(
-        x,
-        [round(weighted_average.mean(), 2)] * len(x),
-        linestyle="solid",
-        alpha=0.75,
-        linewidth=1.25,
-        color=colors[5],
-    )
-
-    # Get the current value of the labels
-    handles, labels = plt.gca().get_legend_handles_labels()
+    if not options.get("no_overall_avg"):
+        # Plot an horizontal line showing the weighted average obtained over time
+        x = np.array(weighted_average.index)
+        y = [round(v, 2) for v in np.array(weighted_average)]
+        plt.plot(
+            x,
+            [round(weighted_average.mean(), 2)] * len(x),
+            linestyle="solid",
+            alpha=0.75,
+            linewidth=1.25,
+            color=colors[5],
+        )
+        weighted_degree = Line2D(
+            [0], [0], color=colors[5], linestyle="solid", linewidth=1.25
+        )
+        handles.extend([weighted_degree])
+        labels.extend(["Overall weighted avg."])
 
     # prepend with "Levels" to avoid adding a title to the legend
-    labels = [f"Level {l}" for l in labels]
+    labels = [f"Level {l}" if len(l) == 1 else l for l in labels]
 
     # Manually add the other lines we're plotting to the legend
     unweighted_semester = Line2D(
@@ -233,23 +245,8 @@ def plot_modules(grades: Grades):
     weighted_semester = Line2D(
         [0], [0], color=colors[4], linestyle="dashdot", linewidth=0.85
     )
-    weighted_degree = Line2D(
-        [0], [0], color=colors[5], linestyle="solid", linewidth=1.25
-    )
-    trendline = Line2D(
-        [0], [0], color=colors[6], linestyle="dotted", linewidth=1.25
-    )
-    handles.extend(
-        [unweighted_semester, weighted_semester, weighted_degree, trendline]
-    )
-    labels.extend(
-        [
-            "Unweighted avg.",
-            "Weighted avg.",
-            "Overall weighted avg.",
-            "Trend line",
-        ]
-    )
+    handles.extend([unweighted_semester, weighted_semester])
+    labels.extend(["Unweighted avg.", "Weighted avg."])
 
     # Draw the legend outside the figure as it tends to overlap with data
     plt.legend(
@@ -267,7 +264,11 @@ def plot_modules(grades: Grades):
 
     # Rotate the labels to take less space and label them from the
     # "Date string" column, which is easier to read
-    plt.xticks(rotation=60, ticks=x, labels=df["Date string"].unique())
+    plt.xticks(
+        rotation=60,
+        ticks=df["Completion date"].unique(),
+        labels=df["Date string"].unique(),
+    )
 
     # required to avoid overlap with labels in the figure
     adjust_text(all_texts)
