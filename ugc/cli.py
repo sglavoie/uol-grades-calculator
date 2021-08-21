@@ -132,8 +132,27 @@ def plot():
 
 
 @plot.command()
+@click.option(
+    "-d",
+    "--dpi",
+    default=300,
+    type=click.IntRange(100, 1000),
+    help="Specify the output quality in dots per inch.",
+)
+@click.option(
+    "--no-overall-avg",
+    is_flag=True,
+    default=False,
+    help="Remove the weighted average obtained across the degree.",
+)
+@click.option(
+    "--no-trend",
+    is_flag=True,
+    default=False,
+    help="Remove the trend line.",
+)
 @pass_grades
 @run_if_config_exists
-def modules(ctx, grades):
+def modules(ctx, grades, **kwargs):
     """Produce a scatter plot showing all individual grades."""
-    commands.plot_modules(grades)
+    commands.plot_modules(grades=grades, options=kwargs)
