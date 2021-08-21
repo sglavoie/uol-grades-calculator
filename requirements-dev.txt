@@ -4,3 +4,5 @@ pytest-cov==2.11.1
 pytest-flake8==1.0.7
 pytest==6.2.2
 Sphinx==3.5.4
+twine==3.4.2
+wheel==0.37.0
