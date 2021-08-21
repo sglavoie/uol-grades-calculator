@@ -186,6 +186,24 @@ def plot():
     default=False,
     help="Append today's date in the title when used with `--title`.",
 )
+@click.option(
+    "--no-module-names",
+    is_flag=True,
+    default=False,
+    help="Remove the display of module names entirely.",
+)
+@click.option(
+    "--long-module-names",
+    is_flag=True,
+    default=False,
+    help="Display the full name of each module.",
+)
+@click.option(
+    "--no-grades",
+    is_flag=True,
+    default=False,
+    help="Do not display the grade for any module.",
+)
 @pass_grades
 @run_if_config_exists
 def modules(ctx, grades, **kwargs):
