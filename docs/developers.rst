@@ -24,6 +24,7 @@ Installing the necessary requirements:
 .. code-block:: bash
 
     $ pip install -r requirements.txt
+    $ pip install -r requirements-dev.txt
 
 
 Building the application once (no need to rebuild to test changes on the source code):
@@ -40,6 +41,36 @@ The tool can then be uninstalled using the following command:
 .. code-block:: bash
 
     $ python setup.py develop --uninstall
+
+
+Managing dependencies
+---------------------
+
+- Requirements to test and develop the application should go into ``requirements-dev.txt``. None of these are required to run ``ugc`` as a user.
+- User requirements should go into ``requirements.txt``.
+- The section ``install_requires`` in ``setup.cfg`` should be kept up-to-date when new releases are to be published.
+- Non-Python files (e.g. YML and JSON) used by ``ugc`` should be explicitly included in ``MANIFEST.in`` to be distributed with the package.
+
+
+Publishing the package to PyPI
+------------------------------
+
+.. code-block:: bash
+
+    # Remove existing distribution packages
+    rm -rf dist build
+
+    # The following commands would be run preferably
+    # from a virtual environment
+
+    # Generate the distribution packages for PyPI
+    python setup.py sdist bdist_wheel --universal
+
+    # Upload to the test instance of PyPI
+    python -m twine upload --repository testpypi dist/*
+
+    # Upload to the production instance of PyPI
+    python -m twine upload dist/*
 
 
 Documentation
