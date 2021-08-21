@@ -136,11 +136,11 @@ def plot_modules(grades: Grades, options: dict) -> None:
     today = datetime.today().strftime("%Y-%m-%d")
     if options.get("title") is not None:
         plot_title = options.get("title", "")
-        if options.get("keep_date_in_title"):
-            plot_title += f" - {today}"
+        if options.get("title_keep_date"):
+            plot_title += f" ({today})"
     # Otherwise, contemplate the possibility of removing the date in the title.
     else:
-        if not options.get("no_date_in_title"):
+        if not options.get("title_no_date"):
             plot_title = f"Grades over time as of {today}"
         else:
             plot_title = "Grades over time"
@@ -229,7 +229,7 @@ def plot_modules(grades: Grades, options: dict) -> None:
         )
         average_over_time = df.groupby("Completion date").mean()
 
-        if not options.get("no_avgs") and not options.get("no_unweighted_avg"):
+        if not options.get("no_avgs") and not options.get("no_avg_unweighted"):
             # Plot the unweighted average per semester
             plt.plot(
                 average_over_time.index,
@@ -251,7 +251,7 @@ def plot_modules(grades: Grades, options: dict) -> None:
             handles.extend([unweighted_semester])
             labels.extend(["Unweighted avg."])
 
-        if not options.get("no_avgs") and not options.get("no_weighted_avg"):
+        if not options.get("no_avgs") and not options.get("no_avg_weighted"):
             # Plot the weighted average per semester
             plt.plot(
                 weighted_average.index,
@@ -298,7 +298,7 @@ def plot_modules(grades: Grades, options: dict) -> None:
             handles.extend([trendline])
             labels.extend(["Trend line"])
 
-        if not options.get("no_avgs") and not options.get("no_overall_avg"):
+        if not options.get("no_avgs") and not options.get("no_avg_overall"):
             # Plot an horizontal line showing the weighted average obtained over time
             x = np.array(weighted_average.index)
             y = [round(v, 2) for v in np.array(weighted_average)]

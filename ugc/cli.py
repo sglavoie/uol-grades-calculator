@@ -140,57 +140,9 @@ def plot():
     help="Specify the output quality in dots per inch.",
 )
 @click.option(
-    "--no-trend",
-    is_flag=True,
-    default=False,
-    help="Remove the trend line.",
-)
-@click.option(
-    "--no-avgs",
-    is_flag=True,
-    default=False,
-    help="Remove all unweighted and weighted average lines.",
-)
-@click.option(
-    "--no-overall-avg",
-    is_flag=True,
-    default=False,
-    help="Remove the weighted average obtained across the degree.",
-)
-@click.option(
-    "--no-weighted-avg",
-    is_flag=True,
-    default=False,
-    help="Remove the weighted average per semester.",
-)
-@click.option(
-    "--no-unweighted-avg",
-    is_flag=True,
-    default=False,
-    help="Remove the unweighted average per semester.",
-)
-@click.option(
-    "--no-date-in-title",
-    is_flag=True,
-    default=False,
-    help="Remove the part `as of YYYY-MM-DD` in the title of the graph.",
-)
-@click.option(
-    "--title",
+    "--filename",
     type=str,
-    help="Print a custom title for the graph.",
-)
-@click.option(
-    "--keep-date-in-title",
-    is_flag=True,
-    default=False,
-    help="Append today's date in the title when used with `--title`.",
-)
-@click.option(
-    "--no-module-names",
-    is_flag=True,
-    default=False,
-    help="Remove the display of module names entirely.",
+    help="Change the output file name.",
 )
 @click.option(
     "--long-module-names",
@@ -199,20 +151,68 @@ def plot():
     help="Display the full name of each module.",
 )
 @click.option(
+    "--no-avg-overall",
+    is_flag=True,
+    default=False,
+    help="Remove the weighted average obtained across the degree.",
+)
+@click.option(
+    "--no-avg-unweighted",
+    is_flag=True,
+    default=False,
+    help="Remove the unweighted average per semester.",
+)
+@click.option(
+    "--no-avg-weighted",
+    is_flag=True,
+    default=False,
+    help="Remove the weighted average per semester.",
+)
+@click.option(
+    "--no-avgs",
+    is_flag=True,
+    default=False,
+    help="Remove all unweighted and weighted average lines.",
+)
+@click.option(
     "--no-grades",
     is_flag=True,
     default=False,
     help="Do not display the grade for any module.",
 )
 @click.option(
-    "--filename",
-    type=str,
-    help="Change the output file name.",
+    "--no-module-names",
+    is_flag=True,
+    default=False,
+    help="Remove the display of module names entirely.",
+)
+@click.option(
+    "--no-trend",
+    is_flag=True,
+    default=False,
+    help="Remove the trend line.",
 )
 @click.option(
     "--path",
     type=str,
     help="Set the output path to save the generated plot.",
+)
+@click.option(
+    "--title",
+    type=str,
+    help="Print a custom title for the graph.",
+)
+@click.option(
+    "--title-keep-date",
+    is_flag=True,
+    default=False,
+    help="Append today's date to the title when used with `--title`.",
+)
+@click.option(
+    "--title-no-date",
+    is_flag=True,
+    default=False,
+    help="Remove the part `as of YYYY-MM-DD` in the title of the graph.",
 )
 @pass_grades
 @run_if_config_exists
