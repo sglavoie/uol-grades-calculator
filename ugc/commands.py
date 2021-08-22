@@ -415,14 +415,14 @@ def summarize_all(grades: Grades, symbol: str = "=", repeat: int = 80) -> None:
     summarize_progress(grades)
 
 
-def summarize_done(grades):
+def summarize_done(grades) -> dict:
     """Print a summary of the progress made so far for modules that are done
     and dusted."""
     if not (finished_modules := grades.get_list_of_finished_modules()):
         click.secho(
             "No modules done. Good luck in your journey!", fg="bright_blue"
         )
-        return
+        return {}
     modules = grades_helpers.get_grades_list_as_list_of_dicts(finished_modules)
 
     df = commands_helpers.get_modules_done_dataframe(grades, modules)
@@ -463,6 +463,21 @@ def summarize_done(grades):
         f"Total credits done: {total_credits} / 360 ({pct_done}%)",
         fg="cyan",
     )
+
+    return {
+        "modules": modules,
+        "weighted_average": wavg,
+        "unweighted_average": uavg,
+        "weighted_ects": wects,
+        "unweighted_ects": uects,
+        "weighted_us": wus,
+        "unweighted_us": uus,
+        "weighted_class": wclass,
+        "weighted_gpa_us": wgpa_us,
+        "weighted_gpa_uk": wgpa_uk,
+        "credits_done": total_credits,
+        "percentage_done": pct_done,
+    }
 
 
 def summarize_progress(grades):
