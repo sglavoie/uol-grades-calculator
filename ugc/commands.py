@@ -503,9 +503,9 @@ def summarize_progress(grades) -> dict:
     }
 
 
-def summarize_progress_avg_progress_only(grades):
+def summarize_progress_avg_progress_only(grades) -> dict:
     if commands_helpers.there_are_no_modules_in_progress(grades):
-        return
+        return {}
 
     (
         df_all_scores,
@@ -525,3 +525,9 @@ def summarize_progress_avg_progress_only(grades):
         commands_helpers.print_unweighted_average_in_progress(
             uavg, only_in_progress=True
         )
+
+    return {
+        "modules": in_progress,
+        "weighted_average": wavg,
+        "unweighted_average": uavg,
+    }
