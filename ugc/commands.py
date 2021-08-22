@@ -480,20 +480,27 @@ def summarize_done(grades) -> dict:
     }
 
 
-def summarize_progress(grades):
+def summarize_progress(grades) -> dict:
     """Print a summary of only the modules that are currently in progress."""
     if commands_helpers.there_are_no_modules_in_progress(grades):
-        return
+        return {}
 
-    df_all_scores, _ = commands_helpers.get_modules_in_progress_dataframe(
-        grades
-    )
+    (
+        df_all_scores,
+        in_progress,
+    ) = commands_helpers.get_modules_in_progress_dataframe(grades)
     commands_helpers.pprint_dataframe(df_all_scores)
 
     wavg = grades.weighted_average_in_progress
     uavg = grades.unweighted_average_including_in_progress
     commands_helpers.print_weighted_average_in_progress(wavg)
     commands_helpers.print_unweighted_average_in_progress(uavg)
+
+    return {
+        "modules": in_progress,
+        "weighted_average": wavg,
+        "unweighted_average": uavg,
+    }
 
 
 def summarize_progress_avg_progress_only(grades):
