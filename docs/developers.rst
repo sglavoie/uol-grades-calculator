@@ -7,15 +7,6 @@ Getting a copy of the source code
 `Clone <https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository>`_ this `repository <https://github.com/sglavoie/uol-grades-calculator>`_.
 
 
-Running the test suite
-----------------------
-
-.. code-block:: bash
-
-    $ pip install -r requirements-dev.txt
-    $ pytest
-
-
 Developing locally as a package
 -------------------------------
 
@@ -23,8 +14,7 @@ Installing the necessary requirements:
 
 .. code-block:: bash
 
-    $ pip install -r requirements.txt
-    $ pip install -r requirements-dev.txt
+    $ pip install -r requirements.txt -r requirements-dev.txt
 
 
 Building the application once (no need to rebuild to test changes on the source code):
@@ -41,6 +31,16 @@ The tool can then be uninstalled using the following command:
 .. code-block:: bash
 
     $ python setup.py develop --uninstall
+
+
+Running the test suite
+----------------------
+
+Default settings are defined in ``pytest.ini``. Then, it's just a matter of typing:
+
+.. code-block:: bash
+
+    $ pytest
 
 
 Managing dependencies

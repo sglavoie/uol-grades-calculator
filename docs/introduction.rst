@@ -56,8 +56,8 @@ Note that you will have to indicate where the config is each time you use this t
     $ ugc --config /path/to/config/file.yml summarize
 
 
-How to fill the config file (`.grades.yml` by default)
-------------------------------------------------------
+How to fill the config file (``.grades.yml`` by default)
+--------------------------------------------------------
 
 Each module described in the config file should contain information adhering to the following indications:
 
@@ -85,7 +85,7 @@ Here is a complete example for one module:
 Module taken
 ............
 
-This means we define a module score between `0` and `100`, both being inclusive values.
+This means we define a module score between `0` and `100`, both being inclusive values, for a module for which an official grade was confirmed by the university.
 
 .. code-block:: yaml
 
@@ -96,11 +96,11 @@ This means we define a module score between `0` and `100`, both being inclusive 
 Module recognized (RPL)
 .......................
 
-In this case, we define a score of `-1` to indicate that this module is done but we didn't get a score for it.
+In this case, we define a score of `-1` to indicate that this module is done but we didn't get a score for it. This way, we can keep track of the fact that the module is `"done"` but exclude it from calculations when getting an average, for instance.
 
 .. code-block:: yaml
 
-    Algorithms and Data Structures I:
+    How Computers Work:
       module_score: -1
 
 
