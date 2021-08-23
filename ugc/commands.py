@@ -404,15 +404,17 @@ def plot_modules(grades: Grades, options: dict) -> None:
         )
 
 
-def summarize_all(grades: Grades, symbol: str = "=", repeat: int = 80) -> None:
+def summarize_all(grades: Grades, symbol: str = "=", repeat: int = 80) -> dict:
     """Print a summary of modules done and in progress."""
     click.secho("Modules completed", fg="bright_cyan")
     click.secho(symbol * repeat, fg="bright_cyan")
-    summarize_done(grades)
+    summary_done = summarize_done(grades)
 
     click.secho("\nModules in progress", fg="bright_cyan")
     click.secho(symbol * repeat, fg="bright_cyan")
-    summarize_progress(grades)
+    summary_progress = summarize_progress(grades)
+
+    return {"done": summary_done, "progress": summary_progress}
 
 
 def summarize_done(grades) -> dict:
