@@ -660,6 +660,9 @@ class TestDataIsCalculatedWell:
     @pytest.mark.parametrize(
         "num_credits,exp_percentage",
         [
+            (-100, -1),
+            (-2, -1),
+            (-1, -1),
             (0, 0),
             (15, 4.17),
             (30, 8.33),
@@ -668,7 +671,7 @@ class TestDataIsCalculatedWell:
             (240, 66.67),
             (300, 83.33),
             (360, 100),
-            (375, -1),  # can't have more than 360 credits
+            (375, 100),  # can't have more than 360 credits, cap it
         ],
     )
     def test_get_percentage_degree_done(

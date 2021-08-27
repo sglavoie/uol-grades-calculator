@@ -286,5 +286,7 @@ class Grades:
         """From the total number of credits, return the percentage done
         out of 360 credits."""
         if num_credits > 360:
-            return -1  # can't be more than what's available!
+            return 100  # one could take more modules, still completion is 100%
+        if num_credits < 0:
+            return -1  # can't be negative! Returns -1 as an error
         return round(num_credits / 360 * 100, 2)
