@@ -6,7 +6,6 @@ List the commands available from the CLI: one per function.
 from datetime import datetime
 from pathlib import Path
 import os
-import sys
 
 # Third-party library imports
 import click
@@ -76,7 +75,7 @@ def generate_sample_overwrite(config) -> dict:
     )
 
 
-def plot_modules(grades: Grades, options: dict) -> None:
+def plot_modules(grades: Grades, options: dict) -> dict:
     """
     Plot modules over time with additional information and save the generated
     plot to `path`. It might be a good idea to refactor this gigantic function
@@ -94,11 +93,9 @@ def plot_modules(grades: Grades, options: dict) -> None:
         )
         df = commands_helpers.get_modules_done_dataframe(grades, modules)
     else:
-        click.secho(
-            "Aborting: there is not enough data to produce a plot.",
-            fg="bright_blue",
-        )
-        sys.exit()
+        err_msg = "Aborting: there is not enough data to produce a plot."
+        click.secho(err_msg, fg="bright_blue")
+        return {"ok": False, "error": err_msg}
 
     # Drop unneeded columns
     df = df.drop(["ECTS", "US"], axis=1)
@@ -217,7 +214,7 @@ def plot_modules(grades: Grades, options: dict) -> None:
     # It's not much of a line with less than 2 different dates...
     if len(dates) < 2:
         click.secho(
-            f"Not enough data to plot a line: skipping trend and averages...",
+            "Not enough data to plot a line: skipping trend and averages...",
             fg="bright_yellow",
         )
     else:
@@ -362,17 +359,20 @@ def plot_modules(grades: Grades, options: dict) -> None:
 
     if options.get("path"):
         if not os.path.exists(options.get("path", "")):
+            err_msg = (
+                "Cannot save to the path specified: "
+                f"{Path(options.get('path', '')) / filename}"
+            )
             click.secho(
-                f"Cannot save to the path specified: {Path(options.get('path', '')) / filename}",
+                err_msg,
                 fg="bright_red",
             )
             click.secho(
                 "Make sure the output directory exists.",
                 fg="blue",
             )
-            sys.exit()
-        else:
-            filepath = Path(options.get("path", "")) / filename
+            return {"ok": False, "error": err_msg}
+        filepath = Path(options.get("path", "")) / filename
 
     if os.path.exists(filepath):
         click.secho(
@@ -390,16 +390,16 @@ def plot_modules(grades: Grades, options: dict) -> None:
                 "Aborting: the existing file was kept intact.",
                 fg="bright_blue",
             )
-            sys.exit()
+            return {"ok": True, "save_filepath": filepath}
 
     try:
         plt.savefig(filepath)
         click.secho(f"Plot saved to {filepath}", fg="bright_green")
+        return {"ok": True, "save_filepath": filepath}
     except PermissionError:
-        click.secho(
-            f"PermissionError: could not save the output to {filepath}",
-            fg="bright_red",
-        )
+        err_msg = f"PermissionError: could not save the output to {filepath}"
+        click.secho(err_msg, fg="bright_red")
+        return {"ok": False, "error": err_msg}
 
 
 def summarize_all(grades: Grades, symbol: str = "=", repeat: int = 80) -> dict:
