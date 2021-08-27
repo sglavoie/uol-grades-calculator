@@ -19,7 +19,11 @@ def test_generate_sample_does_not_overwrite_existing_location(
     local_config.path = tmpdir / ".grades.yml"
     test_file = tmpdir.join(".grades.yml")
     test_file.write("content")  # file can't be empty to test it
-    assert not commands.generate_sample(local_config)
+    expected = {
+        "ok": False,
+        "error": f"Will not overwrite existing {local_config.path}",
+    }
+    assert commands.generate_sample(local_config) == expected
 
 
 def test_generate_sample_creates_file_if_it_does_not_exist(
@@ -28,7 +32,7 @@ def test_generate_sample_creates_file_if_it_does_not_exist(
     local_config.path = tmpdir / ".grades.yml"
     result = commands.generate_sample(local_config)
     assert os.path.exists(local_config.path)
-    assert result
+    assert result == {"ok": True, "error": None}
 
 
 @pytest.mark.parametrize(

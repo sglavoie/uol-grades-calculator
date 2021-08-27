@@ -56,12 +56,30 @@ def print_unweighted_average_in_progress(uavg, only_in_progress=False) -> None:
     )
 
 
-def generate_sample_copy_config_file_and_print_message(config_path: str):
+def generate_sample_copy_config_file_and_print_message(
+    config_path: str,
+) -> dict:
     here = Path(__file__).parent  # directory containing this file
     template_location = here / "../grades-template.yml"
 
-    shutil.copyfile(template_location, config_path)
-    click.secho("→ Configuration file generated.", fg="bright_green")
+    try:
+        shutil.copyfile(template_location, config_path)
+    except shutil.SameFileError:
+        # Extremely unlikely to occur, but still possible...
+        # When template_location == config_path
+        err_msg = (
+            "SameFileError: The template file cannot be overwritten!"
+            f" ({config_path})"
+        )
+        print(err_msg)
+        return {"ok": False, "error": err_msg}
+    except OSError:  # destination might not be writable
+        err_msg = f"OSError: Failed to write to {config_path}"
+        print(err_msg)
+        return {"ok": False, "error": err_msg}
+    else:
+        click.secho("→ Configuration file generated.", fg="bright_green")
+        return {"ok": True, "error": None}
 
 
 def pprint_dataframe(dataframe):

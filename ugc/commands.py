@@ -52,28 +52,26 @@ def check_score_accuracy(grades) -> dict:
     return expected_dict
 
 
-def generate_sample(config) -> bool:
+def generate_sample(config) -> dict:
     """Generate a sample grades YAML config file."""
     if os.path.exists(config.path):
-        click.secho(
-            f"Will not overwrite existing {config.path}", fg="bright_yellow"
-        )
-        return False
+        err_msg = f"Will not overwrite existing {config.path}"
+        click.secho(err_msg, fg="bright_yellow")
+        return {"ok": False, "error": err_msg}
 
-    commands_helpers.generate_sample_copy_config_file_and_print_message(
+    return commands_helpers.generate_sample_copy_config_file_and_print_message(
         config_path=config.path
     )
-    return True
 
 
-def generate_sample_overwrite(config) -> None:
+def generate_sample_overwrite(config) -> dict:
     """Generate a sample grades YAML config file: overwrite if it exists."""
     if os.path.exists(config.path):
         click.secho(f"Overwriting {config.path}", fg="bright_blue")
     else:
         click.secho(f"Creating {config.path}", fg="bright_blue")
 
-    commands_helpers.generate_sample_copy_config_file_and_print_message(
+    return commands_helpers.generate_sample_copy_config_file_and_print_message(
         config_path=config.path
     )
 
