@@ -75,7 +75,7 @@ def generate_sample_overwrite(config) -> dict:
     )
 
 
-def plot_modules(grades: Grades, options: dict = {}) -> dict:
+def plot_modules(grades: Grades, api=False, options: dict = {}) -> dict:
     """
     Plot modules over time with additional information and save the generated
     plot to `path`. It might be a good idea to refactor this gigantic function
@@ -375,10 +375,14 @@ def plot_modules(grades: Grades, options: dict = {}) -> dict:
         filepath = Path(options.get("path", "")) / filename
 
     if os.path.exists(filepath):
+        err_msg = f"The output destination file already exists: {filepath}"
         click.secho(
-            f"The output destination file already exists: {filepath}",
+            err_msg,
             fg="bright_yellow",
         )
+        # don't ask anything and return early when called with the `api` flag
+        if api:
+            return {"ok": False, "error": err_msg}
 
         if not click.confirm(
             "Would you like to overwrite this file?",
