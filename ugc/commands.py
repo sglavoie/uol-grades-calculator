@@ -75,7 +75,7 @@ def generate_sample_overwrite(config) -> dict:
     )
 
 
-def plot_modules(grades: Grades, options: dict) -> dict:
+def plot_modules(grades: Grades, options: dict = {}) -> dict:
     """
     Plot modules over time with additional information and save the generated
     plot to `path`. It might be a good idea to refactor this gigantic function
@@ -124,7 +124,7 @@ def plot_modules(grades: Grades, options: dict) -> dict:
     )
 
     # Figure aspect ratio and output quality in dots per inch
-    plt.figure(figsize=(12, 6), dpi=options["dpi"])
+    plt.figure(figsize=(12, 6), dpi=options.get("dpi", 100))
 
     # Graph title: if the `title` option is passed, set the title to that and
     # optionally append today's date if the `keep_date_in_title` option is set.
