@@ -28,7 +28,7 @@ class Config:
         self.data = {}
 
         grades_template = Path(__file__).parent / "grades-template.yml"
-        with open(grades_template) as gfile:
+        with open(grades_template, encoding="UTF-8") as gfile:
             self.default = yaml.safe_load(gfile)
             gfile.seek(0)  # need to reset position in file to read it again
             self.template = gfile.read().splitlines()
@@ -44,7 +44,7 @@ class Config:
     def load(self) -> dict:
         """Load grades from a YAML file."""
         try:
-            with open(self.path) as gfile:
+            with open(self.path, encoding="UTF-8") as gfile:
                 self.check_config_format_is_syntactically_correct()
                 self.data = yaml.safe_load(gfile)
                 self.verify()
@@ -76,7 +76,7 @@ class Config:
     def check_config_format_is_syntactically_correct(self) -> bool:
         """Just make it much less probable we will find garbage in an
         altered config. Avoids having to check for YAML syntax errors."""
-        with open(self.path) as gfile:
+        with open(self.path, encoding="UTF-8") as gfile:
             content = gfile.read().splitlines()
 
         for idx, line in enumerate(content):

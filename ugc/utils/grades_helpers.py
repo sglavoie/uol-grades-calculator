@@ -273,6 +273,6 @@ def get_grades_list_as_list_of_dicts(grades: list) -> list:
 def load_short_module_names():
     here = Path(__file__).parent  # directory containing this file
     name_file = here / "../short_module_names.json"
-    with open(name_file) as nfile:
+    with open(name_file, encoding="UTF-8") as nfile:
         module_names = json.load(nfile)
     return module_names
