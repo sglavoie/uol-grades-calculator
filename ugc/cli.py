@@ -50,12 +50,14 @@ def print_version(context, param, value):
 @click.option(
     "--config",
     default=f"{str(Path.home())}/.ugc-grades.json",
+    type=str,
     show_default=True,
     help="Custom path to config file.",
 )
 @click.option(
     "--json",
     "json_str",
+    type=str,
     default=None,
     help="Load grades data from a JSON string.",
 )
