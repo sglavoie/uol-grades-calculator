@@ -12,9 +12,13 @@ from ugc.utils import (
 
 
 class Grades:
-    def __init__(self, config_path=None) -> None:
+    def __init__(self, json_str=None, config_path=None) -> None:
         """Set some default values before loading any grades."""
-        self.config = Config(config_path=config_path)
+        if json_str is not None:
+            # Load data from a JSON string instead of from a file
+            self.config = Config(json_str=json_str)
+        else:
+            self.config = Config(config_path=config_path)
 
         # Return before raising an error with a config file not found
         # so we can run the `generate-sample` command.

@@ -22,19 +22,19 @@ class ConfigValidationError(Exception):
 
 
 class Config:
-    """Loads the configuration file where grades are stored."""
+    """Loads the configuration where grades are stored.
 
-    def __init__(self, config_path=None):
+    If `json_str` is passed, load from a JSON string. Instead, if
+    `config_path` is passed, load from a path. Else, try loading from a
+    default configuration file."""
+
+    def __init__(self, json_str=None, config_path=None):
         self.data = {}
+        self.json = json_str
 
         grades_template = Path(__file__).parent / "grades-template.json"
         with open(grades_template, encoding="UTF-8") as gfile:
             self.default = json.load(gfile)
-            gfile.seek(0)  # need to reset position in file to read it again
-            self.template = gfile.read().splitlines()
-            self.template[1:] = [
-                l.split(":")[0] + ":" for l in self.template[1:]
-            ]
 
         if config_path is not None:
             self.path = config_path
@@ -42,7 +42,15 @@ class Config:
             self.path = f"{str(Path.home())}/.ugc-grades.json"
 
     def load(self) -> dict:
-        """Load grades from a JSON file."""
+        """Load grades from JSON (string or file)."""
+        err_msg = "Could not load grades as a valid JSON input."
+        if self.json is not None:
+            try:
+                self.data = json.loads(self.json)
+                self.verify()
+                return self.data
+            except json.decoder.JSONDecodeError as e:
+                raise ConfigValidationError(err_msg) from e
         try:
             with open(self.path, encoding="UTF-8") as gfile:
                 self.data = json.load(gfile)
@@ -55,19 +63,26 @@ class Config:
             click.secho("Try `ugc generate-sample --help`", fg="bright_blue")
             raise e
         except json.decoder.JSONDecodeError as e:
-            raise ConfigValidationError(
-                "Could not load grades as a valid JSON file."
-            ) from e
+            raise ConfigValidationError(err_msg) from e
 
     def verify(self) -> None:
         """Check that the config file contains valid data. One of the
         functions will throw an error if the config is not valid."""
+        self.config_is_a_dict()
         self.check_config_is_not_empty()
-        self.check_total_weight_sums_up_100_in_all_modules()
-        self.check_score_accuracy_raises_error_on_RPLed_module_with_scores()
         self.all_modules_are_found_with_valid_names()
         self.all_modules_are_set_to_correct_level()
         self.all_modules_have_valid_float_scores_and_weights()
+        self.check_score_accuracy_raises_error_on_RPLed_module_with_scores()
+        self.check_total_weight_sums_up_100_in_all_modules()
+
+    def config_is_a_dict(self) -> bool:
+        if not isinstance(self.data, dict):
+            raise ConfigValidationError(
+                "Configuration file must be convertible to a Python"
+                f" dictionary. Got: {self.data}"
+            )
+        return True
 
     def check_config_is_not_empty(self) -> bool:
         if self.data is None:

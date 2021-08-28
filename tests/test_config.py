@@ -6,6 +6,8 @@ Test config.py
 from pathlib import Path
 
 # Third-party library imports
+from hypothesis import given
+from hypothesis.strategies import text
 import pytest
 
 # Local imports
@@ -39,6 +41,12 @@ def test_config_file_exists_but_is_empty_raises_ConfigValidationError(
     local_config.path = Path(__file__).parent / "fixtures/json/empty.json"
     with pytest.raises(ConfigValidationError):
         local_config.load()
+
+
+@given(text())
+def test_bad_config_json_raises_ConfigValidationError(json_str):
+    with pytest.raises(ConfigValidationError):
+        Config(json_str=json_str).load()
 
 
 @pytest.mark.parametrize(

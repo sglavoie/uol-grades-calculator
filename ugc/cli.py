@@ -53,9 +53,15 @@ def print_version(context, param, value):
     show_default=True,
     help="Custom path to config file.",
 )
+@click.option(
+    "--json",
+    "json_str",
+    default=None,
+    help="Load grades data from a JSON string.",
+)
 @click.pass_context
-def cli(ctx, config):
-    ctx.obj = Grades(config_path=config)
+def cli(ctx, config, json_str):
+    ctx.obj = Grades(json_str=json_str, config_path=config)
 
 
 @cli.group()
