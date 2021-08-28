@@ -13,22 +13,22 @@ from ugc.config import Config, ConfigValidationError
 
 
 def test_self_path_is_set_to_custom_path():
-    custom_path = "/home/user/custom.yml"
+    custom_path = "/home/user/custom.json"
     config = Config(config_path=custom_path)
     assert config.path == custom_path
 
 
 def test_self_path_is_set_to_default_path():
-    default_path = f"{str(Path.home())}/.grades.yml"  # should mock...
+    default_path = f"{str(Path.home())}/.ugc-grades.json"
     assert Config().path == default_path
 
 
-def test_grades_yml_is_loaded_as_dict(local_config):
+def test_grades_json_is_loaded_as_dict(local_config):
     data = local_config.load()
     assert isinstance(data, dict)
 
 
-def test_bad_format_grades_yml_raises_ConfigValidationError(local_bad_config):
+def test_bad_format_grades_json_raises_ConfigValidationError(local_bad_config):
     with pytest.raises(ConfigValidationError):
         local_bad_config.load()
 
@@ -36,7 +36,7 @@ def test_bad_format_grades_yml_raises_ConfigValidationError(local_bad_config):
 def test_config_file_exists_but_is_empty_raises_ConfigValidationError(
     local_config,
 ):
-    local_config.path = Path(__file__).parent / "fixtures/yaml/empty.yml"
+    local_config.path = Path(__file__).parent / "fixtures/json/empty.json"
     with pytest.raises(ConfigValidationError):
         local_config.load()
 

@@ -52,7 +52,7 @@ def check_score_accuracy(grades) -> dict:
 
 
 def generate_sample(config) -> dict:
-    """Generate a sample grades YAML config file."""
+    """Generate a sample grades JSON config file."""
     if os.path.exists(config.path):
         err_msg = f"Will not overwrite existing {config.path}"
         click.secho(err_msg, fg="bright_yellow")
@@ -64,7 +64,7 @@ def generate_sample(config) -> dict:
 
 
 def generate_sample_overwrite(config) -> dict:
-    """Generate a sample grades YAML config file: overwrite if it exists."""
+    """Generate a sample grades JSON config file: overwrite if it exists."""
     if os.path.exists(config.path):
         click.secho(f"Overwriting {config.path}", fg="bright_blue")
     else:

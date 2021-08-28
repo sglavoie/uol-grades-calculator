@@ -16,8 +16,9 @@ from ugc.utils import commands_helpers
 def test_generate_sample_does_not_overwrite_existing_location(
     local_config, tmpdir
 ):
-    local_config.path = tmpdir / ".grades.yml"
-    test_file = tmpdir.join(".grades.yml")
+    filename = ".ugc-grades.json"
+    local_config.path = tmpdir / filename
+    test_file = tmpdir.join(filename)
     test_file.write("content")  # file can't be empty to test it
     expected = {
         "ok": False,
@@ -29,7 +30,7 @@ def test_generate_sample_does_not_overwrite_existing_location(
 def test_generate_sample_creates_file_if_it_does_not_exist(
     local_config, tmpdir
 ):
-    local_config.path = tmpdir / ".grades.yml"
+    local_config.path = tmpdir / ".ugc-grades.json"
     result = commands.generate_sample(local_config)
     assert os.path.exists(local_config.path)
     assert result == {"ok": True, "error": None}

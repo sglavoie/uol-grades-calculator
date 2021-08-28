@@ -1,0 +1,272 @@
+{
+  "Algorithms and Data Structures I": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 4
+  },
+  "Computational Mathematics": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 4
+  },
+  "Discrete Mathematics": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 4
+  },
+  "Fundamentals of Computer Science": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 4
+  },
+  "How Computers Work": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 4
+  },
+  "Introduction to Programming I": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 4
+  },
+  "Introduction to Programming II": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 70,
+    "midterm_score": null,
+    "midterm_weight": 30,
+    "module_score": null,
+    "level": 4
+  },
+  "Web Development": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 70,
+    "midterm_score": null,
+    "midterm_weight": 30,
+    "module_score": null,
+    "level": 4
+  },
+  "Agile Software Projects": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 70,
+    "midterm_score": null,
+    "midterm_weight": 30,
+    "module_score": null,
+    "level": 5
+  },
+  "Algorithms and Data Structures II": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 5
+  },
+  "Computer Security": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 5
+  },
+  "Databases Networks and the Web": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 5
+  },
+  "Graphics Programming": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 5
+  },
+  "Object Oriented Programming": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 5
+  },
+  "Programming with Data": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 5
+  },
+  "Software Design and Development": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 5
+  },
+  "3D Graphics Animation": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  },
+  "Advanced Web Development": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  },
+  "Artificial Intelligence": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  },
+  "Data Science": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  },
+  "Databases and Advanced Data Techniques": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  },
+  "Games Development": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  },
+  "Intelligent Signal Processing": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  },
+  "Interaction Design": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  },
+  "Machine Learning and Neural Networks": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  },
+  "Mobile Development": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  },
+  "Natural Language Processing": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  },
+  "Physical Computing and IOT": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  },
+  "Virtual Reality": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  },
+  "Final Project": {
+    "completion_date": null,
+    "final_score": null,
+    "final_weight": 50,
+    "midterm_score": null,
+    "midterm_weight": 50,
+    "module_score": null,
+    "level": 6
+  }
+}

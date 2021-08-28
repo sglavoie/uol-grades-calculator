@@ -55,7 +55,7 @@ Example output::
 
     Usage: ugc generate-sample [OPTIONS]
 
-    Generate a sample grades YAML config file.
+    Generate a sample grades JSON config file.
 
     Options:
     -f, --force-overwrite  Overwrite the existing config file, if any.
@@ -66,7 +66,7 @@ Example output::
 
     $ ugc generate-sample
 
-    Configuration file not found: /home/user/.grades.yml
+    Configuration file not found: /home/user/.ugc-grades.json
     → Configuration file generated.
 
 

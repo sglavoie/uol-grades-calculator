@@ -60,7 +60,7 @@ def generate_sample_copy_config_file_and_print_message(
     config_path: str,
 ) -> dict:
     here = Path(__file__).parent  # directory containing this file
-    template_location = here / "../grades-template.yml"
+    template_location = here / "../grades-template.json"
 
     try:
         shutil.copyfile(template_location, config_path)

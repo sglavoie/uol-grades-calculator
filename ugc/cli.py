@@ -49,7 +49,7 @@ def print_version(context, param, value):
 )
 @click.option(
     "--config",
-    default=f"{str(Path.home())}/.grades.yml",
+    default=f"{str(Path.home())}/.ugc-grades.json",
     show_default=True,
     help="Custom path to config file.",
 )
@@ -107,7 +107,7 @@ def progress(ctx, grades, avg_progress_only):
 )
 @pass_grades
 def generate_sample(grades, force_overwrite):
-    """Generate a sample grades YAML config file."""
+    """Generate a sample grades JSON config file."""
     if force_overwrite:
         return commands.generate_sample_overwrite(grades.config)
     return commands.generate_sample(grades.config)

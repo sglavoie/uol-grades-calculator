@@ -11,7 +11,7 @@ from ugc.config import Config
 from ugc.grades import Grades
 
 FIXTURE_CONFIG_PATH = (
-    pathlib.Path().absolute() / "ugc/grades-template.yml"
+    pathlib.Path().absolute() / "ugc/grades-template.json"
 )
 
 
@@ -34,6 +34,6 @@ def local_bad_config():
     """Return an instance of the Config class as a fixture available
     for the function."""
     config_path = (
-        pathlib.Path().absolute() / "tests/fixtures/yaml/bad_config.yml"
+        pathlib.Path().absolute() / "tests/fixtures/json/bad_config.json"
     )
     return Config(config_path)

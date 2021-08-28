@@ -49,7 +49,7 @@ Managing dependencies
 - Requirements to test and develop the application should go into ``requirements-dev.txt``. None of these are required to run ``ugc`` as a user.
 - User requirements should go into ``requirements.txt``.
 - The section ``install_requires`` in ``setup.cfg`` should be kept up-to-date when new releases are to be published.
-- Non-Python files (e.g. YML and JSON) used by ``ugc`` should be explicitly included in ``MANIFEST.in`` to be distributed with the package.
+- Non-Python files (e.g. JSON) used by ``ugc`` should be explicitly included in ``MANIFEST.in`` to be distributed with the package.
 
 
 Publishing the package to PyPI

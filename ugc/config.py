@@ -4,10 +4,10 @@ Manage the configuration file.
 
 # Standard library imports
 from pathlib import Path
+import json
 
 # Third-party library imports
 import click
-import yaml
 
 
 class ConfigValidationError(Exception):
@@ -27,9 +27,9 @@ class Config:
     def __init__(self, config_path=None):
         self.data = {}
 
-        grades_template = Path(__file__).parent / "grades-template.yml"
+        grades_template = Path(__file__).parent / "grades-template.json"
         with open(grades_template, encoding="UTF-8") as gfile:
-            self.default = yaml.safe_load(gfile)
+            self.default = json.load(gfile)
             gfile.seek(0)  # need to reset position in file to read it again
             self.template = gfile.read().splitlines()
             self.template[1:] = [
@@ -39,14 +39,13 @@ class Config:
         if config_path is not None:
             self.path = config_path
         else:
-            self.path = f"{str(Path.home())}/.grades.yml"
+            self.path = f"{str(Path.home())}/.ugc-grades.json"
 
     def load(self) -> dict:
-        """Load grades from a YAML file."""
+        """Load grades from a JSON file."""
         try:
             with open(self.path, encoding="UTF-8") as gfile:
-                self.check_config_format_is_syntactically_correct()
-                self.data = yaml.safe_load(gfile)
+                self.data = json.load(gfile)
                 self.verify()
                 return self.data
         except FileNotFoundError as e:
@@ -55,6 +54,10 @@ class Config:
             )
             click.secho("Try `ugc generate-sample --help`", fg="bright_blue")
             raise e
+        except json.decoder.JSONDecodeError as e:
+            raise ConfigValidationError(
+                "Could not load grades as a valid JSON file."
+            ) from e
 
     def verify(self) -> None:
         """Check that the config file contains valid data. One of the
@@ -70,28 +73,6 @@ class Config:
         if self.data is None:
             raise ConfigValidationError(
                 f"Configuration file is empty ({self.path})."
-            )
-        return True
-
-    def check_config_format_is_syntactically_correct(self) -> bool:
-        """Just make it much less probable we will find garbage in an
-        altered config. Avoids having to check for YAML syntax errors."""
-        with open(self.path, encoding="UTF-8") as gfile:
-            content = gfile.read().splitlines()
-
-        for idx, line in enumerate(content):
-            if line.startswith(self.template[idx]):
-                continue
-            # Legacy situation here :)
-            if (
-                line == "Numerical Mathematics:"
-                and self.template[idx] == "Computational Mathematics:"
-            ):
-                continue
-            raise ConfigValidationError(
-                f"Line {idx + 1} does not match "
-                f"the template. Expected '{self.template[idx]}', "
-                f"got '{line}'"
             )
         return True
 
