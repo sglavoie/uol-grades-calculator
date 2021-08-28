@@ -111,11 +111,3 @@ How to use this tool
 ====================
 
 Please refer to the page :doc:`commands` to see what ``ugc`` can do for you.
-
-Demo
-====
-
-.. raw:: html
-
-    <!-- Demo of v0.8.0 -->
-    <script id="asciicast-zwozjpOa0twETKgtmqlpuMaor" src="https://asciinema.org/a/zwozjpOa0twETKgtmqlpuMaor.js" async></script>
