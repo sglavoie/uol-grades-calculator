@@ -40,6 +40,7 @@ def print_version(context, param, value):
 
 @click.group()
 @click.option(
+    "-v",
     "--version",
     is_flag=True,
     callback=print_version,
