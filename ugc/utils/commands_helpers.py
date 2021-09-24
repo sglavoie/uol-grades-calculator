@@ -2,6 +2,7 @@
 from datetime import datetime
 from pathlib import Path
 import calendar
+import json
 import shutil
 
 # Third-party library imports
@@ -59,8 +60,7 @@ def print_unweighted_average_in_progress(uavg, only_in_progress=False) -> None:
 def generate_sample_copy_config_file_and_print_message(
     config_path: str,
 ) -> dict:
-    here = Path(__file__).parent  # directory containing this file
-    template_location = here / "../grades-template.json"
+    template_location = get_template_location()
 
     try:
         shutil.copyfile(template_location, config_path)
@@ -80,6 +80,14 @@ def generate_sample_copy_config_file_and_print_message(
     else:
         click.secho("→ Configuration file generated.", fg="bright_green")
         return {"ok": True, "error": None}
+
+
+def get_template() -> dict:
+    """Return the default grades template used for the initial configuration
+    as a dict."""
+    template_location = get_template_location()
+    with open(template_location) as template_file:
+        return json.load(template_file)
 
 
 def pprint_dataframe(dataframe):
@@ -268,3 +276,8 @@ def dataframe_parse_datetime_as_month_year(row) -> str:
     year, month = date.year, date.month
     month_name = calendar.month_abbr[month]
     return f"{month_name} {year}"
+
+
+def get_template_location() -> Path:
+    here = Path(__file__).parent  # directory containing this file
+    return here / "../grades-template.json"
