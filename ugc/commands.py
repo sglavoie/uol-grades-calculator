@@ -5,7 +5,10 @@ List the commands available from the CLI: one per function.
 # Standard library imports
 from datetime import datetime
 from pathlib import Path
+import base64
+import io
 import os
+import urllib
 
 # Third-party library imports
 import click
@@ -342,7 +345,7 @@ def plot_modules(grades: Grades, api=False, options: dict = {}) -> dict:
 
     plt.tight_layout(pad=1)  # add some padding, otherwise the x-labels are cut
 
-    # Save the results to the disk
+    # Define a string for the filename to save the results to the disk
     default_filename = today + "_grades_over_time.png"
     filename = (
         options.get("filename", "")
@@ -374,15 +377,13 @@ def plot_modules(grades: Grades, api=False, options: dict = {}) -> dict:
             return {"ok": False, "error": err_msg}
         filepath = Path(options.get("path", "")) / filename
 
-    if os.path.exists(filepath):
+    # Don't check if file already exists when api=True: we won't save to disk
+    if not api and os.path.exists(filepath):
         err_msg = f"The output destination file already exists: {filepath}"
         click.secho(
             err_msg,
             fg="bright_yellow",
         )
-        # don't ask anything and return early when called with the `api` flag
-        if api:
-            return {"ok": False, "error": err_msg}
 
         if not click.confirm(
             "Would you like to overwrite this file?",
@@ -394,16 +395,28 @@ def plot_modules(grades: Grades, api=False, options: dict = {}) -> dict:
                 "Aborting: the existing file was kept intact.",
                 fg="bright_blue",
             )
-            return {"ok": True, "save_filepath": filepath}
+            return {}  # just to be consistent with return types
 
+    # Separate strategy when the function is called with api=True:
+    # return the image as a readable string
+    if api:
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format="png")
+        buffer.seek(0)
+        image_string = base64.b64encode(buffer.read())
+
+        # This can be used as the `src` attribute on the `img` tag
+        uri = "data:image/png;base64," + urllib.parse.quote(image_string)
+        return {"ok": True, "src": uri}
+
+    # Save the file to disk
     try:
         plt.savefig(filepath)
         click.secho(f"Plot saved to {filepath}", fg="bright_green")
-        return {"ok": True, "save_filepath": filepath}
     except PermissionError:
         err_msg = f"PermissionError: could not save the output to {filepath}"
         click.secho(err_msg, fg="bright_red")
-        return {"ok": False, "error": err_msg}
+    return {}  # just to be consistent with return types
 
 
 def summarize_all(grades: Grades, symbol: str = "=", repeat: int = 80) -> dict:
