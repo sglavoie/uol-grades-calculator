@@ -1,6 +1,9 @@
 Available commands
 ==================
 
+.. toctree::
+   :maxdepth: 2
+
 ``check``
 ---------
 

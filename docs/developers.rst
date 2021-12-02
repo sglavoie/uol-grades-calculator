@@ -1,6 +1,9 @@
 For developers
 ==============
 
+.. toctree::
+   :maxdepth: 3
+
 Getting a copy of the source code
 ---------------------------------
 
@@ -120,7 +123,7 @@ Adding ``ugc`` as a command
 To avoid having to activate a virtual environment and calling the program as a module via ``python -m ugc``, one can create an alias or put a symbolic link in the ``$PATH`` to make the command ``ugc`` accessible.
 
 Creating an alias
-.................
+^^^^^^^^^^^^^^^^^
 
 As a quick and dirty way to access ``ugc`` with an alias, a virtual environment can be activated and the Python interpreter can be called from that environment. Adding an alias like the following would do the trick:
 
@@ -131,7 +134,7 @@ As a quick and dirty way to access ``ugc`` with an alias, a virtual environment 
 
 
 Adding to the ``$PATH``
-.......................
+^^^^^^^^^^^^^^^^^^^^^^^
 
 When developing locally and assuming all dependencies were installed inside a virtual environment:
 
@@ -157,7 +160,7 @@ Documentation
 -------------
 
 Generating modules documentation
-................................
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
