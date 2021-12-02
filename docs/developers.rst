@@ -14,7 +14,14 @@ Installing the necessary requirements:
 
 .. code-block:: bash
 
-    $ pip install -r requirements.txt -r requirements-dev.txt
+    $ pip install -r requirements-dev.txt
+
+
+If using `pipenv <https://pipenv.pypa.io/en/latest/>`_, the following will do:
+
+.. code-block:: bash
+
+    $ pipenv install --dev && pipenv shell
 
 
 Building the application once (no need to rebuild to test changes on the source code):
