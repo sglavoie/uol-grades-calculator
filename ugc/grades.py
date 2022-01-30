@@ -12,8 +12,15 @@ from ugc.utils import (
 
 
 class Grades:
-    def __init__(self, json_str=None, config_path=None) -> None:
+    def __init__(
+        self, json_str=None, config_path=None, verified=True, error=None
+    ) -> None:
         """Set some default values before loading any grades."""
+        self.error = error
+        if not verified:
+            self.config = Config()
+            self.config_exists = False
+            return
         if json_str is not None:
             # Load data from a JSON string instead of from a file
             self.config = Config(json_str=json_str)

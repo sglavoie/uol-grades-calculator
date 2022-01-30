@@ -12,8 +12,17 @@ import click
 # Local imports
 from ugc import __version__, commands
 from ugc.grades import Grades
+from ugc.config import ConfigValidationError
 
 pass_grades = click.make_pass_decorator(Grades, ensure=True)
+
+
+def print_error(context):
+    click.secho(
+        f"The configuration file contains errors. Got:\n{context.error}",
+        fg="bright_red",
+    )
+
 
 # From https://click.palletsprojects.com/en/8.0.x/commands/#decorating-commands
 # There might be a more elegant way to do this, but it works well...
@@ -25,6 +34,8 @@ def run_if_config_exists(f):
         # invoke command only when attribute `config_exists` is set to True
         if ctx.obj.config_exists:
             return ctx.invoke(f, ctx.obj, *args, **kwargs)
+        else:
+            print_error(ctx.obj)
         return None
 
     return update_wrapper(new_func, f)
@@ -64,7 +75,10 @@ def print_version(context, param, value):
 )
 @click.pass_context
 def cli(ctx, config, json_str):
-    ctx.obj = Grades(json_str=json_str, config_path=config)
+    try:
+        ctx.obj = Grades(json_str=json_str, config_path=config)
+    except ConfigValidationError as error:
+        ctx.obj = Grades(verified=False, error=error)
 
 
 @cli.group()
@@ -117,6 +131,8 @@ def progress(ctx, grades, avg_progress_only):
 @pass_grades
 def generate_sample(grades, force_overwrite):
     """Generate a sample grades JSON config file."""
+    if grades.error:
+        print_error(grades)
     if force_overwrite:
         return commands.generate_sample_overwrite(grades.config)
     return commands.generate_sample(grades.config)
