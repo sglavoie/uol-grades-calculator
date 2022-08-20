@@ -191,3 +191,17 @@ Rebuilding documentation
 
 
 If something is not rendered even after a force-refresh (such as when editing the config file or adding custom CSS), try running ``make clean html`` instead: there can be instances where changes are not applied due to the local cache.
+
+
+Viewing the documentation locally
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Once the documentation has been generated, it can be viewed with a simple server. A built-in option could be as follows:
+
+.. code-block:: bash
+
+    $ cd docs/_build/html  # from the root
+    $ python -m http.server
+
+
+This will set up a server at http://localhost:8000/ by default.
