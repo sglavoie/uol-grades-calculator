@@ -37,14 +37,17 @@ Available commands
     --help  Show this message and exit.
 
 
-Example output::
+Example output 1:
 
-    $ ugc check score-accuracy
+.. image:: ./_static/images/check_score1.png
+  :width: 594
+  :alt: Output 1 of `ugc check score-accuracy`
 
-    Algorithms and Data Structures I: 78% actual [expected 79.0%]
-    Discrete Mathematics: 79.5% actual [expected 80.0%]
-    Fundamentals of Computer Science: 60% actual [expected 58.0%]
+Example output 2:
 
+.. image:: ./_static/images/check_score2.png
+  :width: 1112
+  :alt: Output 2 of `ugc check score-accuracy`
 
 ----------
 
@@ -65,13 +68,11 @@ Example output::
     --help                 Show this message and exit.
 
 
-Example output::
+Example output:
 
-    $ ugc generate-sample
-
-    Configuration file not found: /home/user/.ugc-grades.json
-    → Configuration file generated.
-
+.. image:: ./_static/images/generate_sample.png
+  :width: 1138
+  :alt: Default output of `ugc generate-sample`
 
 ----------
 
@@ -175,60 +176,8 @@ Example output 2::
         progress  Output includes only modules that are in progress.
 
 
-    $ ugc summarize progress --help
+Example output:
 
-    Usage: ugc summarize progress [OPTIONS]
-
-    Output includes only modules that are in progress.
-
-    In progress means there is no value provided for `module_score` yet for a
-    given module.
-
-    Options:
-    -o, --avg-progress-only  Show the average for modules in progress only.
-    --help                   Show this message and exit.
-
-
-Example output 1::
-
-    $ ugc summarize done
-
-    +-------------------+---------+-----------------------------------+---------+--------+------+
-    | Completion date   |   Level | Module name                       | Score   | ECTS   | US   |
-    |-------------------+---------+-----------------------------------+---------+--------+------|
-    | 2018-12           |       4 | How Computers Work                | N/A     | N/A    | N/A  |
-    | 2019-09           |       4 | Introduction to Programming I     | 100     | A      | A    |
-    | 2019-09           |       4 | Numerical Mathematics             | 80      | A      | B-   |
-    | 2019-09           |       4 | Web Development                   | 87      | A      | B+   |
-    | 2020-03           |       4 | Algorithms and Data Structures I  | 95      | A      | A    |
-    | 2020-03           |       4 | Discrete Mathematics              | 100     | A      | A    |
-    | 2020-03           |       4 | Introduction to Programming II    | 99      | A      | A    |
-    | 2020-09           |       4 | Fundamentals of Computer Science  | 98      | A      | A    |
-    | 2020-09           |       5 | Algorithms and Data Structures II | 92      | A      | A-   |
-    | 2020-09           |       5 | Object Oriented Programming       | 96      | A      | A    |
-    | 2021-03           |       5 | Agile Software Projects           | 86      | A      | B    |
-    | 2021-03           |       5 | Graphics Programming              | 98      | A      | A    |
-    | 2021-03           |       5 | Programming with Data             | 86      | A      | B    |
-    +-------------------+---------+-----------------------------------+---------+--------+------+
-
-    Weighted average: 92.41 (ECTS: A, US: A-)
-    Unweighted average: 93.08 (ECTS: A, US: A)
-    Classification (weighted): First Class Honours
-    GPA (weighted): 3.7 US – 4 UK
-    Total credits done: 195 / 360 (54.17%)
-
-
-Example output 2::
-
-    $ ugc summarize progress
-
-    +---------------------------------+---------+-----------+--------+------+
-    | Module name                     |   Level |   Midterm | ECTS   | US   |
-    |---------------------------------+---------+-----------+--------+------|
-    | Computer Security               |       5 |       100 | A      | A    |
-    | Databases Networks and the Web  |       5 |        90 | A      | A-   |
-    | Software Design and Development |       5 |        88 | A      | B+   |
-    +---------------------------------+---------+-----------+--------+------+
-
-    Weighted average (including modules in progress): 92.48 (ECTS: A, US: A-)
-    Unweighted average (including modules in progress): 93.0 (ECTS: A, US: A)
+.. image:: ./_static/images/summarize_all.png
+  :width: 1200
+  :alt: Output of `ugc summarize all`
