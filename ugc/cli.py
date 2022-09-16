@@ -10,17 +10,18 @@ from pathlib import Path
 import click
 
 # Local imports
-from ugc import __version__, commands
+from ugc import __version__
+from ugc import commands
 from ugc.grades import Grades
 from ugc.config import ConfigValidationError
+from ugc.utils import console
 
 pass_grades = click.make_pass_decorator(Grades, ensure=True)
 
 
 def print_error(context):
-    click.secho(
-        f"The configuration file contains errors. Got:\n{context.error}",
-        fg="bright_red",
+    console.print(
+        f"[red]The configuration file contains errors. Got:\n{context.error}"
     )
 
 
@@ -45,7 +46,7 @@ def print_version(context, param, value):
     "Print the program version and exit."
     if not value or context.resilient_parsing:
         return
-    click.echo(__version__)
+    console.print(__version__)
     context.exit()
 
 
@@ -244,4 +245,5 @@ def plot():
 @run_if_config_exists
 def modules(ctx, grades, **kwargs):
     """Produce a scatter plot showing all individual grades."""
-    commands.plot_modules(grades=grades, options=kwargs)
+    with console.status("Working..."):
+        commands.plot_modules(grades=grades, options=kwargs)

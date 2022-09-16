@@ -11,8 +11,8 @@ import os
 import urllib
 
 # Third-party library imports
-import click
 from matplotlib.lines import Line2D
+import click
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -22,7 +22,7 @@ from adjustText import adjust_text
 
 # Local imports
 from ugc.grades import Grades
-from ugc.utils import commands_helpers, grades_helpers
+from ugc.utils import console, commands_helpers, grades_helpers
 
 
 def check_score_accuracy(grades) -> dict:
@@ -45,12 +45,11 @@ def check_score_accuracy(grades) -> dict:
                 "actual": actual_score,
                 "expected": expected_score,
             }
-            click.secho(
-                f"{module}: {actual_score}% actual [expected {expected_score}%]",
-                fg="bright_red",
+            console.print(
+                f"[red]{module}: {actual_score}% actual (expected {expected_score}%)"
             )
     if not expected_dict:
-        click.secho("All module scores are accurate!", fg="bright_green")
+        console.print("[green]All module scores are accurate!")
     return expected_dict
 
 
@@ -58,7 +57,7 @@ def generate_sample(config) -> dict:
     """Generate a sample grades JSON config file."""
     if os.path.exists(config.path):
         err_msg = f"Will not overwrite existing {config.path}"
-        click.secho(err_msg, fg="bright_yellow")
+        console.print(f"[yellow]{err_msg}")
         return {"ok": False, "error": err_msg}
 
     return commands_helpers.generate_sample_copy_config_file_and_print_message(
@@ -69,9 +68,9 @@ def generate_sample(config) -> dict:
 def generate_sample_overwrite(config) -> dict:
     """Generate a sample grades JSON config file: overwrite if it exists."""
     if os.path.exists(config.path):
-        click.secho(f"Overwriting {config.path}", fg="bright_blue")
+        console.print(f"[blue]Overwriting {config.path}")
     else:
-        click.secho(f"Creating {config.path}", fg="bright_blue")
+        console.print(f"[blue]Creating {config.path}")
 
     return commands_helpers.generate_sample_copy_config_file_and_print_message(
         config_path=config.path
@@ -97,7 +96,7 @@ def plot_modules(grades: Grades, api=False, options: dict = {}) -> dict:
         df = commands_helpers.get_modules_done_dataframe(grades, modules)
     else:
         err_msg = "Aborting: there is not enough data to produce a plot."
-        click.secho(err_msg, fg="bright_blue")
+        console.print(f"[blue]{err_msg}")
         return {"ok": False, "error": err_msg}
 
     # Drop unneeded columns
@@ -216,9 +215,8 @@ def plot_modules(grades: Grades, api=False, options: dict = {}) -> dict:
 
     # It's not much of a line with less than 2 different dates...
     if len(dates) < 2:
-        click.secho(
-            "Not enough data to plot a line: skipping trend and averages...",
-            fg="bright_yellow",
+        console.print(
+            "[yellow]Not enough data to plot a line: skipping trend and averages..."
         )
     else:
         # Used to plot multiple lines, so calculate those once and for all
@@ -366,24 +364,15 @@ def plot_modules(grades: Grades, api=False, options: dict = {}) -> dict:
                 "Cannot save to the path specified: "
                 f"{Path(options.get('path', '')) / filename}"
             )
-            click.secho(
-                err_msg,
-                fg="bright_red",
-            )
-            click.secho(
-                "Make sure the output directory exists.",
-                fg="blue",
-            )
+            console.print(f"[red]{err_msg}")
+            console.print("[blue]Make sure the output directory exists.")
             return {"ok": False, "error": err_msg}
         filepath = Path(options.get("path", "")) / filename
 
     # Don't check if file already exists when api=True: we won't save to disk
     if not api and os.path.exists(filepath):
         err_msg = f"The output destination file already exists: {filepath}"
-        click.secho(
-            err_msg,
-            fg="bright_yellow",
-        )
+        console.print(f"[yellow]{err_msg}")
 
         if not click.confirm(
             "Would you like to overwrite this file?",
@@ -391,10 +380,7 @@ def plot_modules(grades: Grades, api=False, options: dict = {}) -> dict:
             show_default=True,
             err=False,
         ):
-            click.secho(
-                "Aborting: the existing file was kept intact.",
-                fg="bright_blue",
-            )
+            console.print("[blue]Aborting: the existing file was kept intact.")
             return {}  # just to be consistent with return types
 
     # Separate strategy when the function is called with api=True:
@@ -412,21 +398,22 @@ def plot_modules(grades: Grades, api=False, options: dict = {}) -> dict:
     # Save the file to disk
     try:
         plt.savefig(filepath)
-        click.secho(f"Plot saved to {filepath}", fg="bright_green")
+        console.print(f"[green]Plot saved to {filepath}")
+
     except PermissionError:
         err_msg = f"PermissionError: could not save the output to {filepath}"
-        click.secho(err_msg, fg="bright_red")
+        console.print(f"[red]{err_msg}")
     return {}  # just to be consistent with return types
 
 
 def summarize_all(grades: Grades, symbol: str = "=", repeat: int = 80) -> dict:
     """Print a summary of modules done and in progress."""
-    click.secho("Modules completed", fg="bright_cyan")
-    click.secho(symbol * repeat, fg="bright_cyan")
+    console.print("[cyan]Modules completed")
+    console.print(f"[cyan]{symbol * repeat}")
     summary_done = summarize_done(grades)
 
-    click.secho("\nModules in progress", fg="bright_cyan")
-    click.secho(symbol * repeat, fg="bright_cyan")
+    console.print("\n[cyan]Modules in progress")
+    console.print(f"[cyan]{symbol * repeat}")
     summary_progress = summarize_progress(grades)
 
     return {"done": summary_done, "progress": summary_progress}
@@ -436,14 +423,14 @@ def summarize_done(grades) -> dict:
     """Print a summary of the progress made so far for modules that are done
     and dusted."""
     if not (finished_modules := grades.get_list_of_finished_modules()):
-        click.secho(
-            "No modules done. Good luck in your journey!", fg="bright_blue"
-        )
+        console.print("[blue]No modules done. Good luck in your journey!")
         return {}
     modules = grades_helpers.get_grades_list_as_list_of_dicts(finished_modules)
 
     df = commands_helpers.get_modules_done_dataframe(grades, modules)
-    commands_helpers.pprint_dataframe(df)
+    commands_helpers.pprint_dataframe_done(
+        df, title="Progress made — Modules done"
+    )
 
     # Store all the data we want to print
     wavg = grades.weighted_average
@@ -458,27 +445,18 @@ def summarize_done(grades) -> dict:
     total_credits = grades.total_credits
     pct_done = grades.get_percentage_degree_done(total_credits)
 
-    click.secho(
-        f"\nWeighted average: {wavg} (ECTS: {wects}, US: {wus})",
-        fg="bright_green",
+    console.print(
+        f"\n[green]Weighted average: {wavg} (ECTS: {wects}, US: {wus})"
     )
-    click.secho(
-        f"Unweighted average: {uavg} (ECTS: {uects}, US: {uus})",
-        fg="bright_yellow",
+    console.print(
+        f"[yellow]Unweighted average: {uavg} (ECTS: {uects}, US: {uus})"
     )
 
-    click.secho(
-        f"Classification (weighted): {wclass}",
-        fg="bright_blue",
-    )
-    click.secho(
-        f"GPA (weighted): {wgpa_us} US – {wgpa_uk} UK",
-        fg="magenta",
-    )
+    console.print(f"[blue]Classification (weighted): {wclass}")
+    console.print(f"[magenta]GPA (weighted): {wgpa_us} US — {wgpa_uk} UK")
 
-    click.secho(
-        f"Total credits done: {total_credits} / 360 ({pct_done}%)",
-        fg="cyan",
+    console.print(
+        f"[cyan]Total credits done: {total_credits} / 360 ({pct_done}%)"
     )
 
     return {
@@ -506,7 +484,9 @@ def summarize_progress(grades) -> dict:
         df_all_scores,
         in_progress,
     ) = commands_helpers.get_modules_in_progress_dataframe(grades)
-    commands_helpers.pprint_dataframe(df_all_scores)
+    commands_helpers.pprint_dataframe_in_progress(
+        df_all_scores, title="Work in progress — Modules with pending grades"
+    )
 
     wavg = grades.weighted_average_in_progress
     uavg = grades.unweighted_average_including_in_progress
@@ -528,7 +508,9 @@ def summarize_progress_avg_progress_only(grades) -> dict:
         df_all_scores,
         in_progress,
     ) = commands_helpers.get_modules_in_progress_dataframe(grades)
-    commands_helpers.pprint_dataframe(df_all_scores)
+    commands_helpers.pprint_dataframe_in_progress(
+        df_all_scores, title="Work in progress — Modules with pending grades"
+    )
 
     wavg = grades.weighted_average_in_progress_only
     uavg = grades.unweighted_average_in_progress_only

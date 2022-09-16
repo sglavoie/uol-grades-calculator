@@ -6,8 +6,8 @@ Manage the configuration file.
 from pathlib import Path
 import json
 
-# Third-party library imports
-import click
+# Local imports
+from ugc.utils import console
 
 
 class ConfigValidationError(Exception):
@@ -57,10 +57,8 @@ class Config:
                 self.verify()
                 return self.data
         except FileNotFoundError as e:
-            click.secho(
-                f"Configuration file not found: {self.path}", fg="bright_red"
-            )
-            click.secho("Try `ugc generate-sample --help`", fg="bright_blue")
+            console.print(f"[red]Configuration file not found: {self.path}")
+            console.print("[blue]Try `ugc generate-sample --help`")
             raise e
         except json.decoder.JSONDecodeError as e:
             raise ConfigValidationError(err_msg) from e

@@ -6,14 +6,13 @@ import json
 import shutil
 
 # Third-party library imports
-from tabulate import tabulate
+from rich.table import Table
 import click
 import pandas as pd
 
 # Local imports
 from ugc.grades import Grades
-from ugc.utils import mathtools
-from ugc.utils import grades_helpers
+from ugc.utils import console, grades_helpers, mathtools
 
 
 def get_module_score_rounded_up(module) -> float:
@@ -24,12 +23,12 @@ def get_module_score_rounded_up(module) -> float:
 def there_are_no_modules_in_progress(grades) -> bool:
     if grades.get_list_of_modules_in_progress():
         return False
-    click.secho("No modules in progress.", fg="bright_blue")
+    console.print("[blue]No modules in progress.")
     return True
 
 
 def print_modules_in_progress(pretty_printer, grades):
-    click.secho("Modules in progress:", fg="bright_blue")
+    console.print("[blue]Modules in progress:")
     pretty_printer.pprint(grades.get_list_of_modules_in_progress())
 
 
@@ -39,9 +38,9 @@ def print_weighted_average_in_progress(wavg, only_in_progress=False) -> None:
     wects = grades_helpers.get_ects_equivalent_score(wavg)
     wus = grades_helpers.get_us_letter_equivalent_score(wavg)
 
-    click.secho(
-        f"\nWeighted average ({msg} modules in progress): {wavg} (ECTS: {wects}, US: {wus})",
-        fg="bright_green",
+    console.print(
+        f"\n[green]Weighted average ({msg} modules in progress): "
+        f"{wavg} (ECTS: {wects}, US: {wus})"
     )
 
 
@@ -51,9 +50,9 @@ def print_unweighted_average_in_progress(uavg, only_in_progress=False) -> None:
     uects = grades_helpers.get_ects_equivalent_score(uavg)
     uus = grades_helpers.get_us_letter_equivalent_score(uavg)
 
-    click.secho(
-        f"Unweighted average ({msg} modules in progress): {uavg} (ECTS: {uects}, US: {uus})",
-        fg="bright_yellow",
+    console.print(
+        f"[yellow]Unweighted average ({msg} modules in progress): "
+        f"{uavg} (ECTS: {uects}, US: {uus})"
     )
 
 
@@ -78,7 +77,7 @@ def generate_sample_copy_config_file_and_print_message(
         print(err_msg)
         return {"ok": False, "error": err_msg}
     else:
-        click.secho("→ Configuration file generated.", fg="bright_green")
+        console.print("[green]→ Configuration file generated.")
         return {"ok": True, "error": None}
 
 
@@ -90,10 +89,41 @@ def get_template() -> dict:
         return json.load(template_file)
 
 
-def pprint_dataframe(dataframe):
-    print(
-        tabulate(dataframe, headers="keys", tablefmt="psql", showindex=False)
+def pprint_dataframe_done(dataframe: pd.DataFrame, title: str) -> None:
+    table = Table(
+        title=title,
+        row_styles=["dim", ""],
+        highlight=True,
     )
+    table.add_column("Completion date", style="blue", no_wrap=True)
+    table.add_column("Level", style="magenta")
+    table.add_column("Module name", style="cyan")
+    table.add_column("Score", justify="right", style="dark_green")
+    table.add_column("ECTS", justify="right", style="chartreuse4")
+    table.add_column("US", justify="right", style="orange4")
+
+    content = list(dataframe.itertuples(index=False, name=None))
+    for row in content:
+        table.add_row(*(str(x) for x in row))
+    console.print(table)
+
+
+def pprint_dataframe_in_progress(dataframe: pd.DataFrame, title: str) -> None:
+    table = Table(
+        title=title,
+        row_styles=["dim", ""],
+        highlight=True,
+    )
+    table.add_column("Module name", style="blue", no_wrap=True)
+    table.add_column("Level", style="magenta")
+    table.add_column("Midterm", style="cyan")
+    table.add_column("ECTS", justify="right", style="chartreuse4")
+    table.add_column("US", justify="right", style="orange4")
+
+    content = list(dataframe.itertuples(index=False))
+    for row in content:
+        table.add_row(*(str(x) for x in row))
+    console.print(table)
 
 
 def get_modules_done_dataframe(
