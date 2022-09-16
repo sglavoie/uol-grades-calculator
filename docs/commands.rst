@@ -39,15 +39,23 @@ Available commands
 
 Example output 1:
 
-.. image:: ./_static/images/check_score1.png
-  :width: 594
-  :alt: Output 1 of `ugc check score-accuracy`
+.. image:: ./_static/images/check_score_dark1.png
+  :width: 986
+  :alt: Output 1 of `ugc check score-accuracy` in dark theme
+
+.. image:: ./_static/images/check_score_light1.png
+  :width: 986
+  :alt: Output 1 of `ugc check score-accuracy` in light theme
 
 Example output 2:
 
-.. image:: ./_static/images/check_score2.png
-  :width: 1112
-  :alt: Output 2 of `ugc check score-accuracy`
+.. image:: ./_static/images/check_score_dark2.png
+  :width: 986
+  :alt: Output 2 of `ugc check score-accuracy` in dark theme
+
+.. image:: ./_static/images/check_score_light2.png
+  :width: 986
+  :alt: Output 2 of `ugc check score-accuracy` in light theme
 
 ----------
 
@@ -70,9 +78,13 @@ Example output 2:
 
 Example output:
 
-.. image:: ./_static/images/generate_sample.png
-  :width: 1138
-  :alt: Default output of `ugc generate-sample`
+.. image:: ./_static/images/generate_sample_dark.png
+  :width: 1002
+  :alt: Default output of `ugc generate-sample` in dark theme
+
+.. image:: ./_static/images/generate_sample_light.png
+  :width: 1002
+  :alt: Default output of `ugc generate-sample` in light theme
 
 ----------
 
@@ -178,6 +190,10 @@ Example output 2::
 
 Example output:
 
-.. image:: ./_static/images/summarize_all.png
+.. image:: ./_static/images/summarize_all_dark.png
   :width: 1200
-  :alt: Output of `ugc summarize all`
+  :alt: Output of `ugc summarize all` in dark theme
+
+.. image:: ./_static/images/summarize_all_light.png
+  :width: 1200
+  :alt: Output of `ugc summarize all` in light theme
