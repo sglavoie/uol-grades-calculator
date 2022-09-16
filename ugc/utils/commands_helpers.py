@@ -7,7 +7,6 @@ import shutil
 
 # Third-party library imports
 from rich.table import Table
-import click
 import pandas as pd
 
 # Local imports
@@ -85,7 +84,7 @@ def get_template() -> dict:
     """Return the default grades template used for the initial configuration
     as a dict."""
     template_location = get_template_location()
-    with open(template_location) as template_file:
+    with open(template_location, encoding="utf-8") as template_file:
         return json.load(template_file)
 
 

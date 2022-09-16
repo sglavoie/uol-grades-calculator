@@ -1,7 +1,7 @@
 """
 Describes the commands available from the terminal when running this tool.
 """
-
+# pylint: disable=unused-argument
 # Standard library imports
 from functools import update_wrapper
 from pathlib import Path
@@ -35,9 +35,7 @@ def run_if_config_exists(f):
         # invoke command only when attribute `config_exists` is set to True
         if ctx.obj.config_exists:
             return ctx.invoke(f, ctx.obj, *args, **kwargs)
-        else:
-            print_error(ctx.obj)
-        return None
+        return print_error(ctx.obj)
 
     return update_wrapper(new_func, f)
 
